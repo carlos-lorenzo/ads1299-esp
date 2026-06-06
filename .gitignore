@@ -62,6 +62,7 @@ dkms.conf
 build/
 sdkconfig
 sdkconfig.old
+*output/
 
 # Python & System caches
 __pycache__/
