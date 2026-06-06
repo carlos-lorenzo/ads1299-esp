@@ -1,0 +1,4 @@
+version: "0.0.1"
+description: "ADS1299 driver for ESP-IDF"
+url: "https://github.com/carlos-lorenzo/ads1299-esp"
+license: "MIT"
