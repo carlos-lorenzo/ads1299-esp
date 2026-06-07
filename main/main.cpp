@@ -44,17 +44,12 @@ extern "C" void app_main(void)
     uint8_t tx_buf[5] = {0xAA, 0x55, 0x11, 0x22, 0x33}; // Test pattern
     uint8_t rx_buf[5] = {0};
 
-    spi_transaction_t t = {
-        .flags = 0,
-        .cmd = 0,
-        .addr = 0,
-        .length = 5 * 8, // 5 bytes = 40 bits
-        .rxlength = 5 * 8, // 5 bytes = 40 bits
-        .override_freq_hz = 0, // Use default frequency
-        .user = nullptr,
-        .tx_buffer = tx_buf,
-        .rx_buffer = rx_buf,
-    };
+    spi_transaction_t t;
+    t.length = 5 * 8;
+    t.rxlength = 5 * 8;
+    t.tx_buffer = tx_buf;
+    t.rx_buffer = rx_buf;
+
 
     while (1) {
         // Clear RX buffer before every transfer to ensure no false positives

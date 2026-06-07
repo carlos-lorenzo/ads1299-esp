@@ -104,10 +104,16 @@ esp_err_t ads1299_init(ads1299_config_t *config)
     gpio_set_level(config->reset_pin, 1);
     vTaskDelay(pdMS_TO_TICKS(2500));
     ads1299_reset_hardware(config);
+    ads1299_sdatac(config);
 
 
 
     return ret;
+}
+
+esp_err_t write_register(ads1299_config_t* config, uint8_t reg, uint8_t value)
+{
+
 }
 
 esp_err_t send_command(const ads1299_config_t* config, uint8_t command)
@@ -117,18 +123,50 @@ esp_err_t send_command(const ads1299_config_t* config, uint8_t command)
     esp_rom_delay_us(ADS1299_T_CSSC);
 
     // Send command byte over SPI
-    spi_transaction_t transaction = {
-        .length = 8, // Command is 1 byte (8 bits)
-        .tx_buffer = &command,
-        .rx_buffer = NULL
-    };
+    spi_transaction_t t;
+    t.length = 8;
+    t.rxlength = 0;
+    t.tx_buffer = &command;
+    t.rx_buffer = nullptr;
 
-    esp_err_t ret = spi_device_polling_transmit(config->spi_handle, &transaction);
+    esp_err_t ret = spi_device_polling_transmit(config->spi_handle, &t);
 
     esp_rom_delay_us(ADS1299_T_CSH);
+
+    ESP_ERROR_CHECK(ret);
 
     // Deassert CS pin
     gpio_set_level(config->cs_pin, 1);
 
     return ret;
 }
+
+esp_err_t read_data(ads1299_config_t* config, uint8_t* buffer, size_t buffer_len)
+{
+    // This function will be called from the DRDY interrupt handler, so it should be designed to be as fast as possible. It will read the data registers from the ADS1299 and store the data in the provided buffer. The buffer should be large enough to hold the data for all 8 channels (24 bits per channel) plus any additional bytes for status or metadata if needed.
+
+    // Assert CS pin
+    gpio_set_level(config->cs_pin, 0);
+    esp_rom_delay_us(ADS1299_T_CSSC);
+
+    // Send RDATA command followed by dummy bytes to read the data
+    uint8_t command = ADS1299_CMD_RDATA;
+    spi_transaction_t t;
+    t.length = 8;
+    t.rxlength = buffer_len * 8;
+    t.tx_buffer = &command;
+    t.rx_buffer = buffer;
+
+    esp_err_t ret = spi_device_polling_transmit(config->spi_handle, &t);
+
+    esp_rom_delay_us(ADS1299_T_CSH);
+
+    ESP_ERROR_CHECK(ret);
+
+    // Deassert CS pin
+    gpio_set_level(config->cs_pin, 1);
+
+    return ret;
+}
+
+
