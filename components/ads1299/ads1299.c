@@ -16,7 +16,21 @@ esp_err_t ads1299_reset_hardware(const ads1299_config_t* config)
     return ESP_OK;
 }
 
-esp_err_t ads1299_init(const ads1299_config_t *config)
+esp_err_t ads1299_reset_software(const ads1299_config_t* config)
+{
+    esp_err_t ret = send_command(config, ADS1299_CMD_RESET);
+    esp_rom_delay_us(ADS1299_T_RESET);
+    return ret;
+}
+
+esp_err_t ads1299_sdatac(const ads1299_config_t* config)
+{
+    esp_err_t ret = send_command(config, ADS1299_CMD_RESET);
+    esp_rom_delay_us(ADS1299_T_SDATAC);
+    return ret;
+}
+
+esp_err_t ads1299_init(ads1299_config_t *config)
 {
 
 
@@ -44,8 +58,6 @@ esp_err_t ads1299_init(const ads1299_config_t *config)
     ret = gpio_config(&pin_config);
     ESP_ERROR_CHECK(ret);
 
-    // Initialisation procedures like setting reset for required time
-
 
     // Initialize SPI interface
 
@@ -59,6 +71,21 @@ esp_err_t ads1299_init(const ads1299_config_t *config)
     };
 
     ret = spi_bus_initialize(config->spi_host, &bus_config, SPI_DMA_CH_AUTO);
+
+    spi_device_interface_config_t device_config = {
+        .mode = 1,                                    // Mode 1 (CPOL=0, CPHA=1)
+        .clock_speed_hz = 4 * 1000 * 1000,            // 4 MHz
+        .spics_io_num = -1,                           // -1 = Manually managed via GPIO *CRITICAL*
+        .queue_size = 3,                              // Small queue since transactions are sequential
+        .command_bits = 0,
+        .address_bits = 0,
+        .dummy_bits = 0,
+        .flags = 0,
+        .pre_cb = nullptr,
+        .post_cb = nullptr
+    };
+    spi_bus_add_device(config->spi_host, &device_config, &config->spi_handle);
+
 
     ESP_ERROR_CHECK(ret);
     
@@ -80,12 +107,28 @@ esp_err_t ads1299_init(const ads1299_config_t *config)
 
 
 
+    return ret;
+}
 
+esp_err_t send_command(const ads1299_config_t* config, uint8_t command)
+{
+    // Assert CS pin
+    gpio_set_level(config->cs_pin, 0);
+    esp_rom_delay_us(ADS1299_T_CSSC);
 
+    // Send command byte over SPI
+    spi_transaction_t transaction = {
+        .length = 8, // Command is 1 byte (8 bits)
+        .tx_buffer = &command,
+        .rx_buffer = NULL
+    };
 
+    esp_err_t ret = spi_device_polling_transmit(config->spi_handle, &transaction);
 
+    esp_rom_delay_us(ADS1299_T_CSH);
 
-
+    // Deassert CS pin
+    gpio_set_level(config->cs_pin, 1);
 
     return ret;
 }
