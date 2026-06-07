@@ -31,12 +31,10 @@ typedef struct {
     gpio_num_t reset_pin;               // Reset GPIO pin
     gpio_num_t start_pin;               // Start GPIO pin
 
-    ads1299_data_rate_t data_rate;      // Data output rate (e.g., 250 SPS, 500 SPS, etc.)
-    ads1299_channel_config_t channel_configs[8]; // Configuration for each of the 8 channels
+    ads1299_sample_rate_t sample_rate;      // Data output rate (e.g., 250 SPS, 500 SPS, etc.)
+    // ads1299_channel_config_t channel_configs[8]; // Configuration for each of the 8 channels
 
    
-
-
 } ads1299_config_t;
 
 
@@ -61,11 +59,16 @@ esp_err_t read_data(ads1299_config_t* config, uint8_t* buffer, size_t buffer_len
 
 
 // Specific commands
-esp_err_t ads1299_start(ads1299_config_t* config);
-esp_err_t ads1299_stop(ads1299_config_t* config);
-esp_err_t ads1299_reset(ads1299_config_t* config);
-esp_err_t ads1299_standby(ads1299_config_t* config);
-esp_err_t ads1299_wakeup(ads1299_config_t* config);
+esp_err_t ads1299_start_hardware(const ads1299_config_t* config);
+esp_err_t ads1299_start_software(const ads1299_config_t* config);
+
+esp_err_t ads1299_stop(const ads1299_config_t* config);
+
+esp_err_t ads1299_reset_hardware(const ads1299_config_t* config);
+esp_err_t ads1299_reset_software(const ads1299_config_t* config);
+
+esp_err_t ads1299_standby(const ads1299_config_t* config);
+esp_err_t ads1299_wakeup(const ads1299_config_t* config);
 
 
 void do_something(void);

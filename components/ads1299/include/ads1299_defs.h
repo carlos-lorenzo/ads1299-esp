@@ -7,6 +7,22 @@ extern "C" {
 
 #include <stdint.h>
 
+
+/**
+ * @brief ADS1299 timing constants
+ * Assuming an internal clock of 2.048 MHz
+ */
+#define ADS1299_CLK_FREQ      2048000UL
+
+// Convert clock cycles to microseconds, rounding up
+#define ADS1299_TICKS_TO_US(ticks) (((ticks) * 1000000UL + (ADS1299_CLK_FREQ - 1)) / ADS1299_CLK_FREQ)
+
+
+#define ADS1299_T_CLK_US ADS1299_TICKS_TO_US(1)
+#define ADS1299_T_RESET ADS1299_TICKS_TO_US(18)
+#define ADS1299_T_PULSE ADS1299_TICKS_TO_US(2)
+
+
 /**
  * @brief ADS1299 SPI Command Opcodes (Datasheet Table 12)
  * These are fixed single-byte or multi-byte protocol bytes.
@@ -58,7 +74,7 @@ typedef enum {
     ADS1299_DR_1kSPS   = 0x04,
     ADS1299_DR_500SPS  = 0x05,
     ADS1299_DR_250SPS  = 0x06
-} ads1299_data_rate_t;
+} ads1299_sample_rate_t;
 
 /**
  * @brief Programmable Gain Amplifier (PGA) Settings (CHxSET Register Bits [6:4])

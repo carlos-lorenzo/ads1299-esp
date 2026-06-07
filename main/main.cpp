@@ -13,7 +13,9 @@ extern "C" void app_main(void)
         .drdy_pin = GPIO_NUM_8,
         .reset_pin = GPIO_NUM_13,
         .start_pin = GPIO_NUM_12,
-        .data_rate = ADS1299_DR_500SPS,
+        .sample_rate = ADS1299_DR_500SPS,
     };
+
+    ads1299_init(&config);
 }
 
