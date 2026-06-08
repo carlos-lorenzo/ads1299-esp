@@ -32,6 +32,7 @@ extern "C" {
 #define ADS1299_T_SDECODE ADS1299_TICKS_TO_US(4)
 
 
+#define ADS1299_FRAME_SIZE 27  // 3 status + 8 channels * 3 bytes
 
 /**
  * @brief ADS1299 SPI Command Opcodes (Datasheet Table 12)
