@@ -150,22 +150,127 @@ esp_err_t ads1299_deinit(ads1299_t *dev)
 
 esp_err_t ads1299_write_register(ads1299_t* dev, uint8_t reg, uint8_t value)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    // WREG command: two command bytes followed by the register value.
+    // Byte 0: 0x40 | reg address
+    // Byte 1: number of registers to write minus 1 (0x00 = write 1 register)
+    // Byte 2: value
+    uint8_t tx[3] = {
+        (uint8_t)(ADS1299_CMD_WREG | (reg & 0x1F)),
+        0x00,
+        value,
+    };
+
+    gpio_set_level(dev->config.cs_pin, 0);
+    esp_rom_delay_us(ADS1299_T_CSSC);
+
+    spi_transaction_t t = {
+        .length = 8 * 3,
+        .tx_buffer = tx,
+        .rx_buffer = nullptr,
+    };
+
+    esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
+
+    esp_rom_delay_us(ADS1299_T_CSH);
+    gpio_set_level(dev->config.cs_pin, 1);
+
+    return ret;
 }
 
 esp_err_t ads1299_read_register(ads1299_t* dev, uint8_t reg, uint8_t* value)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    // RREG command: two command bytes, then clock out one byte to receive.
+    // Byte 0: 0x20 | reg address
+    // Byte 1: number of registers to read minus 1 (0x00 = read 1 register)
+    // Byte 2: dummy TX byte — chip drives MISO with the register value
+    uint8_t tx[3] = {
+        (uint8_t)(ADS1299_CMD_RREG | (reg & 0x1F)),
+        0x00,
+        0x00,
+    };
+    uint8_t rx[3] = {0};
+
+    gpio_set_level(dev->config.cs_pin, 0);
+    esp_rom_delay_us(ADS1299_T_CSSC);
+
+    spi_transaction_t t = {
+        .length = 8 * 3,
+        .tx_buffer = tx,
+        .rx_buffer = rx,
+    };
+
+    esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
+
+    esp_rom_delay_us(ADS1299_T_CSH);
+    gpio_set_level(dev->config.cs_pin, 1);
+
+    if (ret == ESP_OK) {
+        *value = rx[2];
+    }
+
+    return ret;
 }
 
 esp_err_t ads1299_write_registers(ads1299_t* dev, uint8_t start_reg, const uint8_t* data, size_t count)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    // Same as write_register but byte 1 is (count - 1) and followed by count value bytes
+    uint8_t tx[2 + count];
+    tx[0] = (uint8_t)(ADS1299_CMD_WREG | (start_reg & 0x1F));
+    tx[1] = (uint8_t)(count - 1);
+    for (size_t i = 0; i < count; i++) {
+        tx[2 + i] = data[i];
+    }
+
+    gpio_set_level(dev->config.cs_pin, 0);
+    esp_rom_delay_us(ADS1299_T_CSSC);
+
+    spi_transaction_t t = {
+        .length = 8 * (2 + count),
+        .tx_buffer = tx,
+        .rx_buffer = nullptr,
+    };
+
+    esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
+
+    esp_rom_delay_us(ADS1299_T_CSH);
+    gpio_set_level(dev->config.cs_pin, 1);
+
+    return ret;
 }
 
 esp_err_t ads1299_read_registers(ads1299_t* dev, uint8_t start_reg, uint8_t* data, size_t count)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    // Same as read_register but byte 1 is (count - 1) and count bytes are received after
+    uint8_t tx[2 + count];
+    tx[0] = (uint8_t)(ADS1299_CMD_RREG | (start_reg & 0x1F));
+    tx[1] = (uint8_t)(count - 1);
+    for (size_t i = 0; i < count; i++) {
+        tx[2 + i] = 0x00;
+    }
+
+    uint8_t rx[2 + count];
+
+    gpio_set_level(dev->config.cs_pin, 0);
+    esp_rom_delay_us(ADS1299_T_CSSC);
+
+    spi_transaction_t t = {
+        .length = 8 * (2 + count),
+        .tx_buffer = tx,
+        .rx_buffer = rx,
+    };
+
+    esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
+
+    esp_rom_delay_us(ADS1299_T_CSH);
+    gpio_set_level(dev->config.cs_pin, 1);
+
+    if (ret == ESP_OK) {
+        for (size_t i = 0; i < count; i++) {
+            data[i] = rx[2 + i];
+        }
+    }
+
+    return ret;
 }
 
 esp_err_t ads1299_send_command(ads1299_t* dev, uint8_t command)
@@ -232,17 +337,43 @@ esp_err_t ads1299_read_data(ads1299_t* dev, uint8_t* buffer)
 
 esp_err_t ads1299_read_sample(ads1299_t* dev, ads1299_sample_t* sample)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    if (!dev || !sample) {
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    uint8_t buffer[ADS1299_FRAME_SIZE];
+
+    esp_err_t ret = ads1299_read_data(dev, buffer);
+    if (ret != ESP_OK) {
+        return ret;
+    }
+
+    // First 3 bytes are status
+    sample->status[0] = buffer[0];
+    sample->status[1] = buffer[1];
+    sample->status[2] = buffer[2];
+
+    // Remaining 24 bytes are 8 channels of 3 bytes each, 24-bit signed MSB first
+    for (int ch = 0; ch < 8; ch++) {
+        int offset = 3 + ch * 3;
+        sample->channels[ch] = ((int32_t)(int8_t)buffer[offset] << 16)
+                              | ((uint32_t)buffer[offset + 1] << 8)
+                              |  (uint32_t)buffer[offset + 2];
+    }
+
+    return ESP_OK;
 }
 
 esp_err_t ads1299_start(ads1299_t* dev)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    gpio_set_level(dev->config.start_pin, 1);
+    return ESP_OK;
 }
 
 esp_err_t ads1299_stop(ads1299_t* dev)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    gpio_set_level(dev->config.start_pin, 0);
+    return ads1299_send_command(dev, ADS1299_CMD_STOP);
 }
 
 esp_err_t ads1299_reset_hardware(ads1299_t* dev)
@@ -264,57 +395,26 @@ esp_err_t ads1299_reset_software(ads1299_t* dev)
 
 esp_err_t ads1299_standby(ads1299_t* dev)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    return ads1299_send_command(dev, ADS1299_CMD_STANDBY);
 }
-
 
 esp_err_t ads1299_wakeup(ads1299_t* dev)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    esp_err_t ret = ads1299_send_command(dev, ADS1299_CMD_WAKEUP);
+    esp_rom_delay_us(ADS1299_TICKS_TO_US(4));
+    return ret;
 }
 
 esp_err_t ads1299_enable_continuous_read(ads1299_t* dev)
 {
-    esp_err_t ret = ads1299_send_command(dev, ADS1299_CMD_RESET);
+    esp_err_t ret = ads1299_send_command(dev, ADS1299_CMD_RDATAC);
     esp_rom_delay_us(ADS1299_T_SDATAC);
     return ret;
 }
 
 esp_err_t ads1299_disable_continuous_read(ads1299_t* dev)
 {
-    return ESP_ERR_NOT_SUPPORTED;
+    esp_err_t ret = ads1299_send_command(dev, ADS1299_CMD_SDATAC);
+    esp_rom_delay_us(ADS1299_T_SDATAC);
+    return ret;
 }
-
-
-//
-// esp_err_t read_data(ads1299_config_t* config, uint8_t* buffer, size_t buffer_len)
-// {
-//     // This function will be called from the DRDY interrupt handler, so it should be designed to be as fast as possible. It will read the data registers from the ADS1299 and store the data in the provided buffer. The buffer should be large enough to hold the data for all 8 channels (24 bits per channel) plus any additional bytes for status or metadata if needed.
-//
-//     // Assert CS pin
-//     gpio_set_level(config->cs_pin, 0);
-//     esp_rom_delay_us(ADS1299_T_CSSC);
-//
-//     // Send RDATA command followed by dummy bytes to read the data
-//     uint8_t command = ADS1299_CMD_RDATA;
-//     spi_transaction_t t;
-//     t.length = 8;
-//     t.rxlength = buffer_len * 8;
-//     t.tx_buffer = &command;
-//     t.rx_buffer = buffer;
-//
-//     esp_err_t ret = spi_device_polling_transmit(config->spi_handle, &t);
-//
-//     esp_rom_delay_us(ADS1299_T_CSH);
-//
-//     ESP_ERROR_CHECK(ret);
-//
-//     // Deassert CS pin
-//     gpio_set_level(config->cs_pin, 1);
-//
-//     return ret;
-// }
-//
-//
-
-
