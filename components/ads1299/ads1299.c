@@ -89,18 +89,133 @@ esp_err_t ads1299_init(ads1299_t *dev)
         return ESP_ERR_NO_MEM;
     }
 
-    /* ---------------- ADS1299 hardware reset sequence ---------------- */
+    /* ---------------- ADS1299 hardware powerup sequence ---------------- */
+    esp_err_t err;
+    /*
+     * 1. Turn on external clock
+     * 2. Set CLKSEL = 1 and wait for wakeup
+     * 3. Set PDWN and RESET = 1
+     * 4. wait for VCAP >= 1.1V
+     * 5. Reset pulse and wait for 18 tCLKs
+     * 6. SDATAC
+     * 7. External reference logic?
+     * 8. Write certin registers
+     * 9. Set start = 1
+     * 10. Set to RDATAC
+     * 11. Capture data and check noise
+     * 12. Set test signals
+     * 13. Caputure data and Test Signals
+     */
 
-    vTaskDelay(pdMS_TO_TICKS(10));
 
-    gpio_set_level(dev->config.reset_pin, 0);
-    vTaskDelay(pdMS_TO_TICKS(10));
-    gpio_set_level(dev->config.reset_pin, 1);
+    // 1. Analog and Digital Power-Up
+    // (Assumes power rails are stable before calling this sequence)
 
-    vTaskDelay(pdMS_TO_TICKS(50));
+    // 2. Clock Selection
+    //if (use_external_clock) {
+        // Set CLKSEL Pin = 0 and Provide External Clock fCLK = 2.048 MHz
+        // Note: CLKSEL is typically a hardware pin. If tied to a GPIO, control it here.
+        // e.g., gpio_set_level(dev->config.clksel_pin, 0);
+    //} else {
+        // Set CLKSEL Pin = 1 and Wait for Oscillator to Wake Up
+        // e.g., gpio_set_level(dev->config.clksel_pin, 1);
+        // If START pin is tied High, DRDY will toggle at fCLK / 8192 after this step
+    //}
 
-    /* SDATAC (stop continuous mode) */
-    // ads1299_send_command(dev, ADS1299_CMD_SDATAC);
+    // 3. Reset and Power Down Pin Setup
+    // Set PDWN = 1 and RESET = 1
+    // gpio_set_level(dev->config.pdwn_pin, 1);
+    err = gpio_set_level(dev->config.reset_pin, 1);
+    ESP_ERROR_CHECK(err);
+    // 4. Wait for VCAP1 >= 1.1 V
+    // If VCAP1 < 1.1 V at t_POR, continue waiting until VCAP1 >= 1.1 V
+    // Note: Usually implemented as a fixed conservative safe delay (e.g., 500ms total)
+    // unless VCAP1 is actively monitored by an ADC channel on the MCU.
+    vTaskDelay(pdMS_TO_TICKS(350));
+
+    // 5. Issue Reset Pulse, Wait for 18 tCLKs
+    // Hardware reset pulse: pull low, wait (~2µs), pull high, wait 18 tCLKs (~9µs)
+    err = ads1299_reset_hardware(dev);
+    ESP_ERROR_CHECK(err);
+
+    // 6. Send SDATAC Command
+    // Device wakes up in RDATAC mode, so send SDATAC so registers can be written
+    err = ads1299_disable_continuous_read(dev);
+    ESP_ERROR_CHECK(err);
+
+    // 7. External / Internal Reference Configuration
+    // if (use_external_reference) {
+    //     // No action required on PDB_REFBUF if using external reference
+    // } else {
+    //     // If Using Internal Reference, Send This Command: WREG CONFIG3 E0h
+    //     err = ads1299_write_register(dev, ADS1299_REG_CONFIG3, 0xE0);
+    //     if (err != ESP_OK) return err;
+    //
+    //     // Set PDB_REFBUF = 1 and Wait for Internal Reference to Settle
+    //     // Internal reference settling time typically takes ~150ms
+    //     vTaskDelay(pdMS_TO_TICKS(150));
+    // }
+
+    // 8. Write Certain Registers, Including Input Short
+    // WREG CONFIG1 96h (Set Device for DR = fMOD / 4096)
+    err = ads1299_write_register(dev, ADS1299_REG_CONFIG1, 0x96);
+    ESP_ERROR_CHECK(err);
+
+    // WREG CONFIG2 C0h
+    err = ads1299_write_register(dev, ADS1299_REG_CONFIG2, 0xC0);
+    ESP_ERROR_CHECK(err);
+
+    // WREG CHnSET 01h (Set All Channels to Input Short)
+    for (uint8_t i = 1; i <= 8; i++) {
+        err = ads1299_write_register(dev, (ADS1299_REG_CH1SET + (i - 1)), 0x01);
+        ESP_ERROR_CHECK(err);
+    }
+
+    // 9. Set START = 1
+    // Activate Conversion. After this point DRDY toggles at fCLK / 8192
+    err = ads1299_start(dev);
+    ESP_ERROR_CHECK(err);
+
+    // 10. RDATAC
+    // Put the Device Back in RDATAC Mode
+    err = ads1299_enable_continuous_read(dev);
+    ESP_ERROR_CHECK(err);
+
+    // 11. Capture Data and Check Noise
+    // Look for DRDY and issue 24 + n x 24 SCLKs
+    ads1299_sample_t noise_sample;
+    // (In application logic, you would wait for the DRDY pin interrupt here)
+    err = ads1299_read_sample(dev, &noise_sample);
+    ESP_ERROR_CHECK(err);
+
+    // 12. Set Test Signals
+    // Activate a (1 mV x VREF / 2.4) Square-Wave Test Signal On All Channels
+
+    // Step A: SDATAC (Must exit RDATAC to write registers)
+    err = ads1299_disable_continuous_read(dev);
+    ESP_ERROR_CHECK(err);
+
+    // Step B: WREG CONFIG2 D0h
+    err = ads1299_write_register(dev, ADS1299_REG_CONFIG2, 0xD0);
+    ESP_ERROR_CHECK(err);
+
+    // Step C: WREG CHnSET 05h (Set all channels to Test Signal)
+    for (uint8_t i = 1; i <= 8; i++) {
+        err = ads1299_write_register(dev, (ADS1299_REG_CH1SET + (i - 1)), 0x05);
+        ESP_ERROR_CHECK(err);
+    }
+
+    // Step D: RDATAC
+    err = ads1299_enable_continuous_read(dev);
+    ESP_ERROR_CHECK(err);
+
+    // 13. Capture Data and Test Signal
+    // Look for DRDY and Issue 24 + n x 24 SCLKs
+    ads1299_sample_t test_signal_sample;
+    // (In application logic, wait for DRDY pin interrupt)
+    err = ads1299_read_sample(dev, &test_signal_sample);
+    ESP_ERROR_CHECK(err);
+
 
     ESP_LOGI(TAG, "ADS1299 initialized");
 
