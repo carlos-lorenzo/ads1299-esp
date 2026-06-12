@@ -54,21 +54,6 @@ esp_err_t ads1299_init(ads1299_t *dev)
 
     /* ---------------- SPI bus ---------------- */
 
-    spi_bus_config_t bus_cfg = {
-        .mosi_io_num = dev->config.mosi_pin,
-        .miso_io_num = dev->config.miso_pin,
-        .sclk_io_num = dev->config.sclk_pin,
-        .quadwp_io_num = -1,
-        .quadhd_io_num = -1,
-        .max_transfer_sz = 64
-    };
-
-    ESP_RETURN_ON_ERROR(
-        spi_bus_initialize(dev->config.spi_host, &bus_cfg, SPI_DMA_CH_AUTO),
-        TAG,
-        "SPI bus init failed"
-    );
-
     spi_device_interface_config_t dev_cfg = {
         .mode = 1,
         .clock_speed_hz = 4 * 1000 * 1000,
@@ -158,7 +143,7 @@ esp_err_t ads1299_init(ads1299_t *dev)
 
     // 8. Write Certain Registers, Including Input Short
     // WREG CONFIG1 96h (Set Device for DR = fMOD / 4096)
-    err = ads1299_write_register(dev, ADS1299_REG_CONFIG1, 0x96);
+    err = ads1299_write_register(dev, ADS1299_REG_CONFIG1, dev->config.sample_rate);
     ESP_ERROR_CHECK(err);
 
     // WREG CONFIG2 C0h
@@ -394,12 +379,13 @@ esp_err_t ads1299_send_command(ads1299_t* dev, uint8_t command)
     gpio_set_level(dev->config.cs_pin, 0);
     esp_rom_delay_us(ADS1299_T_CSSC);
 
-    // Send command byte over SPI
-    spi_transaction_t t;
+    // FIX 1: = {0} zeroes out the override_freq_hz garbage memory
+    spi_transaction_t t = {0};
+
+    // FIX 2: Using tx_data avoids DMA stack alignment issues entirely
+    t.flags = SPI_TRANS_USE_TXDATA;
     t.length = 8;
-    t.rxlength = 0;
-    t.tx_buffer = &command;
-    t.rx_buffer = nullptr;
+    t.tx_data[0] = command;
 
     esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
 
@@ -427,11 +413,11 @@ esp_err_t ads1299_read_data(ads1299_t* dev, uint8_t* buffer)
     uint8_t tx[ADS1299_FRAME_SIZE] = {0};
     uint8_t rx[ADS1299_FRAME_SIZE] = {0};
 
-    spi_transaction_t t = {
-        .length = ADS1299_FRAME_SIZE * 8,
-        .tx_buffer = tx,
-        .rx_buffer = rx,
-    };
+    spi_transaction_t t = {0};
+
+    t.length = ADS1299_FRAME_SIZE * 8;
+    t.tx_buffer = tx;
+    t.rx_buffer = rx;
 
     tx[0] = cmd;
 
@@ -481,8 +467,7 @@ esp_err_t ads1299_read_sample(ads1299_t* dev, ads1299_sample_t* sample)
 
 esp_err_t ads1299_start(ads1299_t* dev)
 {
-    gpio_set_level(dev->config.start_pin, 1);
-    return ESP_OK;
+    return gpio_set_level(dev->config.start_pin, 1);
 }
 
 esp_err_t ads1299_stop(ads1299_t* dev)
@@ -493,8 +478,7 @@ esp_err_t ads1299_stop(ads1299_t* dev)
 
 esp_err_t ads1299_reset_hardware(ads1299_t* dev)
 {
-    esp_err_t ret = ESP_OK;
-    ret = gpio_set_level(dev->config.reset_pin, 0);
+    esp_err_t ret = gpio_set_level(dev->config.reset_pin, 0);
     esp_rom_delay_us(ADS1299_T_RESET);
     gpio_set_level(dev->config.reset_pin, 1);
 
@@ -516,14 +500,14 @@ esp_err_t ads1299_standby(ads1299_t* dev)
 esp_err_t ads1299_wakeup(ads1299_t* dev)
 {
     esp_err_t ret = ads1299_send_command(dev, ADS1299_CMD_WAKEUP);
-    esp_rom_delay_us(ADS1299_TICKS_TO_US(4));
+    esp_rom_delay_us(ADS1299_T_WAKEUP);
     return ret;
 }
 
 esp_err_t ads1299_enable_continuous_read(ads1299_t* dev)
 {
     esp_err_t ret = ads1299_send_command(dev, ADS1299_CMD_RDATAC);
-    esp_rom_delay_us(ADS1299_T_SDATAC);
+    esp_rom_delay_us(ADS1299_T_RDATAC);
     return ret;
 }
 
@@ -532,4 +516,48 @@ esp_err_t ads1299_disable_continuous_read(ads1299_t* dev)
     esp_err_t ret = ads1299_send_command(dev, ADS1299_CMD_SDATAC);
     esp_rom_delay_us(ADS1299_T_SDATAC);
     return ret;
+}
+
+bool ads1299_is_running(const ads1299_t* dev)
+{
+    if (!dev) {
+        return false;
+    }
+    return dev->dma_ctx != nullptr;
+}
+
+void ads1299_parse_frame(const uint8_t* raw, int64_t timestamp, ads1299_sample_t* out)
+{
+    out->status[0] = raw[0];
+    out->status[1] = raw[1];
+    out->status[2] = raw[2];
+
+    for (int ch = 0; ch < 8; ch++) {
+        int offset = 3 + ch * 3;
+
+        // Temporary 24-bit value stored in a 32-bit int for sign extension
+        int32_t val = ((int32_t)raw[offset] << 16) |
+                      ((int32_t)raw[offset + 1] << 8)  |
+                       (int32_t)raw[offset + 2];
+
+        // Bit manipulation magic to properly fill the left most bits based on the sign
+        out->channels[ch] = (val << 8) >> 8;
+    }
+    out->timestamp_us = timestamp;
+
+}
+
+uint32_t ads1299_sample_rate_to_hz(ads1299_sample_rate_t rate)
+{
+    switch (rate)
+    {
+        case ADS1299_DR_16kSPS: return 16000;
+        case ADS1299_DR_8kSPS:  return 8000;
+        case ADS1299_DR_4kSPS:  return 4000;
+        case ADS1299_DR_2kSPS:  return 2000;
+        case ADS1299_DR_1kSPS:  return 1000;
+        case ADS1299_DR_500SPS: return 500;
+        case ADS1299_DR_250SPS: return 250;
+        default: return 0;
+    }
 }
