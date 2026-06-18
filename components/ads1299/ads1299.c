@@ -47,7 +47,7 @@ static void spi_post_transfer_cb(spi_transaction_t *trans) {
     ads1299_dma_ctx_t *ctx = (ads1299_dma_ctx_t *)trans->user;
 
     ctx->sample_count++;
-    ESP_LOGI(TAG, "SPI post transfer triggered"); // TODO: Remove this call as its blocking
+
 
     if (ctx->sample_count == ctx->chunk_samples) {
         uint8_t *filled = ctx->active;
@@ -129,7 +129,7 @@ esp_err_t ads1299_init(ads1299_t *dev)
         .spics_io_num = dev->config.cs_pin,
         .cs_ena_pretrans = 2,
         .cs_ena_posttrans = 4,
-        .queue_size = 3,
+        .queue_size = 25,
         .post_cb = spi_post_transfer_cb
     };
 
@@ -601,7 +601,6 @@ esp_err_t ads1299_disable_continuous_read(ads1299_t* dev)
 static void IRAM_ATTR drdy_isr_handler(void *arg)
 {
     ads1299_t *dev = (ads1299_t *)arg;
-    ESP_LOGI(TAG, "DRDY ISR triggered"); // TODO: Remove this call as its blocking
     spi_transaction_t *t = dev->dma_ctx->active == dev->dma_ctx->ping ? &dev->dma_ctx->ping_trans : &dev->dma_ctx->pong_trans;
     t->rx_buffer = dev->dma_ctx->active + dev->dma_ctx->sample_count * ADS1299_FRAME_SIZE;
     t->user = dev->dma_ctx; // Pass the DMA context to the post-transfer callback
@@ -611,7 +610,7 @@ static void IRAM_ATTR drdy_isr_handler(void *arg)
     ts[dev->dma_ctx->sample_count] = esp_timer_get_time();
 
     // Will occur if queue full
-    if (spi_device_queue_trans(dev->spi_handle, t, 0) != ESP_OK) {
+    if (spi_device_polling_transmit(dev->spi_handle, t) != ESP_OK) {
         // TODO: Handle exception by notifying task/queue as logs can't be written in isr tasks as they're blocking
     }
 
@@ -625,10 +624,12 @@ void ads1299_handler_task(void *arg) {
 
     for (;;) {
         if (xTaskNotifyWait(0, ULONG_MAX, &notif_value, portMAX_DELAY) == pdTRUE) {
+
             if (notif_value == 0) {
-                ESP_LOGI(TAG, "Handler task deleted"); // TODO: Remove this call as its blocking
-                vTaskDelete(NULL);
+                ESP_LOGI(TAG, "Handler task deleted %d", ctx->sample_count);
+                vTaskDelete(ctx->handler_task);
             }
+
             ESP_LOGI(TAG, "Handler task notified"); // TODO: Remove this call as its blocking
 
             uint8_t *ready_buf = (uint8_t *)notif_value;
@@ -646,6 +647,9 @@ void ads1299_handler_task(void *arg) {
             chunk.last_timestamp_us = ctx->samples[ctx->chunk_samples - 1].timestamp_us;
 
             ctx->on_chunk(&chunk, ctx->ctx);
+
+
+
 
             // parse ready_buf into ads1299_sample_t[] (local/static array)
             // build ads1299_chunk_t

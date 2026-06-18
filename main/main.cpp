@@ -68,7 +68,7 @@ extern "C" void app_main(void)
 
 
     // 0 initialized raw bytestream
-    uint8_t raw[ADS1299_FRAME_BYTES] = {0x00};
+    // uint8_t raw[ADS1299_FRAME_BYTES] = {0x00};
     // int64_t timestamp = esp_timer_get_time();
     // ads1299_sample_t sample;
     // ads1299_parse_frame(raw, timestamp, &sample);
@@ -80,12 +80,16 @@ extern "C" void app_main(void)
     // }
 
     // 100 ms and 250SPS => 25 samples
-    for (int i = 0; i < 25; i++)
+    for (int i = 0; i < 26; i++)
     {
+        // Fake interrupt triggering
         gpio_set_level(DRDY_PIN, 0);
-        vTaskDelay(pdTICKS_TO_MS(4)); // 1000/250 = 4
+        esp_rom_delay_us(10);
         gpio_set_level(DRDY_PIN, 1);
+        vTaskDelay(pdMS_TO_TICKS(4)); // 1000/250 = 4
     }
 
+    // vTaskDelay(pdMS_TO_TICKS(2500));
+    // ads1299_stop_continuous(&dev1);
 }
 
