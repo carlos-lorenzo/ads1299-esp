@@ -1,14 +1,70 @@
 #include "esp_log.h"
 #include "esp_err.h"
 #include "esp_check.h"
+#include "esp_timer.h"
+
 #include "driver/gpio.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
+
 #include "ads1299.h"
 
 static const char *TAG = "ADS1299";
+
+// Driver hidden functions and structs
+
+struct ads1299_dma_ctx
+{
+    uint8_t *ping; // DMA-capable buffer A
+    uint8_t *pong; // DMA-capable buffer B
+    spi_transaction_t ping_trans;
+    spi_transaction_t pong_trans;
+
+    uint8_t *active; // points to ping or pong
+    size_t chunk_samples; // samples per chunk
+    size_t buf_bytes; // chunk_samples * ADS1299_FRAME_BYTES
+    size_t sample_count; // samples written into active buffer
+
+    int64_t *ping_timestamps; // Pointer to timestamp array
+    int64_t *pong_timestamps; // Pointer to timestamp array
+    ads1299_sample_t *samples; // Pointer to ads1299_sample_t array
+
+    TaskHandle_t handler_task; // woken by TaskNotify from ISR
+    ads1299_chunk_cb_t on_chunk; // User defined
+    ads1299_error_cb_t on_error; // User defined
+    void *ctx;
+};
+
+static void spi_post_transfer_cb(spi_transaction_t *trans) {
+    // This will run even if the ads1299 isn't in read mode => ctx won't be defined
+    if (trans->user == NULL)
+    {
+        return;
+    }
+
+    ads1299_dma_ctx_t *ctx = (ads1299_dma_ctx_t *)trans->user;
+
+    ctx->sample_count++;
+    ESP_LOGI(TAG, "SPI post transfer triggered"); // TODO: Remove this call as its blocking
+
+    if (ctx->sample_count == ctx->chunk_samples) {
+        uint8_t *filled = ctx->active;
+        ctx->active = (ctx->active == ctx->ping) ? ctx->pong : ctx->ping;
+        ctx->sample_count = 0;
+
+        BaseType_t higher_woken = pdFALSE;
+        xTaskNotifyFromISR(ctx->handler_task,
+                           (uint32_t)filled,   // pass which buffer is ready
+                           eSetValueWithOverwrite,
+                           &higher_woken);
+        portYIELD_FROM_ISR(higher_woken);
+    }
+}
+
+
+
 
 ads1299_t ads1299_create(const ads1299_config_t *cfg)
 {
@@ -16,6 +72,13 @@ ads1299_t ads1299_create(const ads1299_config_t *cfg)
     if (cfg) {
         dev.config = *cfg;
     }
+    dev.dma_ctx = calloc(1, sizeof(ads1299_dma_ctx_t));
+    if (!dev.dma_ctx)
+    {
+        ESP_LOGE(TAG, "Failed to allocate DMA context - No memory");
+        return dev;
+    }
+
     return dev;
 }
 
@@ -37,7 +100,6 @@ esp_err_t ads1299_init(ads1299_t *dev)
     /* ---------------- GPIO setup ---------------- */
     gpio_config_t io_cfg = {
         .pin_bit_mask =
-            (1ULL << dev->config.cs_pin) |
             (1ULL << dev->config.reset_pin) |
             (1ULL << dev->config.start_pin),
         .mode = GPIO_MODE_OUTPUT,
@@ -48,7 +110,14 @@ esp_err_t ads1299_init(ads1299_t *dev)
 
     ESP_RETURN_ON_ERROR(gpio_config(&io_cfg), TAG, "GPIO config failed");
 
-    gpio_set_level(dev->config.cs_pin, 1);
+    gpio_config_t drdy_config = {};
+    drdy_config.pin_bit_mask = (1ULL << dev->config.drdy_pin);
+    drdy_config.mode = GPIO_MODE_INPUT_OUTPUT; // TODO: Change to only input - output used to fake drdy falling
+    drdy_config.pull_up_en = GPIO_PULLUP_ENABLE;
+    drdy_config.intr_type = GPIO_INTR_NEGEDGE;
+
+    ESP_RETURN_ON_ERROR(gpio_config(&drdy_config), TAG, "DRDY GPIO config failed");
+
     gpio_set_level(dev->config.reset_pin, 1);
     gpio_set_level(dev->config.start_pin, 0);
 
@@ -57,8 +126,11 @@ esp_err_t ads1299_init(ads1299_t *dev)
     spi_device_interface_config_t dev_cfg = {
         .mode = 1,
         .clock_speed_hz = 4 * 1000 * 1000,
-        .spics_io_num = -1,   // manual CS control
+        .spics_io_num = dev->config.cs_pin,
+        .cs_ena_pretrans = 2,
+        .cs_ena_posttrans = 4,
         .queue_size = 3,
+        .post_cb = spi_post_transfer_cb
     };
 
     ESP_RETURN_ON_ERROR(
@@ -229,19 +301,21 @@ esp_err_t ads1299_deinit(ads1299_t *dev)
     /* remove SPI device */
     if (dev->spi_handle) {
         spi_bus_remove_device(dev->spi_handle);
-        dev->spi_handle = nullptr;
+        dev->spi_handle = NULL;
     }
 
-    /* free SPI bus */
-    spi_bus_free(dev->config.spi_host);
 
     /* free mutex */
     if (dev->mutex) {
         vSemaphoreDelete(dev->mutex);
-        dev->mutex = nullptr;
+        dev->mutex = NULL;
     }
 
     dev->initialized = false;
+
+
+    free(dev->dma_ctx);
+    dev->dma_ctx = NULL;
 
     ESP_LOGI(TAG, "ADS1299 deinitialized");
 
@@ -260,19 +334,19 @@ esp_err_t ads1299_write_register(ads1299_t* dev, uint8_t reg, uint8_t value)
         value,
     };
 
-    gpio_set_level(dev->config.cs_pin, 0);
-    esp_rom_delay_us(ADS1299_T_CSSC);
+
+
 
     spi_transaction_t t = {
         .length = 8 * 3,
         .tx_buffer = tx,
-        .rx_buffer = nullptr,
+        .rx_buffer = NULL,
     };
 
     esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
 
-    esp_rom_delay_us(ADS1299_T_CSH);
-    gpio_set_level(dev->config.cs_pin, 1);
+
+
 
     return ret;
 }
@@ -290,8 +364,8 @@ esp_err_t ads1299_read_register(ads1299_t* dev, uint8_t reg, uint8_t* value)
     };
     uint8_t rx[3] = {0};
 
-    gpio_set_level(dev->config.cs_pin, 0);
-    esp_rom_delay_us(ADS1299_T_CSSC);
+
+
 
     spi_transaction_t t = {
         .length = 8 * 3,
@@ -301,8 +375,8 @@ esp_err_t ads1299_read_register(ads1299_t* dev, uint8_t reg, uint8_t* value)
 
     esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
 
-    esp_rom_delay_us(ADS1299_T_CSH);
-    gpio_set_level(dev->config.cs_pin, 1);
+
+
 
     if (ret == ESP_OK) {
         *value = rx[2];
@@ -321,19 +395,19 @@ esp_err_t ads1299_write_registers(ads1299_t* dev, uint8_t start_reg, const uint8
         tx[2 + i] = data[i];
     }
 
-    gpio_set_level(dev->config.cs_pin, 0);
-    esp_rom_delay_us(ADS1299_T_CSSC);
+
+
 
     spi_transaction_t t = {
         .length = 8 * (2 + count),
         .tx_buffer = tx,
-        .rx_buffer = nullptr,
+        .rx_buffer = NULL,
     };
 
     esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
 
-    esp_rom_delay_us(ADS1299_T_CSH);
-    gpio_set_level(dev->config.cs_pin, 1);
+
+
 
     return ret;
 }
@@ -350,8 +424,8 @@ esp_err_t ads1299_read_registers(ads1299_t* dev, uint8_t start_reg, uint8_t* dat
 
     uint8_t rx[2 + count];
 
-    gpio_set_level(dev->config.cs_pin, 0);
-    esp_rom_delay_us(ADS1299_T_CSSC);
+
+
 
     spi_transaction_t t = {
         .length = 8 * (2 + count),
@@ -361,8 +435,8 @@ esp_err_t ads1299_read_registers(ads1299_t* dev, uint8_t start_reg, uint8_t* dat
 
     esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
 
-    esp_rom_delay_us(ADS1299_T_CSH);
-    gpio_set_level(dev->config.cs_pin, 1);
+
+
 
     if (ret == ESP_OK) {
         for (size_t i = 0; i < count; i++) {
@@ -376,8 +450,8 @@ esp_err_t ads1299_read_registers(ads1299_t* dev, uint8_t start_reg, uint8_t* dat
 esp_err_t ads1299_send_command(ads1299_t* dev, uint8_t command)
 {
     // Assert CS pin
-    gpio_set_level(dev->config.cs_pin, 0);
-    esp_rom_delay_us(ADS1299_T_CSSC);
+
+
 
     // FIX 1: = {0} zeroes out the override_freq_hz garbage memory
     spi_transaction_t t = {0};
@@ -389,12 +463,12 @@ esp_err_t ads1299_send_command(ads1299_t* dev, uint8_t command)
 
     esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
 
-    esp_rom_delay_us(ADS1299_T_CSH);
+
 
     ESP_ERROR_CHECK(ret);
 
     // Deassert CS pin
-    gpio_set_level(dev->config.cs_pin, 1);
+
 
     return ret;
 }
@@ -405,8 +479,8 @@ esp_err_t ads1299_read_data(ads1299_t* dev, uint8_t* buffer)
         return ESP_ERR_INVALID_ARG;
     }
 
-    gpio_set_level(dev->config.cs_pin, 0);
-    esp_rom_delay_us(ADS1299_T_CSSC);
+
+
 
     static const uint8_t cmd = ADS1299_CMD_RDATA;
 
@@ -423,8 +497,8 @@ esp_err_t ads1299_read_data(ads1299_t* dev, uint8_t* buffer)
 
     esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
 
-    esp_rom_delay_us(ADS1299_T_CSH);
-    gpio_set_level(dev->config.cs_pin, 1);
+
+
 
     if (ret != ESP_OK) {
         return ret;
@@ -518,12 +592,144 @@ esp_err_t ads1299_disable_continuous_read(ads1299_t* dev)
     return ret;
 }
 
+
+/* Interrupt Service Routine (ISR) for DRDY pin.
+ * This will be called when the DRDY pin goes low, indicating that new data is ready to be read from the ADS1299.
+ * The ISR will send the GPIO number to a FreeRTOS queue for processing in a separate task.
+ * Declared within ads1299.c to keep it private to the driver implementation.
+ */
+static void IRAM_ATTR drdy_isr_handler(void *arg)
+{
+    ads1299_t *dev = (ads1299_t *)arg;
+    ESP_LOGI(TAG, "DRDY ISR triggered"); // TODO: Remove this call as its blocking
+    spi_transaction_t *t = dev->dma_ctx->active == dev->dma_ctx->ping ? &dev->dma_ctx->ping_trans : &dev->dma_ctx->pong_trans;
+    t->rx_buffer = dev->dma_ctx->active + dev->dma_ctx->sample_count * ADS1299_FRAME_SIZE;
+    t->user = dev->dma_ctx; // Pass the DMA context to the post-transfer callback
+
+
+    int64_t *ts = (dev->dma_ctx->active == dev->dma_ctx->ping) ? dev->dma_ctx->ping_timestamps : dev->dma_ctx->pong_timestamps;
+    ts[dev->dma_ctx->sample_count] = esp_timer_get_time();
+
+    // Will occur if queue full
+    if (spi_device_queue_trans(dev->spi_handle, t, 0) != ESP_OK) {
+        // TODO: Handle exception by notifying task/queue as logs can't be written in isr tasks as they're blocking
+    }
+
+}
+
+void ads1299_handler_task(void *arg) {
+    ads1299_dma_ctx_t *ctx = (ads1299_dma_ctx_t *)arg;
+    uint32_t notif_value;
+
+    ESP_LOGI(TAG, "Handler task set"); // TODO: Remove this call as its blocking
+
+    for (;;) {
+        if (xTaskNotifyWait(0, ULONG_MAX, &notif_value, portMAX_DELAY) == pdTRUE) {
+            if (notif_value == 0) {
+                ESP_LOGI(TAG, "Handler task deleted"); // TODO: Remove this call as its blocking
+                vTaskDelete(NULL);
+            }
+            ESP_LOGI(TAG, "Handler task notified"); // TODO: Remove this call as its blocking
+
+            uint8_t *ready_buf = (uint8_t *)notif_value;
+            // handler task knows ready_buf, so:
+            int64_t *ready_ts = (ready_buf == ctx->ping) ? ctx->ping_timestamps : ctx->pong_timestamps;
+            for (int i = 0; i < ctx->chunk_samples; i++)
+            {
+                ads1299_parse_frame(ready_buf + i * ADS1299_FRAME_SIZE, ready_ts[i], &ctx->samples[i]);
+            }
+
+            ads1299_chunk_t chunk = {0};
+            chunk.samples = ctx->samples;
+            chunk.n_samples = ctx->chunk_samples;
+            chunk.first_timestamp_us = ctx->samples[0].timestamp_us;
+            chunk.last_timestamp_us = ctx->samples[ctx->chunk_samples - 1].timestamp_us;
+
+            ctx->on_chunk(&chunk, ctx->ctx);
+
+            // parse ready_buf into ads1299_sample_t[] (local/static array)
+            // build ads1299_chunk_t
+            // call ctx->on_chunk(&chunk, ctx->ctx)
+        }
+    }
+}
+
+esp_err_t ads1299_start_continuous(ads1299_t* dev, const ads1299_continuous_config_t* cfg)
+{
+    if (!dev || !cfg || !cfg->on_chunk || !dev->initialized || !dev->dma_ctx) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    uint32_t ms = cfg->chunk_duration_ms ? cfg->chunk_duration_ms : ADS1299_DEFAULT_CHUNK_MS;
+    dev->dma_ctx->chunk_samples = ads1299_sample_rate_to_hz(dev->config.sample_rate) * ms / 1000;
+
+
+    dev->dma_ctx->buf_bytes = dev->dma_ctx->chunk_samples * ADS1299_FRAME_SIZE;
+    dev->dma_ctx->ping = (uint8_t*)heap_caps_malloc(dev->dma_ctx->buf_bytes, MALLOC_CAP_DMA);
+    dev->dma_ctx->pong = (uint8_t*)heap_caps_malloc(dev->dma_ctx->buf_bytes, MALLOC_CAP_DMA);
+    dev->dma_ctx->active = dev->dma_ctx->ping;
+    dev->dma_ctx->sample_count = 0;
+    dev->dma_ctx->on_chunk = cfg->on_chunk;
+    dev->dma_ctx->on_error = cfg->on_error;
+    dev->dma_ctx->ctx = cfg->ctx;
+
+
+    dev->dma_ctx->ping_trans.length = ADS1299_FRAME_SIZE * 8;
+    dev->dma_ctx->ping_trans.rxlength = ADS1299_FRAME_SIZE * 8;
+    dev->dma_ctx->ping_trans.tx_buffer = NULL;
+
+    dev->dma_ctx->pong_trans.length = ADS1299_FRAME_SIZE * 8;
+    dev->dma_ctx->pong_trans.rxlength = ADS1299_FRAME_SIZE * 8;
+    dev->dma_ctx->pong_trans.tx_buffer = NULL;
+
+
+    dev->dma_ctx->ping_timestamps = (int64_t*)malloc(dev->dma_ctx->chunk_samples * sizeof(int64_t));
+    dev->dma_ctx->pong_timestamps = (int64_t*)malloc(dev->dma_ctx->chunk_samples * sizeof(int64_t));
+    dev->dma_ctx->samples = (ads1299_sample_t*)malloc(dev->dma_ctx->chunk_samples * sizeof(ads1299_sample_t));
+
+    dev->dma_ctx->handler_task = NULL; // Internally by default so not needed as only the pointer is needed
+
+
+    if (!dev->dma_ctx->ping || !dev->dma_ctx->pong || !dev->dma_ctx->ping_timestamps || !dev->dma_ctx->pong_timestamps || !dev->dma_ctx->samples) {
+        ads1299_stop_continuous(dev);  // if stop_continuous handles partial cleanup
+        return ESP_ERR_NO_MEM;
+    }
+
+    // Will fail if more than 1 device is in use as it will try to install the service twice
+    gpio_install_isr_service(0);
+
+
+    ESP_ERROR_CHECK(gpio_isr_handler_add(dev->config.drdy_pin, drdy_isr_handler, dev));
+
+    xTaskCreatePinnedToCore(
+        ads1299_handler_task,
+        "drdy_task",
+        2048,
+        dev->dma_ctx,
+        cfg->task_priority,
+        &dev->dma_ctx->handler_task,
+        cfg->task_core
+
+    );
+
+    return ESP_OK;
+
+}
+
+esp_err_t ads1299_stop_continuous(ads1299_t* dev)
+{
+    if (!dev || !dev->initialized || !dev->dma_ctx) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    xTaskNotify(dev->dma_ctx->handler_task, 0, eSetValueWithOverwrite);
+    return ESP_OK;
+}
+
 bool ads1299_is_running(const ads1299_t* dev)
 {
     if (!dev) {
         return false;
     }
-    return dev->dma_ctx != nullptr;
+    return dev->dma_ctx != NULL;
 }
 
 void ads1299_parse_frame(const uint8_t* raw, int64_t timestamp, ads1299_sample_t* out)

@@ -110,7 +110,7 @@ typedef struct {
     gpio_num_t            reset_pin;   // hardware reset (active low)
     gpio_num_t            start_pin;   // conversion start
     ads1299_sample_rate_t sample_rate; // ADS1299_DR_250SPS .. ADS1299_DR_16KSPS
-} ads1299_config_t;
+    } ads1299_config_t;
 
 /**
  * Continuous acquisition configuration. Provided to ads1299_start_continuous().
@@ -138,7 +138,7 @@ typedef struct {
     UBaseType_t task_priority;
 
     /** Core affinity for the handler task. 0 or 1. Use tskNO_AFFINITY to
-     *  let the scheduler decide. Recommended: 1 (leave core 0 for networking) */
+     *  let the scheduler decide. */
     BaseType_t task_core;
 } ads1299_continuous_config_t;
 
@@ -165,22 +165,30 @@ typedef struct {
 } ads1299_t;
 
 /* ================================================================
- * INTERNAL DMA CONTEXT  (defined in ads1299.c, never exposed)
+ * INTERNAL DMA CONTEXT (defined in ads1299.c, never exposed)
  *
  * Documented here for contributor reference only.
  *
- * struct ads1299_dma_ctx {
- *     uint8_t        *ping;            // DMA-capable buffer A
- *     uint8_t        *pong;            // DMA-capable buffer B
- *     uint8_t        *active;          // points to ping or pong
- *     size_t          chunk_samples;   // samples per chunk
- *     size_t          buf_bytes;       // chunk_samples * ADS1299_FRAME_BYTES
- *     size_t          sample_count;    // samples written into active buffer
- *     RingbufHandle_t ring;            // parsed chunks → processing task
- *     TaskHandle_t    handler_task;    // woken by TaskNotify from ISR
- *     ads1299_chunk_cb_t  on_chunk;
- *     ads1299_error_cb_t  on_error;
- *     void               *ctx;
+ * struct ads1299_dma_ctx
+ * {
+ *     uint8_t *ping; // DMA-capable buffer A
+ *     uint8_t *pong; // DMA-capable buffer B
+ *     spi_transaction_t ping_trans;
+ *     spi_transaction_t pong_trans;
+ *
+ *     uint8_t *active; // points to ping or pong
+ *     size_t chunk_samples; // samples per chunk
+ *     size_t buf_bytes; // chunk_samples * ADS1299_FRAME_BYTES
+ *     size_t sample_count; // samples written into active buffer
+ *
+ *     int64_t *ping_timestamps; // Pointer to timestamp array
+ *     int64_t *pong_timestamps; // Pointer to timestamp array
+ *     ads1299_sample_t *samples; // Pointer to ads1299_sample_t array
+ *
+ *     TaskHandle_t handler_task; // woken by TaskNotify from ISR
+ *     ads1299_chunk_cb_t on_chunk; // User defined
+ *     ads1299_error_cb_t on_error; // User defined
+ *     void *ctx;
  * };
  *
  * ISR flow:

@@ -2,26 +2,38 @@
 #include "ads1299_defs.h"
 #include "esp_check.h"
 #include "freertos/FreeRTOS.h"
+#include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/queue.h"
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
 #include "esp_rom_sys.h"
+#include "esp_timer.h"
 
-static const char *TAG = "SPI_LOOPBACK";
+
+#define DRDY_PIN GPIO_NUM_8
+#define MISO_PIN GPIO_NUM_9
+#define SCLK_PIN GPIO_NUM_10
+#define CS1_PIN GPIO_NUM_11
+#define START_PIN GPIO_NUM_12
+#define RESET_PIN GPIO_NUM_13
+#define MOSI_PIN GPIO_NUM_14
+#define CS2_PIN GPIO_NUM_21
+
+
+void on_chunk(const ads1299_chunk_t *chunk, void *ctx)
+{
+    ESP_LOGI("ADS1299", "Received chunk with %d samples", chunk->n_samples);
+}
+
 
 extern "C" void app_main(void)
 {
-
-    gpio_num_t mosi_pin = GPIO_NUM_14;
-    gpio_num_t miso_pin = GPIO_NUM_9;
-    gpio_num_t sclk_pin = GPIO_NUM_10;
-
     spi_bus_config_t bus_cfg = {};
-
-    bus_cfg.mosi_io_num = mosi_pin;
-    bus_cfg.miso_io_num = miso_pin;
-    bus_cfg.sclk_io_num = sclk_pin;
+    bus_cfg.miso_io_num = MISO_PIN;
+    bus_cfg.mosi_io_num = MOSI_PIN;
+    bus_cfg.sclk_io_num = SCLK_PIN;
     bus_cfg.quadwp_io_num = -1;
     bus_cfg.quadhd_io_num = -1;
     bus_cfg.max_transfer_sz = ADS1299_FRAME_BYTES * 25;
@@ -31,74 +43,49 @@ extern "C" void app_main(void)
         spi_bus_initialize(SPI2_HOST, &bus_cfg, SPI_DMA_CH_AUTO)
     );
 
+    ads1299_config_t cfg1  = {};
+    cfg1.spi_host = SPI2_HOST;
+    cfg1.cs_pin = CS1_PIN;
+    cfg1.drdy_pin = DRDY_PIN;
+    cfg1.start_pin = START_PIN;
+    cfg1.reset_pin = RESET_PIN;
+    cfg1.sample_rate = ADS1299_DR_250SPS;
+    ads1299_t dev1 = ads1299_create(&cfg1);
 
-    ads1299_config_t config = {
-        .spi_host = SPI2_HOST,
-        .cs_pin = GPIO_NUM_11,
-        .drdy_pin = GPIO_NUM_8,
-        .reset_pin = GPIO_NUM_13,
-        .start_pin = GPIO_NUM_12,
-        .sample_rate = ADS1299_DR_500SPS,
-    };
+    ESP_ERROR_CHECK(ads1299_init(&dev1));
 
-    ads1299_t dev = ads1299_create(&config);
-    ads1299_init(&dev);
+    // Run some configs...
+
+    // Ensure ads1299 can transmit data by sending RDATAC command
+    ads1299_enable_continuous_read(&dev1);
+
+    ads1299_continuous_config_t cont_cfg = {};
+    cont_cfg.on_chunk = on_chunk;
+    cont_cfg.chunk_duration_ms = ADS1299_DEFAULT_CHUNK_MS; // 100 ms chunks
+    cont_cfg.task_priority = configMAX_PRIORITIES - 2;
+    cont_cfg.task_core = 0;
+    ESP_ERROR_CHECK(ads1299_start_continuous(&dev1, &cont_cfg));
 
 
-    // Temporal code for testing and making sure it isn't broken
-    ESP_LOGI(TAG, "SPI Loopback Test Initialized. Short MISO (GPIO %d) and MOSI (GPIO %d)!", miso_pin, mosi_pin);
+    // 0 initialized raw bytestream
+    uint8_t raw[ADS1299_FRAME_BYTES] = {0x00};
+    // int64_t timestamp = esp_timer_get_time();
+    // ads1299_sample_t sample;
+    // ads1299_parse_frame(raw, timestamp, &sample);
+    // // Show sample parsed at timestep: <time>\n with status <status bytes>\n Channels:\n each channel's valESP_LOGI(TAG, "Handler task called"); // TODO: Remove this call as its blockingue
+    // printf("Sample parsed at timestep: %lld us\n", sample.timestamp_us);
+    // printf("Status: %02X %02X %02X\n", sample.status[0], sample.status[1], sample.status[2]);
+    // for (int i = 0; i < ADS1299_NUM_CHANNELS; i++) {
+    //     printf("Channel %d: %d\n", i + 1, static_cast<int>(sample.channels[i]));
+    // }
 
-    // FIX: Dynamically allocate buffers from DMA-capable memory
-    uint8_t* tx_buf = (uint8_t*)heap_caps_malloc(5, MALLOC_CAP_DMA);
-    uint8_t* rx_buf = (uint8_t*)heap_caps_malloc(5, MALLOC_CAP_DMA);
-
-    // Initialize test pattern
-    tx_buf[0] = 0xAA; tx_buf[1] = 0x55; tx_buf[2] = 0x11; tx_buf[3] = 0x22; tx_buf[4] = 0x33;
-
-    spi_transaction_t t = {};
-    t.length = 5 * 8;
-    t.rxlength = 5 * 8;
-    t.tx_buffer = tx_buf;
-    t.rx_buffer = rx_buf;
-
-    esp_err_t ret;
-
-    while (true) {
-        // Clear RX buffer before every transfer
-        memset(rx_buf, 0, 5);
-
-        // Manually drive Chip Select LOW
-        gpio_set_level(config.cs_pin, 0);
-        esp_rom_delay_us(2);
-
-        // Execute transmission
-        ret = spi_device_polling_transmit(dev.spi_handle, &t);
-
-        // Manually drive Chip Select HIGH
-        esp_rom_delay_us(2);
-        gpio_set_level(config.cs_pin, 1);
-
-        if (ret == ESP_OK) {
-            // Check if Received Data perfectly mirrors Transmitted Data
-            if (memcmp(tx_buf, rx_buf, 5) == 0) {
-                ESP_LOGI(TAG, "Loopback SUCCESS! Received: 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
-                         rx_buf[0], rx_buf[1], rx_buf[2], rx_buf[3], rx_buf[4]);
-            } else {
-                ESP_LOGE(TAG, "Loopback MISMATCH! Sent data didn't return. Received: 0x%02X 0x%02X 0x%02X 0x%02X 0x%02X",
-                         rx_buf[0], rx_buf[1], rx_buf[2], rx_buf[3], rx_buf[4]);
-            }
-        } else {
-            ESP_LOGE(TAG, "SPI Transaction Failed!");
-        }
-
-        vTaskDelay(pdMS_TO_TICKS(2000));
+    // 100 ms and 250SPS => 25 samples
+    for (int i = 0; i < 25; i++)
+    {
+        gpio_set_level(DRDY_PIN, 0);
+        vTaskDelay(pdTICKS_TO_MS(4)); // 1000/250 = 4
+        gpio_set_level(DRDY_PIN, 1);
     }
 
-    // Clean up heap allocation if you ever exit this loop
-    free(tx_buf);
-    free(rx_buf);
-
 }
-
-
 
