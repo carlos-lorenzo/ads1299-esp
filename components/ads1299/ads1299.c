@@ -7,63 +7,185 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/ringbuf.h"
 
 
 #include "ads1299.h"
 
 static const char *TAG = "ADS1299";
 
-// Driver hidden functions and structs
 
-struct ads1299_dma_ctx
-{
-    uint8_t *ping; // DMA-capable buffer A
-    uint8_t *pong; // DMA-capable buffer B
-    spi_transaction_t ping_trans;
-    spi_transaction_t pong_trans;
 
-    uint8_t *active; // points to ping or pong
-    size_t chunk_samples; // samples per chunk
-    size_t buf_bytes; // chunk_samples * ADS1299_FRAME_BYTES
-    size_t sample_count; // samples written into active buffer
+struct ads1299_dma_ctx {
 
-    int64_t *ping_timestamps; // Pointer to timestamp array
-    int64_t *pong_timestamps; // Pointer to timestamp array
-    ads1299_sample_t *samples; // Pointer to ads1299_sample_t array
+    /* ── DMA staging ─────────────────────────────────────────────── */
+    uint8_t           *dma_buf;           /* 27-byte receive buffer; MALLOC_CAP_DMA  */
+    spi_transaction_t  trans;             /* reused for every sample; configured once */
+    volatile bool      spi_busy;          /* true while DMA in-flight                */
+    int64_t            current_timestamp; /* DRDY edge time; written ISR, read post_cb */
 
-    TaskHandle_t handler_task; // woken by TaskNotify from ISR
-    ads1299_chunk_cb_t on_chunk; // User defined
-    ads1299_error_cb_t on_error; // User defined
-    void *ctx;
+    /* ── Ring buffer ──────────────────────────────────────────────── */
+    ads1299_chunkring_t ring;
+    uint32_t            sample_count;     /* samples written into ring's current slot */
+
+    /* ── Handler task ─────────────────────────────────────────────── */
+    TaskHandle_t        handler_task;
+    SemaphoreHandle_t   done_sem;         /* task gives this before vTaskDelete       */
+    volatile bool       stop_requested;
+
+    /* ── Callbacks ────────────────────────────────────────────────── */
+    ads1299_chunk_cb_t  on_chunk;
+    ads1299_error_cb_t  on_error;
+    void               *cb_ctx;
+
+    /* ── Statistics ───────────────────────────────────────────────── */
+    volatile uint32_t   dropped_count;    /* DRDY pulses dropped; spi_busy was set   */
+    volatile uint32_t   overflow_count;   /* chunks dropped; ring was full            */
 };
 
-static void spi_post_transfer_cb(spi_transaction_t *trans) {
-    // This will run even if the ads1299 isn't in read mode => ctx won't be defined
-    if (trans->user == NULL)
-    {
-        return;
+
+// Ring functions
+/**
+ *
+ * @param r pointer to uninitialised struct
+ * @param capacity number of chunk slots; must be power-of-2, >= 2
+ * @param chunk_samples  samples per chunk; must be > 0
+ * @return
+ *
+ *
+* Validate: r != NULL, chunk_samples > 0, capacity >= 2, capacity & (capacity-1) == 0. Return ESP_ERR_INVALID_ARG otherwise.
+Allocate capacity * chunk_samples * sizeof(ads1299_sample_t) bytes with malloc. Return ESP_ERR_NO_MEM if NULL.
+Set r->buf = <allocated>, r->capacity = capacity, r->chunk_samples = chunk_samples, r->mask = capacity - 1.
+Set r->head = 0, r->tail = 0.
+Return ESP_OK.
+ */
+static esp_err_t ads1299_chunkring_init(ads1299_chunkring_t *r, uint32_t capacity, uint32_t chunk_samples)
+{
+    if (!r) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    if (chunk_samples == 0) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    if (capacity == 0) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    if (capacity & (capacity - 1)) {
+        return ESP_ERR_INVALID_ARG;   /* not power of 2 */
     }
 
-    ads1299_dma_ctx_t *ctx = (ads1299_dma_ctx_t *)trans->user;
-
-    ctx->sample_count++;
-
-
-    if (ctx->sample_count == ctx->chunk_samples) {
-        uint8_t *filled = ctx->active;
-        ctx->active = (ctx->active == ctx->ping) ? ctx->pong : ctx->ping;
-        ctx->sample_count = 0;
-
-        BaseType_t higher_woken = pdFALSE;
-        xTaskNotifyFromISR(ctx->handler_task,
-                           (uint32_t)filled,   // pass which buffer is ready
-                           eSetValueWithOverwrite,
-                           &higher_woken);
-        portYIELD_FROM_ISR(higher_woken);
+    r->capacity = capacity;
+    r->chunk_samples = chunk_samples;
+    r->mask = capacity - 1;
+    r->head = 0;
+    r->tail = 0;
+    r->buf = calloc(capacity * r->chunk_samples, sizeof(*r->buf));
+    if (!r->buf) {
+        return ESP_ERR_NO_MEM;
     }
+    return ESP_OK;
+}
+
+static void ads1299_chunkring_free(ads1299_chunkring_t *r)
+{
+    free(r->buf);
+    memset(r, 0, sizeof(*r));
+}
+static uint32_t ads1299_chunkring_available(const ads1299_chunkring_t *r)
+{
+    return r->head - r->tail;   /* unsigned arithmetic; wraps correctly */
+}
+
+static uint32_t ads1299_chunkring_free_slots(const ads1299_chunkring_t *r)
+{
+    return (r->capacity - 1u) - (r->head - r->tail);
+}
+static ads1299_sample_t *ads1299_chunkring_write_ptr(const ads1299_chunkring_t *r, uint32_t sample_idx)
+{
+    return &r->buf[(r->head & r->mask) * r->chunk_samples + sample_idx];
+}
+static bool ads1299_chunkring_commit(ads1299_chunkring_t *r)
+{
+    if (ads1299_chunkring_free_slots(r) == 0) {
+        return false;   /* ring full; caller increments overflow_count */
+    }
+    /* Release fence: all sample writes to buf[] must be visible to the
+     * consumer before head is incremented. On Xtensa this emits MEMW. */
+    __atomic_thread_fence(__ATOMIC_RELEASE);
+    r->head++;
+    return true;
+}
+
+static const ads1299_sample_t *ads1299_chunkring_read_ptr(const ads1299_chunkring_t *r)
+{
+    /* Acquire fence: read all sample data written before the ISR's
+     * release fence in commit(). */
+    __atomic_thread_fence(__ATOMIC_ACQUIRE);
+    return &r->buf[(r->tail & r->mask) * r->chunk_samples];
+}
+
+static void ads1299_chunkring_release(ads1299_chunkring_t *r)
+{
+    /* Release fence: ensure tail increment is visible to the ISR's
+     * free_slots() check before the ISR observes the freed space. */
+    __atomic_thread_fence(__ATOMIC_RELEASE);
+    r->tail++;
 }
 
 
+
+static void IRAM_ATTR spi_post_transfer_cb(spi_transaction_t *trans)
+{
+    if (!trans->user) return;   /* guard for non-DMA transactions (SDATAC etc.) */
+    ads1299_dma_ctx_t *ctx = (ads1299_dma_ctx_t *)trans->user;
+
+    /* ── 1. Parse DMA bytes into current ring slot ─────────────────── */
+    /* dma_buf is stable: spi_busy has been true since the DRDY ISR
+     * queued this transaction, preventing any new DMA from starting. */
+    ads1299_sample_t *dst = ads1299_chunkring_write_ptr(&ctx->ring, ctx->sample_count);
+    ads1299_parse_frame(ctx->dma_buf, ctx->current_timestamp, dst);
+
+    /* ── 2. Advance sample position ────────────────────────────────── */
+    /* Increment before clearing spi_busy so the next DRDY ISR
+     * sees the correct write position if it fires immediately after. */
+    ctx->sample_count++;
+
+    /* ── 3. Release DMA buffer ──────────────────────────────────────── */
+    /* Cleared AFTER parse. From this point, the next DRDY ISR may
+     * set spi_busy and queue a new transaction that overwrites dma_buf. */
+    ctx->spi_busy = false;
+
+    /* ── 4. Check chunk completion ──────────────────────────────────── */
+    if (ctx->sample_count < ctx->ring.chunk_samples) {
+        return;   /* chunk still in progress */
+    }
+
+    ctx->sample_count = 0;
+
+    /* ── 5. Commit slot to ring ─────────────────────────────────────── */
+    if (!ads1299_chunkring_commit(&ctx->ring)) {
+        /* Ring full: newest chunk dropped.
+         * Same physical slot will be overwritten by the next chunk.
+         * The handler task's tail pointer is untouched. */
+        ctx->overflow_count++;
+        return;
+    }
+
+    /* ── 6. Notify handler task ─────────────────────────────────────── */
+    /* eSetValueWithOverwrite: if task has not woken yet and a previous
+     * notification is pending, this overwrites it (same value = 1).
+     * No notification is lost: the task drains all available chunks
+     * in a loop regardless of how many notifications triggered it. */
+    BaseType_t higher_woken = pdFALSE;
+    xTaskNotifyFromISR(ctx->handler_task,
+                       1u,
+                       eSetValueWithOverwrite,
+                       &higher_woken);
+    portYIELD_FROM_ISR(higher_woken);
+    /* portYIELD_FROM_ISR sets a deferred flag; the SPI ISR completes
+     * normally (puts trans on ret_queue), then the context switch fires
+     * at ISR exit. Safe to call from within post_cb on ESP32/Xtensa. */
+}
 
 
 ads1299_t ads1299_create(const ads1299_config_t *cfg)
@@ -71,12 +193,6 @@ ads1299_t ads1299_create(const ads1299_config_t *cfg)
     ads1299_t dev = {0};
     if (cfg) {
         dev.config = *cfg;
-    }
-    dev.dma_ctx = calloc(1, sizeof(ads1299_dma_ctx_t));
-    if (!dev.dma_ctx)
-    {
-        ESP_LOGE(TAG, "Failed to allocate DMA context - No memory");
-        return dev;
     }
 
     return dev;
@@ -295,6 +411,8 @@ esp_err_t ads1299_deinit(ads1299_t *dev)
 
     ESP_LOGI(TAG, "Deinitializing ADS1299");
 
+    ads1299_stop_continuous(dev);
+
     /* stop device */
     gpio_set_level(dev->config.start_pin, 0);
 
@@ -335,8 +453,6 @@ esp_err_t ads1299_write_register(ads1299_t* dev, uint8_t reg, uint8_t value)
     };
 
 
-
-
     spi_transaction_t t = {
         .length = 8 * 3,
         .tx_buffer = tx,
@@ -344,9 +460,6 @@ esp_err_t ads1299_write_register(ads1299_t* dev, uint8_t reg, uint8_t value)
     };
 
     esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
-
-
-
 
     return ret;
 }
@@ -363,9 +476,6 @@ esp_err_t ads1299_read_register(ads1299_t* dev, uint8_t reg, uint8_t* value)
         0x00,
     };
     uint8_t rx[3] = {0};
-
-
-
 
     spi_transaction_t t = {
         .length = 8 * 3,
@@ -395,9 +505,6 @@ esp_err_t ads1299_write_registers(ads1299_t* dev, uint8_t start_reg, const uint8
         tx[2 + i] = data[i];
     }
 
-
-
-
     spi_transaction_t t = {
         .length = 8 * (2 + count),
         .tx_buffer = tx,
@@ -405,8 +512,6 @@ esp_err_t ads1299_write_registers(ads1299_t* dev, uint8_t start_reg, const uint8
     };
 
     esp_err_t ret = spi_device_polling_transmit(dev->spi_handle, &t);
-
-
 
 
     return ret;
@@ -600,131 +705,294 @@ esp_err_t ads1299_disable_continuous_read(ads1299_t* dev)
  */
 static void IRAM_ATTR drdy_isr_handler(void *arg)
 {
-    ads1299_t *dev = (ads1299_t *)arg;
-    spi_transaction_t *t = dev->dma_ctx->active == dev->dma_ctx->ping ? &dev->dma_ctx->ping_trans : &dev->dma_ctx->pong_trans;
-    t->rx_buffer = dev->dma_ctx->active + dev->dma_ctx->sample_count * ADS1299_FRAME_SIZE;
-    t->user = dev->dma_ctx; // Pass the DMA context to the post-transfer callback
+    ads1299_t         *dev = (ads1299_t *)arg;
+    ads1299_dma_ctx_t *ctx = dev->dma_ctx;
 
-
-    int64_t *ts = (dev->dma_ctx->active == dev->dma_ctx->ping) ? dev->dma_ctx->ping_timestamps : dev->dma_ctx->pong_timestamps;
-    ts[dev->dma_ctx->sample_count] = esp_timer_get_time();
-
-    // Will occur if queue full
-    if (spi_device_polling_transmit(dev->spi_handle, t) != ESP_OK) {
-        // TODO: Handle exception by notifying task/queue as logs can't be written in isr tasks as they're blocking
+    /* ── Guard ────────────────────────────────────────────────────── */
+    if (ctx->spi_busy) {
+        /* Previous DMA not yet parsed. This DRDY pulse is dropped.
+         * At 250 SPS / 4 MHz SPI, the DMA takes ~54 µs; inter-sample
+         * gap is 4000 µs. This path fires only under hardware fault. */
+        ctx->dropped_count++;
+        return;
     }
 
+    /* ── Timestamp ─────────────────────────────────────────────────── */
+    /* Capture at DRDY edge — the most accurate possible timestamp.
+     * current_timestamp is read in post_cb. Race is impossible:
+     * post_cb (SPI ISR, higher priority) cannot interrupt the GPIO ISR;
+     * the next GPIO ISR cannot fire until spi_busy is cleared in post_cb. */
+    ctx->current_timestamp = esp_timer_get_time();
+
+    /* ── Arm DMA ───────────────────────────────────────────────────── */
+    ctx->spi_busy = true;
+
+    /* trans.rx_buffer = ctx->dma_buf (set once at start_continuous).
+     * trans.user      = ctx            (set once at start_continuous).
+     * No fields to modify; just re-queue. */
+    esp_err_t err = spi_device_queue_trans(dev->spi_handle, &ctx->trans, 0);
+    if (err != ESP_OK) {
+        /* queue_trans failed (SPI trans_queue full or bus error).
+         * Clear spi_busy so the next DRDY can retry. */
+        ctx->spi_busy = false;
+        ctx->dropped_count++;
+    }
 }
 
-void ads1299_handler_task(void *arg) {
-    ads1299_dma_ctx_t *ctx = (ads1299_dma_ctx_t *)arg;
-    uint32_t notif_value;
-
-    ESP_LOGI(TAG, "Handler task set"); // TODO: Remove this call as its blocking
+// parse ready_buf into ads1299_sample_t[] (local/static array)
+// build ads1299_chunk_t
+// call ctx->on_chunk(&chunk, ctx->ctx)
+static void ads1299_handler_task(void *arg)
+{
+    ads1299_t         *dev = (ads1299_t *)arg;
+    ads1299_dma_ctx_t *ctx = dev->dma_ctx;
 
     for (;;) {
-        if (xTaskNotifyWait(0, ULONG_MAX, &notif_value, portMAX_DELAY) == pdTRUE) {
 
-            if (notif_value == 0) {
-                ESP_LOGI(TAG, "Handler task deleted %d", ctx->sample_count);
-                vTaskDelete(ctx->handler_task);
-            }
+        /* ── 1. Block until notified ────────────────────────────────── */
+        xTaskNotifyWait(
+            0,            /* do not clear bits on entry */
+            ULONG_MAX,    /* clear all bits on exit     */
+            NULL,         /* notification value unused  */
+            portMAX_DELAY
+        );
 
-            ESP_LOGI(TAG, "Handler task notified"); // TODO: Remove this call as its blocking
-
-            uint8_t *ready_buf = (uint8_t *)notif_value;
-            // handler task knows ready_buf, so:
-            int64_t *ready_ts = (ready_buf == ctx->ping) ? ctx->ping_timestamps : ctx->pong_timestamps;
-            for (int i = 0; i < ctx->chunk_samples; i++)
-            {
-                ads1299_parse_frame(ready_buf + i * ADS1299_FRAME_SIZE, ready_ts[i], &ctx->samples[i]);
-            }
-
-            ads1299_chunk_t chunk = {0};
-            chunk.samples = ctx->samples;
-            chunk.n_samples = ctx->chunk_samples;
-            chunk.first_timestamp_us = ctx->samples[0].timestamp_us;
-            chunk.last_timestamp_us = ctx->samples[ctx->chunk_samples - 1].timestamp_us;
-
-            ctx->on_chunk(&chunk, ctx->ctx);
-
-
-
-
-            // parse ready_buf into ads1299_sample_t[] (local/static array)
-            // build ads1299_chunk_t
-            // call ctx->on_chunk(&chunk, ctx->ctx)
+        /* ── 2. Check stop signal ───────────────────────────────────── */
+        if (ctx->stop_requested) {
+            break;
         }
+
+        /* ── 3. Drain SPI ret_queue ─────────────────────────────────── */
+        /* post_cb does all data work. get_trans_result here is purely
+         * bookkeeping: it frees slots in the SPI driver's internal
+         * ret_queue. Without this drain, ret_queue fills after
+         * chunk_samples transactions and new queue_trans calls silently
+         * fail (timeout 0 returns immediately), breaking the pipeline. */
+        {
+            spi_transaction_t *result;
+            while (spi_device_get_trans_result(dev->spi_handle,
+                                               &result, 0) == ESP_OK) {
+                /* Nothing to do. Data was handled in post_cb. */
+            }
+        }
+
+        /* ── 4. Drain all available complete chunks ─────────────────── */
+        /* Loop — do not return to xTaskNotifyWait after each chunk.
+         * Multiple chunks may have accumulated while this task was
+         * processing on_chunk. Draining here avoids needing one
+         * notification per chunk and handles backlog naturally. */
+        while (ads1299_chunkring_available(&ctx->ring) > 0) {
+
+            /* ── 4a. Acquire pointer into ring (zero-copy) ─────────── */
+            const ads1299_sample_t *samples =
+                ads1299_chunkring_read_ptr(&ctx->ring);
+
+            /* ── 4b. Build chunk descriptor ─────────────────────────── */
+            ads1299_chunk_t chunk = {
+                .samples            = samples,
+                .n_samples          = ctx->ring.chunk_samples,
+                .first_timestamp_us = samples[0].timestamp_us,
+                .last_timestamp_us  = samples[ctx->ring.chunk_samples - 1].timestamp_us,
+                .dropped_count = ctx->dropped_count,
+                .overflow_count = ctx->overflow_count,
+            };
+
+            /* ── 4c. Deliver to user ─────────────────────────────────── */
+            /* chunk.samples points directly into the ring buffer.
+             * It is valid until ads1299_chunkring_release() is called.
+             * The user must copy samples if they need them beyond
+             * the duration of this call. */
+            ctx->on_chunk(&chunk, ctx->cb_ctx);
+
+            /* ── 4d. Release slot ────────────────────────────────────── */
+            /* After release, the ISR may reclaim this slot for a
+             * future chunk. Do not access chunk.samples after this. */
+            ads1299_chunkring_release(&ctx->ring);
+        }
+
+        /* Loop back to xTaskNotifyWait. */
     }
+
+    /* ── Shutdown ────────────────────────────────────────────────────── */
+    xSemaphoreGive(ctx->done_sem);
+    vTaskDelete(NULL);
 }
 
-esp_err_t ads1299_start_continuous(ads1299_t* dev, const ads1299_continuous_config_t* cfg)
+esp_err_t ads1299_start_continuous(ads1299_t  *dev, const ads1299_continuous_config_t *cfg)
 {
-    if (!dev || !cfg || !cfg->on_chunk || !dev->initialized || !dev->dma_ctx) {
+    /* ── Validate ────────────────────────────────────────────────────── */
+    if (!dev || !cfg || !cfg->on_chunk)  return ESP_ERR_INVALID_ARG;
+    if (!dev->initialized)               return ESP_ERR_INVALID_STATE;
+    if (dev->dma_ctx)                    return ESP_ERR_INVALID_STATE; /* already running */
+
+    /* ── Allocate context ────────────────────────────────────────────── */
+    ads1299_dma_ctx_t *ctx = calloc(1, sizeof(ads1299_dma_ctx_t));
+    if (!ctx) return ESP_ERR_NO_MEM;
+    dev->dma_ctx = ctx;
+
+    /* ── Compute sizing ──────────────────────────────────────────────── */
+    uint32_t ms = cfg->chunk_duration_ms ? cfg->chunk_duration_ms
+                                         : ADS1299_DEFAULT_CHUNK_MS;
+    uint32_t chunk_samples = ads1299_sample_rate_to_hz(dev->config.sample_rate)
+                             * ms / 1000;
+    if (chunk_samples == 0) {
+        free(ctx); dev->dma_ctx = NULL;
         return ESP_ERR_INVALID_ARG;
     }
-    uint32_t ms = cfg->chunk_duration_ms ? cfg->chunk_duration_ms : ADS1299_DEFAULT_CHUNK_MS;
-    dev->dma_ctx->chunk_samples = ads1299_sample_rate_to_hz(dev->config.sample_rate) * ms / 1000;
 
+    /* ── Determine ring buffer capacity ─────────────────────────────── */
+    uint32_t ring_chunks = cfg->ring_buffer_chunks
+                           ? cfg->ring_buffer_chunks
+                           : ADS1299_RING_BUF_SLOTS;
+    /* Round up to next power of 2 */
+    ring_chunks--;
+    ring_chunks |= ring_chunks >> 1;
+    ring_chunks |= ring_chunks >> 2;
+    ring_chunks |= ring_chunks >> 4;
+    ring_chunks |= ring_chunks >> 8;
+    ring_chunks |= ring_chunks >> 16;
+    ring_chunks++;
+    if (ring_chunks < 2) ring_chunks = 2;
 
-    dev->dma_ctx->buf_bytes = dev->dma_ctx->chunk_samples * ADS1299_FRAME_SIZE;
-    dev->dma_ctx->ping = (uint8_t*)heap_caps_malloc(dev->dma_ctx->buf_bytes, MALLOC_CAP_DMA);
-    dev->dma_ctx->pong = (uint8_t*)heap_caps_malloc(dev->dma_ctx->buf_bytes, MALLOC_CAP_DMA);
-    dev->dma_ctx->active = dev->dma_ctx->ping;
-    dev->dma_ctx->sample_count = 0;
-    dev->dma_ctx->on_chunk = cfg->on_chunk;
-    dev->dma_ctx->on_error = cfg->on_error;
-    dev->dma_ctx->ctx = cfg->ctx;
+    /* ── Allocate DMA staging buffer ────────────────────────────────── */
+    ctx->dma_buf = heap_caps_malloc(ADS1299_FRAME_SIZE, MALLOC_CAP_DMA);
+    if (!ctx->dma_buf) goto fail;
 
+    /* ── Allocate ring buffer ────────────────────────────────────────── */
+    esp_err_t err = ads1299_chunkring_init(&ctx->ring, ring_chunks, chunk_samples);
+    if (err != ESP_OK) goto fail;
 
-    dev->dma_ctx->ping_trans.length = ADS1299_FRAME_SIZE * 8;
-    dev->dma_ctx->ping_trans.rxlength = ADS1299_FRAME_SIZE * 8;
-    dev->dma_ctx->ping_trans.tx_buffer = NULL;
+    /* ── Populate context ────────────────────────────────────────────── */
+    ctx->sample_count   = 0;
+    ctx->spi_busy       = false;
+    ctx->stop_requested = false;
+    ctx->on_chunk       = cfg->on_chunk;
+    ctx->on_error       = cfg->on_error;
+    ctx->cb_ctx         = cfg->ctx;
+    ctx->dropped_count  = 0;
+    ctx->overflow_count = 0;
 
-    dev->dma_ctx->pong_trans.length = ADS1299_FRAME_SIZE * 8;
-    dev->dma_ctx->pong_trans.rxlength = ADS1299_FRAME_SIZE * 8;
-    dev->dma_ctx->pong_trans.tx_buffer = NULL;
+    ctx->done_sem = xSemaphoreCreateBinary();
+    if (!ctx->done_sem) goto fail;
 
+    /* ── Configure SPI transaction (set once; never modified at runtime) */
+    memset(&ctx->trans, 0, sizeof(spi_transaction_t));
+    ctx->trans.length    = ADS1299_FRAME_SIZE * 8;
+    ctx->trans.rxlength  = ADS1299_FRAME_SIZE * 8;
+    ctx->trans.tx_buffer = NULL;
+    ctx->trans.rx_buffer = ctx->dma_buf;
+    ctx->trans.user      = ctx;
 
-    dev->dma_ctx->ping_timestamps = (int64_t*)malloc(dev->dma_ctx->chunk_samples * sizeof(int64_t));
-    dev->dma_ctx->pong_timestamps = (int64_t*)malloc(dev->dma_ctx->chunk_samples * sizeof(int64_t));
-    dev->dma_ctx->samples = (ads1299_sample_t*)malloc(dev->dma_ctx->chunk_samples * sizeof(ads1299_sample_t));
+    /* ── Re-add SPI device with queue_size = chunk_samples ──────────── */
+    /* The device was added in ads1299_init() with queue_size = 1 for
+     * polling. For async DMA, queue_size must be >= chunk_samples to
+     * prevent the SPI driver's ret_queue from filling between handler
+     * task wake-ups and silently dropping queue_trans calls. */
+    spi_bus_remove_device(dev->spi_handle);
+    dev->spi_handle = NULL;
 
-    dev->dma_ctx->handler_task = NULL; // Internally by default so not needed as only the pointer is needed
+    spi_device_interface_config_t dev_cfg = {
+        .mode             = 1,
+        .clock_speed_hz   = 4 * 1000 * 1000,
+        .spics_io_num     = dev->config.cs_pin,
+        .cs_ena_pretrans  = 2,
+        .cs_ena_posttrans = 4,
+        .queue_size       = chunk_samples,   /* must hold all in-flight trans */
+        .post_cb          = spi_post_transfer_cb,
+    };
+    err = spi_bus_add_device(dev->config.spi_host, &dev_cfg, &dev->spi_handle);
+    if (err != ESP_OK) goto fail;
 
-
-    if (!dev->dma_ctx->ping || !dev->dma_ctx->pong || !dev->dma_ctx->ping_timestamps || !dev->dma_ctx->pong_timestamps || !dev->dma_ctx->samples) {
-        ads1299_stop_continuous(dev);  // if stop_continuous handles partial cleanup
-        return ESP_ERR_NO_MEM;
-    }
-
-    // Will fail if more than 1 device is in use as it will try to install the service twice
-    gpio_install_isr_service(0);
-
-
-    ESP_ERROR_CHECK(gpio_isr_handler_add(dev->config.drdy_pin, drdy_isr_handler, dev));
-
-    xTaskCreatePinnedToCore(
+    /* ── Create handler task ─────────────────────────────────────────── */
+    /* Task must exist before ISR is armed so that post_cb has a valid
+     * handler_task handle for xTaskNotifyFromISR. */
+    BaseType_t ok = xTaskCreatePinnedToCore(
         ads1299_handler_task,
-        "drdy_task",
-        2048,
-        dev->dma_ctx,
+        "ads1299_handler",
+        4096,                       /* stack; adjust if on_chunk does heavy work */
+        dev,
         cfg->task_priority,
-        &dev->dma_ctx->handler_task,
+        &ctx->handler_task,
         cfg->task_core
-
     );
+    if (ok != pdPASS) goto fail;
+
+    /* ── Arm DRDY ISR ────────────────────────────────────────────────── */
+    /* Armed last: handler_task is guaranteed valid when ISR fires. */
+    gpio_install_isr_service(0);    /* no-op if already installed */
+    err = gpio_isr_handler_add(dev->config.drdy_pin, drdy_isr_handler, dev);
+    if (err != ESP_OK) goto fail;
 
     return ESP_OK;
 
+    fail:
+        /* Partial cleanup: free whatever was allocated */
+        if (ctx->handler_task) { vTaskDelete(ctx->handler_task); ctx->handler_task = NULL; }
+        if (ctx->done_sem)     { vSemaphoreDelete(ctx->done_sem); }
+        ads1299_chunkring_free(&ctx->ring);
+        if (ctx->dma_buf)      { free(ctx->dma_buf); }
+        free(ctx);
+        dev->dma_ctx = NULL;
+        return ESP_ERR_NO_MEM;
 }
 
-esp_err_t ads1299_stop_continuous(ads1299_t* dev)
+esp_err_t ads1299_stop_continuous(ads1299_t *dev)
 {
-    if (!dev || !dev->initialized || !dev->dma_ctx) {
-        return ESP_ERR_INVALID_ARG;
+    if (!dev)               return ESP_ERR_INVALID_ARG;
+    if (!dev->initialized)  return ESP_ERR_INVALID_STATE;
+    if (!dev->dma_ctx)      return ESP_OK;   /* already stopped; clean no-op */
+
+    ads1299_dma_ctx_t *ctx = dev->dma_ctx;
+
+    /* ── 1. Disable DRDY ISR ─────────────────────────────────────────── */
+    /* No new DRDY pulses will be processed after this returns. Any ISR
+     * that had already entered drdy_isr_handler before this call
+     * will complete, but no further ones fire. */
+    gpio_isr_handler_remove(dev->config.drdy_pin);
+
+    /* ── 2. Wait for any in-flight DMA to complete ───────────────────── */
+    /* Spin on spi_busy. The in-flight transaction completes in < 100 µs
+     * at 4 MHz SPI. post_cb will fire, parse, and clear spi_busy. */
+    while (ctx->spi_busy) {
+        esp_rom_delay_us(10);
     }
-    xTaskNotify(dev->dma_ctx->handler_task, 0, eSetValueWithOverwrite);
+
+    /* ── 3. Signal handler task to exit ─────────────────────────────── */
+    ctx->stop_requested = true;
+    xTaskNotify(ctx->handler_task, 1u, eSetValueWithOverwrite);
+
+    /* ── 4. Wait for handler task to exit ────────────────────────────── */
+    xSemaphoreTake(ctx->done_sem, portMAX_DELAY);
+
+    /* ── 5. Final SPI ret_queue drain ────────────────────────────────── */
+    {
+        spi_transaction_t *result;
+        while (spi_device_get_trans_result(dev->spi_handle,
+                                           &result, 0) == ESP_OK) {}
+    }
+
+    /* ── 6. Restore SPI device to polling configuration ──────────────── */
+    spi_bus_remove_device(dev->spi_handle);
+    dev->spi_handle = NULL;
+
+    spi_device_interface_config_t poll_cfg = {
+        .mode             = 1,
+        .clock_speed_hz   = 4 * 1000 * 1000,
+        .spics_io_num     = dev->config.cs_pin,
+        .cs_ena_pretrans  = 2,
+        .cs_ena_posttrans = 4,
+        .queue_size       = 1,
+        .post_cb          = NULL,
+    };
+    spi_bus_add_device(dev->config.spi_host, &poll_cfg, &dev->spi_handle);
+
+    /* ── 7. Free resources ────────────────────────────────────────────── */
+    vSemaphoreDelete(ctx->done_sem);
+    ads1299_chunkring_free(&ctx->ring);
+    free(ctx->dma_buf);
+    free(ctx);
+    dev->dma_ctx = NULL;
+
     return ESP_OK;
 }
 

@@ -12,7 +12,8 @@ extern "C" {
  * @brief ADS1299 timing constants
  * Assuming an internal clock of 2.048 MHz
  */
-#define ADS1299_CLK_FREQ      2048000UL
+#define ADS1299_CLK_FREQ 2048000UL
+
 
 // Convert clock cycles to microseconds, rounding up
 #define ADS1299_TICKS_TO_US(ticks) (((ticks) * 1000000UL + (ADS1299_CLK_FREQ - 1)) / ADS1299_CLK_FREQ)
@@ -34,11 +35,26 @@ extern "C" {
 #define ADS1299_T_SDECODE ADS1299_TICKS_TO_US(4)
 
 
-#define ADS1299_FRAME_SIZE 27  // 3 status + 8 channels * 3 bytes
+#define ADS1299_NUM_CHANNELS      8
+#define ADS1299_STATUS_BYTES      3
+#define ADS1299_BYTES_PER_CHANNEL 3
+#define ADS1299_FRAME_SIZE (ADS1299_STATUS_BYTES + ADS1299_NUM_CHANNELS * ADS1299_BYTES_PER_CHANNEL) // 27
+
+/**
+ * Default DMA chunk duration in milliseconds.
+ *  At 250SPS this yields 25 samples per chunk (675 bytes per DMA buffer).
+ *  Override via ads1299_continuous_config_t.chunk_duration_ms.
+ */
+#define ADS1299_DEFAULT_CHUNK_MS  100
+
+/** Minimum ring buffer slots. Driver allocates
+ *  ADS1299_RING_BUF_SLOTS * chunk_bytes of memory at start_continuous(). */
+#define ADS1299_RING_BUF_SLOTS    8
+
 
 /**
  * @brief ADS1299 SPI Command Opcodes (Datasheet Table 12)
- * These are fixed single-byte or multi-byte protocol bytes.
+ * These are fixed single-byte or multibyte protocol bytes.
  */
 #define ADS1299_CMD_WAKEUP   0x02
 #define ADS1299_CMD_STANDBY  0x04

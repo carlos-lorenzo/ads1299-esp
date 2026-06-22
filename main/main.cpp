@@ -22,11 +22,34 @@
 #define CS2_PIN GPIO_NUM_21
 
 
+static const char *TAG = "ADS1299";
+
+
 void on_chunk(const ads1299_chunk_t *chunk, void *ctx)
 {
-    ESP_LOGI("ADS1299", "Received chunk with %d samples", chunk->n_samples);
+
+    ESP_LOGI(TAG, "Received chunk with %zu samples between %lld and %lld whilst having dropped %d and overflown %d", chunk->n_samples, chunk->first_timestamp_us, chunk->last_timestamp_us, chunk->dropped_count, chunk->overflow_count);
+    // for (int i = 0; i < chunk->n_samples; i++)
+    // {
+    //     const ads1299_sample_t *sample = &chunk->samples[i];
+    //     ESP_LOGI(TAG, "Sample %d: Timestamp: %lld, Status: %02X %02X %02X, Channels: %d %d %d %d %d %d %d %d",
+    //              i,
+    //              sample->timestamp_us,
+    //              sample->status[0], sample->status[1], sample->status[2],
+    //              sample->channels[0], sample->channels[1], sample->channels[2], sample->channels[3],
+    //              sample->channels[4], sample->channels[5], sample->channels[6], sample->channels[7]);
+    // }
 }
 
+
+// 1. Define a clean, high-precision timer callback
+static void emulated_drdy_timer_callback(void* arg)
+{
+    // High-precision pulse emulation matching real hardware behavior
+    gpio_set_level(DRDY_PIN, 0);
+    esp_rom_delay_us(10);
+    gpio_set_level(DRDY_PIN, 1);
+}
 
 extern "C" void app_main(void)
 {
@@ -36,7 +59,7 @@ extern "C" void app_main(void)
     bus_cfg.sclk_io_num = SCLK_PIN;
     bus_cfg.quadwp_io_num = -1;
     bus_cfg.quadhd_io_num = -1;
-    bus_cfg.max_transfer_sz = ADS1299_FRAME_BYTES * 25;
+    bus_cfg.max_transfer_sz = ADS1299_FRAME_SIZE * 25;
 
 
     ESP_ERROR_CHECK(
@@ -62,34 +85,28 @@ extern "C" void app_main(void)
     ads1299_continuous_config_t cont_cfg = {};
     cont_cfg.on_chunk = on_chunk;
     cont_cfg.chunk_duration_ms = ADS1299_DEFAULT_CHUNK_MS; // 100 ms chunks
+    cont_cfg.ring_buffer_chunks = ADS1299_RING_BUF_SLOTS; // 8 chunks in ring buffer
     cont_cfg.task_priority = configMAX_PRIORITIES - 2;
     cont_cfg.task_core = 0;
     ESP_ERROR_CHECK(ads1299_start_continuous(&dev1, &cont_cfg));
 
 
-    // 0 initialized raw bytestream
-    // uint8_t raw[ADS1299_FRAME_BYTES] = {0x00};
-    // int64_t timestamp = esp_timer_get_time();
-    // ads1299_sample_t sample;
-    // ads1299_parse_frame(raw, timestamp, &sample);
-    // // Show sample parsed at timestep: <time>\n with status <status bytes>\n Channels:\n each channel's valESP_LOGI(TAG, "Handler task called"); // TODO: Remove this call as its blockingue
-    // printf("Sample parsed at timestep: %lld us\n", sample.timestamp_us);
-    // printf("Status: %02X %02X %02X\n", sample.status[0], sample.status[1], sample.status[2]);
-    // for (int i = 0; i < ADS1299_NUM_CHANNELS; i++) {
-    //     printf("Channel %d: %d\n", i + 1, static_cast<int>(sample.channels[i]));
-    // }
 
-    // 100 ms and 250SPS => 25 samples
-    for (int i = 0; i < 26; i++)
-    {
-        // Fake interrupt triggering
-        gpio_set_level(DRDY_PIN, 0);
-        esp_rom_delay_us(10);
-        gpio_set_level(DRDY_PIN, 1);
-        vTaskDelay(pdMS_TO_TICKS(4)); // 1000/250 = 4
+    // 2. Configure a dedicated microsecond-resolution hardware timer
+    esp_timer_create_args_t periodic_timer_args = {}; // Zero-initialize everything first
+    periodic_timer_args.callback = &emulated_drdy_timer_callback;
+    periodic_timer_args.name = "emulated_drdy";
+
+    esp_timer_handle_t periodic_timer;
+    ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
+
+    // 3. Start the timer at exactly 4000 microseconds (250 Hz)
+    // This runs completely independently of FreeRTOS task slicing
+    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 4000));
+
+    // Fall into standard execution loop
+    for (;;) {
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
-
-    // vTaskDelay(pdMS_TO_TICKS(2500));
-    // ads1299_stop_continuous(&dev1);
 }
 

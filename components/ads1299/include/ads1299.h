@@ -20,25 +20,6 @@ extern "C" {
 #include "ads1299_defs.h"
 
 /* ================================================================
- * CONSTANTS
- * ================================================================ */
-
-#define ADS1299_NUM_CHANNELS      8
-#define ADS1299_STATUS_BYTES      3
-#define ADS1299_BYTES_PER_CHANNEL 3
-#define ADS1299_FRAME_BYTES \
-    (ADS1299_STATUS_BYTES + ADS1299_NUM_CHANNELS * ADS1299_BYTES_PER_CHANNEL) // 27
-
-/** Default DMA chunk duration in milliseconds.
- *  At 250SPS this yields 25 samples per chunk (675 bytes per DMA buffer).
- *  Override via ads1299_continuous_config_t.chunk_duration_ms. */
-#define ADS1299_DEFAULT_CHUNK_MS  100
-
-/** Minimum ring buffer slots. Driver allocates
- *  ADS1299_RING_BUF_SLOTS * chunk_bytes of memory at start_continuous(). */
-#define ADS1299_RING_BUF_SLOTS    8
-
-/* ================================================================
  * DATA TYPES
  * ================================================================ */
 
@@ -65,6 +46,8 @@ typedef struct {
     size_t                  n_samples;
     int64_t                 first_timestamp_us;
     int64_t                 last_timestamp_us;
+    int64_t dropped_count;
+    int64_t overflow_count;
 } ads1299_chunk_t;
 
 /* ================================================================
@@ -109,7 +92,7 @@ typedef struct {
     gpio_num_t            drdy_pin;    // data ready (active low, falling edge)
     gpio_num_t            reset_pin;   // hardware reset (active low)
     gpio_num_t            start_pin;   // conversion start
-    ads1299_sample_rate_t sample_rate; // ADS1299_DR_250SPS .. ADS1299_DR_16KSPS
+    ads1299_sample_rate_t sample_rate; // ADS1299_DR_250SPS - ADS1299_DR_16KSPS
     } ads1299_config_t;
 
 /**
@@ -118,36 +101,77 @@ typedef struct {
  * chunk_duration_ms — the caller does not manage any buffers directly.
  */
 typedef struct {
-    /** Required. Called with each completed chunk. See ads1299_chunk_cb_t. */
     ads1299_chunk_cb_t on_chunk;
-
-    /** Optional. Called on driver errors. NULL to silently discard errors. */
     ads1299_error_cb_t on_error;
+    void              *ctx;
+    uint32_t           chunk_duration_ms;
 
-    /** Passed back unmodified in both callbacks. */
-    void *ctx;
+    /**
+     * Ring buffer depth in number of chunk slots.
+     * 0 = ADS1299_RING_BUF_SLOTS (default).
+     *
+     * Must be a power of 2. Rounded up internally if not.
+     *
+     * Total memory allocated:
+     *   ring_buffer_chunks * chunk_samples * sizeof(ads1299_sample_t)
+     *
+     * At 250 SPS, 100 ms chunks, 8 slots:
+     *   8 * 25 * 44 = 8,800 bytes
+     *
+     * At 16 kSPS, 10 ms chunks, 8 slots:
+     *   8 * 160 * 44 = 56,320 bytes
+     *
+     * At 16 kSPS, 100 ms chunks, 8 slots:
+     *   8 * 1600 * 44 = 563,200 bytes  ← EXCEEDS ESP32 SRAM; reduce chunk_duration_ms
+     */
+    uint32_t    ring_buffer_chunks;
 
-    /** Chunk duration in milliseconds. 0 = ADS1299_DEFAULT_CHUNK_MS.
-     *  Determines DMA buffer size: chunk_samples = sample_rate_hz * ms / 1000.
-     *  Must divide evenly into the sample rate for accurate timing. */
-    uint32_t chunk_duration_ms;
-
-    /** FreeRTOS priority for the driver's internal handler task.
-     *  Should be higher than your processing task to avoid starving the ISR.
-     *  Recommended: configMAX_PRIORITIES - 2 */
     UBaseType_t task_priority;
-
-    /** Core affinity for the handler task. 0 or 1. Use tskNO_AFFINITY to
-     *  let the scheduler decide. */
-    BaseType_t task_core;
+    BaseType_t  task_core;
 } ads1299_continuous_config_t;
+
+
+
+/*
+ * Circular buffer of fully parsed ADS1299 chunks.
+ *
+ * Layout of buf[]:
+ *
+ *   slot 0                    slot 1
+ *   [s0|s1|...|sN-1]          [s0|s1|...|sN-1]    ...
+ *   ^                          ^
+ *   buf[0]                     buf[chunk_samples]
+ *
+ * A slot is addressed as: buf[(index & mask) * chunk_samples + sample_i]
+ *
+ * capacity slots are physically allocated.
+ * capacity-1 slots are usable (one sentinel slot disambiguates full from empty).
+ *
+ * SPSC ownership:
+ *   head — written exclusively by ISR (post_cb)
+ *   tail — written exclusively by handler task
+ */
+typedef struct {
+    ads1299_sample_t *buf;           /* flat array: capacity * chunk_samples entries  */
+    uint32_t          capacity;      /* total slot count; must be power-of-2, >= 2   */
+    uint32_t          chunk_samples; /* samples per slot                              */
+    uint32_t          mask;          /* capacity - 1; used for slot index modulo      */
+    volatile uint32_t head;          /* next write slot index; ISR-owned             */
+    volatile uint32_t tail;          /* next read slot index; task-owned             */
+} ads1299_chunkring_t;
+
 
 /* ================================================================
  * DEVICE HANDLE
  * ================================================================ */
 
 /** Opaque continuous-mode context. Defined only in ads1299.c. */
+
+
+
 typedef struct ads1299_dma_ctx ads1299_dma_ctx_t;
+
+
 
 /**
  * Device handle. Initialise with ads1299_create(), then ads1299_init().
@@ -164,49 +188,9 @@ typedef struct {
     ads1299_dma_ctx_t  *dma_ctx;
 } ads1299_t;
 
-/* ================================================================
- * INTERNAL DMA CONTEXT (defined in ads1299.c, never exposed)
- *
- * Documented here for contributor reference only.
- *
- * struct ads1299_dma_ctx
- * {
- *     uint8_t *ping; // DMA-capable buffer A
- *     uint8_t *pong; // DMA-capable buffer B
- *     spi_transaction_t ping_trans;
- *     spi_transaction_t pong_trans;
- *
- *     uint8_t *active; // points to ping or pong
- *     size_t chunk_samples; // samples per chunk
- *     size_t buf_bytes; // chunk_samples * ADS1299_FRAME_BYTES
- *     size_t sample_count; // samples written into active buffer
- *
- *     int64_t *ping_timestamps; // Pointer to timestamp array
- *     int64_t *pong_timestamps; // Pointer to timestamp array
- *     ads1299_sample_t *samples; // Pointer to ads1299_sample_t array
- *
- *     TaskHandle_t handler_task; // woken by TaskNotify from ISR
- *     ads1299_chunk_cb_t on_chunk; // User defined
- *     ads1299_error_cb_t on_error; // User defined
- *     void *ctx;
- * };
- *
- * ISR flow:
- *   DRDY falls
- *     → SPI DMA transaction queued (27 bytes into active[sample_count])
- *     → SPI post_cb: sample_count++
- *     → if sample_count == chunk_samples:
- *         swap active buffer (ping↔pong)
- *         reset sample_count
- *         xTaskNotifyFromISR(handler_task, ready_buf_index, eSetValueWithOverwrite)
- *
- * Handler task flow:
- *   xTaskNotifyWait()
- *     → parse raw bytes → ads1299_sample_t[]
- *     → fill ads1299_chunk_t
- *     → on_chunk(&chunk, ctx)
- *     → xRingbufferSend(ring, &chunk, ...)   // optional if app uses ring directly
- * ================================================================ */
+
+
+
 
 /* ================================================================
  * LIFECYCLE
