@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.16.1" xml:lang="en-US">
+  <compounddef id="dir_d44c64559bbebec7f509842c48db8b23" kind="dir">
+    <compoundname>/home/carlos/dev/ads1299-esp/include</compoundname>
+    <innerfile refid="ads1299_8h">ads1299.h</innerfile>
+    <innerfile refid="ads1299__defs_8h">ads1299_defs.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/carlos/dev/ads1299-esp/include/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.16.1" xml:lang="en-US">
+  <compounddef id="structads1299__sample__t" kind="struct" language="C++" prot="public">
+    <compoundname>ads1299_sample_t</compoundname>
+    <includes refid="ads1299_8h" local="no">ads1299.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structads1299__sample__t_1af3ce649cf1158a2b6f600c32ee6df81b" prot="public" static="no" mutable="no">
+        <type>uint8_t</type>
+        <definition>uint8_t ads1299_sample_t::status[ADS1299_STATUS_BYTES]</definition>
+        <argsstring>[ADS1299_STATUS_BYTES]</argsstring>
+        <name>status</name>
+        <qualifiedname>ads1299_sample_t::status</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="34" column="14" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structads1299__sample__t_1a3b9c0b5b6256d184d8cfa88e9ef5d052" prot="public" static="no" mutable="no">
+        <type>int32_t</type>
+        <definition>int32_t ads1299_sample_t::channels[ADS1299_NUM_CHANNELS]</definition>
+        <argsstring>[ADS1299_NUM_CHANNELS]</argsstring>
+        <name>channels</name>
+        <qualifiedname>ads1299_sample_t::channels</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="35" column="14" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structads1299__sample__t_1a6d5ab02c36e9759c307c2ad8f3ccf8ea" prot="public" static="no" mutable="no">
+        <type>int64_t</type>
+        <definition>int64_t ads1299_sample_t::timestamp_us</definition>
+        <argsstring></argsstring>
+        <name>timestamp_us</name>
+        <qualifiedname>ads1299_sample_t::timestamp_us</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="36" column="14" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>One fully parsed sample from the ADS1299. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><itemizedlist>
+<listitem><para>channels[] contain sign-extended 24-bit values in LSB units.</para>
+</listitem><listitem><para>Convert to microvolts: uV = channels[n] * (VREF / gain / 8388607.0)</para>
+</listitem><listitem><para>where VREF = 4.5V for ADS1299, and gain is set per channel in CHnSET. </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="33" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="33" bodyend="37"/>
+    <listofallmembers>
+      <member refid="structads1299__sample__t_1a3b9c0b5b6256d184d8cfa88e9ef5d052" prot="public" virt="non-virtual"><scope>ads1299_sample_t</scope><name>channels</name></member>
+      <member refid="structads1299__sample__t_1af3ce649cf1158a2b6f600c32ee6df81b" prot="public" virt="non-virtual"><scope>ads1299_sample_t</scope><name>status</name></member>
+      <member refid="structads1299__sample__t_1a6d5ab02c36e9759c307c2ad8f3ccf8ea" prot="public" virt="non-virtual"><scope>ads1299_sample_t</scope><name>timestamp_us</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

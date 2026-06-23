@@ -27,18 +27,7 @@ static const char *TAG = "ADS1299";
 
 void on_chunk(const ads1299_chunk_t *chunk, void *ctx)
 {
-
     ESP_LOGI(TAG, "Received chunk with %zu samples between %lld and %lld whilst having dropped %d and overflown %d", chunk->n_samples, chunk->first_timestamp_us, chunk->last_timestamp_us, chunk->dropped_count, chunk->overflow_count);
-    // for (int i = 0; i < chunk->n_samples; i++)
-    // {
-    //     const ads1299_sample_t *sample = &chunk->samples[i];
-    //     ESP_LOGI(TAG, "Sample %d: Timestamp: %lld, Status: %02X %02X %02X, Channels: %d %d %d %d %d %d %d %d",
-    //              i,
-    //              sample->timestamp_us,
-    //              sample->status[0], sample->status[1], sample->status[2],
-    //              sample->channels[0], sample->channels[1], sample->channels[2], sample->channels[3],
-    //              sample->channels[4], sample->channels[5], sample->channels[6], sample->channels[7]);
-    // }
 }
 
 

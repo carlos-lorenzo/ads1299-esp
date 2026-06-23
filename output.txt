@@ -1,0 +1,82 @@
+Building all languages
+Will use 2 parallel builds and 1 jobs per build
+Building in build_dir: /home/carlos/dev/ads1299-esp/_build/zh_CN/esp32s3
+Running '/home/carlos/dev/ads1299-esp/.venv/bin/python3 -u -m sphinx.cmd.build -j 1 -b html -d /home/carlos/dev/ads1299-esp/_build/zh_CN/esp32s3/doctrees -w sphinx-warning-log.txt -v -t esp32s3 -D idf_target=esp32s3 -D docs_to_build= -D config_dir=/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/esp_docs -D doxyfile_dir=/home/carlos/dev/ads1299-esp -D project_path=/home/carlos/dev /home/carlos/dev/ads1299-esp/zh_CN /home/carlos/dev/ads1299-esp/_build/zh_CN/esp32s3/html'
+zh_CN/esp32s3: 
+zh_CN/esp32s3: Traceback (most recent call last):
+zh_CN/esp32s3:   File "/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/sphinx/cmd/build.py", line 285, in build_main
+zh_CN/esp32s3:     app = Sphinx(args.sourcedir, args.confdir, args.outputdir,
+zh_CN/esp32s3:                  args.doctreedir, args.builder, args.confoverrides, args.status,
+zh_CN/esp32s3:                  args.warning, args.freshenv, args.warningiserror,
+zh_CN/esp32s3:                  args.tags, args.verbosity, args.jobs, args.keep_going,
+zh_CN/esp32s3:                  args.pdb)
+zh_CN/esp32s3:   File "/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/sphinx/application.py", line 153, in __init__
+zh_CN/esp32s3:     raise ApplicationError(__('Cannot find source directory (%s)') %
+zh_CN/esp32s3:                            self.srcdir)
+zh_CN/esp32s3: sphinx.errors.ApplicationError: Cannot find source directory (/home/carlos/dev/ads1299-esp/zh_CN)
+zh_CN/esp32s3: 
+zh_CN/esp32s3: Application error:
+zh_CN/esp32s3: Cannot find source directory (/home/carlos/dev/ads1299-esp/zh_CN)
+
+=== BUILD FAILED ===
+zh_CN/esp32s3: Sphinx build error (fatal)
+zh_CN/esp32s3: Builder: html
+zh_CN/esp32s3: Exit code: 2
+zh_CN/esp32s3: Sphinx failed before warning comparison could complete.
+zh_CN/esp32s3: Full output: _build/zh_CN/esp32s3/sphinx-build-output-html.txt
+zh_CN/esp32s3: Last output lines:
+zh_CN/esp32s3:     File "/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/sphinx/cmd/build.py", line 285, in build_main
+zh_CN/esp32s3:       app = Sphinx(args.sourcedir, args.confdir, args.outputdir,
+zh_CN/esp32s3:                    args.doctreedir, args.builder, args.confoverrides, args.status,
+zh_CN/esp32s3:                    args.warning, args.freshenv, args.warningiserror,
+zh_CN/esp32s3:                    args.tags, args.verbosity, args.jobs, args.keep_going,
+zh_CN/esp32s3:                    args.pdb)
+zh_CN/esp32s3:     File "/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/sphinx/application.py", line 153, in __init__
+zh_CN/esp32s3:       raise ApplicationError(__('Cannot find source directory (%s)') %
+zh_CN/esp32s3:                              self.srcdir)
+zh_CN/esp32s3:   sphinx.errors.ApplicationError: Cannot find source directory (/home/carlos/dev/ads1299-esp/zh_CN)
+zh_CN/esp32s3:   Application error:
+zh_CN/esp32s3:   Cannot find source directory (/home/carlos/dev/ads1299-esp/zh_CN)
+Building in build_dir: /home/carlos/dev/ads1299-esp/_build/en/esp32s3
+Running '/home/carlos/dev/ads1299-esp/.venv/bin/python3 -u -m sphinx.cmd.build -j 1 -b html -d /home/carlos/dev/ads1299-esp/_build/en/esp32s3/doctrees -w sphinx-warning-log.txt -v -t esp32s3 -D idf_target=esp32s3 -D docs_to_build= -D config_dir=/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/esp_docs -D doxyfile_dir=/home/carlos/dev/ads1299-esp -D project_path=/home/carlos/dev /home/carlos/dev/ads1299-esp/en /home/carlos/dev/ads1299-esp/_build/en/esp32s3/html'
+en/esp32s3: 
+en/esp32s3: Traceback (most recent call last):
+en/esp32s3:   File "/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/sphinx/cmd/build.py", line 285, in build_main
+en/esp32s3:     app = Sphinx(args.sourcedir, args.confdir, args.outputdir,
+en/esp32s3:                  args.doctreedir, args.builder, args.confoverrides, args.status,
+en/esp32s3:                  args.warning, args.freshenv, args.warningiserror,
+en/esp32s3:                  args.tags, args.verbosity, args.jobs, args.keep_going,
+en/esp32s3:                  args.pdb)
+en/esp32s3:   File "/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/sphinx/application.py", line 153, in __init__
+en/esp32s3:     raise ApplicationError(__('Cannot find source directory (%s)') %
+en/esp32s3:                            self.srcdir)
+en/esp32s3: sphinx.errors.ApplicationError: Cannot find source directory (/home/carlos/dev/ads1299-esp/en)
+en/esp32s3: 
+en/esp32s3: Application error:
+en/esp32s3: Cannot find source directory (/home/carlos/dev/ads1299-esp/en)
+
+=== BUILD FAILED ===
+en/esp32s3: Sphinx build error (fatal)
+en/esp32s3: Builder: html
+en/esp32s3: Exit code: 2
+en/esp32s3: Sphinx failed before warning comparison could complete.
+en/esp32s3: Full output: _build/en/esp32s3/sphinx-build-output-html.txt
+en/esp32s3: Last output lines:
+en/esp32s3:     File "/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/sphinx/cmd/build.py", line 285, in build_main
+en/esp32s3:       app = Sphinx(args.sourcedir, args.confdir, args.outputdir,
+en/esp32s3:                    args.doctreedir, args.builder, args.confoverrides, args.status,
+en/esp32s3:                    args.warning, args.freshenv, args.warningiserror,
+en/esp32s3:                    args.tags, args.verbosity, args.jobs, args.keep_going,
+en/esp32s3:                    args.pdb)
+en/esp32s3:     File "/home/carlos/dev/ads1299-esp/.venv/lib/python3.13/site-packages/sphinx/application.py", line 153, in __init__
+en/esp32s3:       raise ApplicationError(__('Cannot find source directory (%s)') %
+en/esp32s3:                              self.srcdir)
+en/esp32s3:   sphinx.errors.ApplicationError: Cannot find source directory (/home/carlos/dev/ads1299-esp/en)
+en/esp32s3:   Application error:
+en/esp32s3:   Cannot find source directory (/home/carlos/dev/ads1299-esp/en)
+
+=== BUILD FAILED ===
+One or more language/target combinations failed or had fatal warnings.
+The following language/target combinations failed:
+language: en, target: esp32s3, errcode: 2
+language: zh_CN, target: esp32s3, errcode: 2

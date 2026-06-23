@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.16.1" xml:lang="en-US">
+  <compounddef id="structads1299__continuous__config__t" kind="struct" language="C++" prot="public">
+    <compoundname>ads1299_continuous_config_t</compoundname>
+    <includes refid="ads1299_8h" local="no">ads1299.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structads1299__continuous__config__t_1a46420117af5f838542cc8d0c2f98ebb9" prot="public" static="no" mutable="no">
+        <type><ref refid="ads1299_8h_1af422f450db03c79e916c3010cc3d6316" kindref="member">ads1299_chunk_cb_t</ref></type>
+        <definition>ads1299_chunk_cb_t ads1299_continuous_config_t::on_chunk</definition>
+        <argsstring></argsstring>
+        <name>on_chunk</name>
+        <qualifiedname>ads1299_continuous_config_t::on_chunk</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="110" column="24" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structads1299__continuous__config__t_1ac2ef9d63859de1e005b8f283d8fffbf1" prot="public" static="no" mutable="no">
+        <type><ref refid="ads1299_8h_1a138db55a2954a65c8fd6c380de1b318e" kindref="member">ads1299_error_cb_t</ref></type>
+        <definition>ads1299_error_cb_t ads1299_continuous_config_t::on_error</definition>
+        <argsstring></argsstring>
+        <name>on_error</name>
+        <qualifiedname>ads1299_continuous_config_t::on_error</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="111" column="24" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structads1299__continuous__config__t_1a5af3dc3511cc441c07c64e3cc7b0d254" prot="public" static="no" mutable="no">
+        <type>void *</type>
+        <definition>void* ads1299_continuous_config_t::ctx</definition>
+        <argsstring></argsstring>
+        <name>ctx</name>
+        <qualifiedname>ads1299_continuous_config_t::ctx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="112" column="23" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structads1299__continuous__config__t_1a0d803b98fde218abb87a15c9f9965eac" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t ads1299_continuous_config_t::chunk_duration_ms</definition>
+        <argsstring></argsstring>
+        <name>chunk_duration_ms</name>
+        <qualifiedname>ads1299_continuous_config_t::chunk_duration_ms</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="113" column="24" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structads1299__continuous__config__t_1a93db9c124ee88b669d56081530171ea2" prot="public" static="no" mutable="no">
+        <type>uint32_t</type>
+        <definition>uint32_t ads1299_continuous_config_t::ring_buffer_chunks</definition>
+        <argsstring></argsstring>
+        <name>ring_buffer_chunks</name>
+        <qualifiedname>ads1299_continuous_config_t::ring_buffer_chunks</qualifiedname>
+        <briefdescription>
+<para>Ring buffer depth in number of chunk slots. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>0 = ADS1299_RING_BUF_SLOTS (default).</para>
+<para>Must be a power of 2. Rounded up internally if not.</para>
+<para>Total memory allocated: ring_buffer_chunks * chunk_samples * sizeof(ads1299_sample_t)</para>
+<para>At 250 SPS, 100 ms chunks, 8 slots: 8 * 25 * 44 = 8,800 bytes</para>
+<para>At 16 kSPS, 10 ms chunks, 8 slots: 8 * 160 * 44 = 56,320 bytes</para>
+<para>At 16 kSPS, 100 ms chunks, 8 slots: 8 * 1600 * 44 = 563,200 bytes ← EXCEEDS ESP32 SRAM; reduce chunk_duration_ms </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="133" column="17" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structads1299__continuous__config__t_1add6d40348e9a1b8596023f1c945bac7b" prot="public" static="no" mutable="no">
+        <type>UBaseType_t</type>
+        <definition>UBaseType_t ads1299_continuous_config_t::task_priority</definition>
+        <argsstring></argsstring>
+        <name>task_priority</name>
+        <qualifiedname>ads1299_continuous_config_t::task_priority</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="135" column="17" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structads1299__continuous__config__t_1a799a043538e080f6914823a34818b086" prot="public" static="no" mutable="no">
+        <type>BaseType_t</type>
+        <definition>BaseType_t ads1299_continuous_config_t::task_core</definition>
+        <argsstring></argsstring>
+        <name>task_core</name>
+        <qualifiedname>ads1299_continuous_config_t::task_core</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="136" column="17" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Continuous acquisition configuration. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Provided to <ref refid="ads1299_8h_1aa9d9a25b8b6b449b24befabbf79a0c3c" kindref="member">ads1299_start_continuous()</ref>. All buffer sizing is derived automatically from config.sample_rate and chunk_duration_ms — the caller does not manage any buffers directly. </para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>ads1299_chunk_t</label>
+        <link refid="structads1299__chunk__t"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>samples</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>ads1299_continuous_config_t</label>
+        <link refid="structads1299__continuous__config__t"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>on_chunk</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>ads1299_sample_t</label>
+        <link refid="structads1299__sample__t"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="109" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="109" bodyend="137"/>
+    <listofallmembers>
+      <member refid="structads1299__continuous__config__t_1a0d803b98fde218abb87a15c9f9965eac" prot="public" virt="non-virtual"><scope>ads1299_continuous_config_t</scope><name>chunk_duration_ms</name></member>
+      <member refid="structads1299__continuous__config__t_1a5af3dc3511cc441c07c64e3cc7b0d254" prot="public" virt="non-virtual"><scope>ads1299_continuous_config_t</scope><name>ctx</name></member>
+      <member refid="structads1299__continuous__config__t_1a46420117af5f838542cc8d0c2f98ebb9" prot="public" virt="non-virtual"><scope>ads1299_continuous_config_t</scope><name>on_chunk</name></member>
+      <member refid="structads1299__continuous__config__t_1ac2ef9d63859de1e005b8f283d8fffbf1" prot="public" virt="non-virtual"><scope>ads1299_continuous_config_t</scope><name>on_error</name></member>
+      <member refid="structads1299__continuous__config__t_1a93db9c124ee88b669d56081530171ea2" prot="public" virt="non-virtual"><scope>ads1299_continuous_config_t</scope><name>ring_buffer_chunks</name></member>
+      <member refid="structads1299__continuous__config__t_1a799a043538e080f6914823a34818b086" prot="public" virt="non-virtual"><scope>ads1299_continuous_config_t</scope><name>task_core</name></member>
+      <member refid="structads1299__continuous__config__t_1add6d40348e9a1b8596023f1c945bac7b" prot="public" virt="non-virtual"><scope>ads1299_continuous_config_t</scope><name>task_priority</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

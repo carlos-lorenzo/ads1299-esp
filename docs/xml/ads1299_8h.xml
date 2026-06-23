@@ -1,0 +1,996 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.16.1" xml:lang="en-US">
+  <compounddef id="ads1299_8h" kind="file" language="C++">
+    <compoundname>ads1299.h</compoundname>
+    <includes local="no">stdbool.h</includes>
+    <includes local="no">stddef.h</includes>
+    <includes local="no">stdint.h</includes>
+    <includes local="yes">driver/gpio.h</includes>
+    <includes local="yes">driver/spi_master.h</includes>
+    <includes local="yes">esp_err.h</includes>
+    <includes local="yes">freertos/FreeRTOS.h</includes>
+    <includes local="yes">freertos/ringbuf.h</includes>
+    <includes local="yes">freertos/semphr.h</includes>
+    <includes local="yes">freertos/task.h</includes>
+    <includes refid="ads1299__defs_8h" local="yes">ads1299_defs.h</includes>
+    <includedby refid="ads1299_8c" local="yes">/home/carlos/dev/ads1299-esp/ads1299.c</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/carlos/dev/ads1299-esp/include/ads1299.h</label>
+        <link refid="ads1299_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>ads1299_defs.h</label>
+        <link refid="ads1299__defs_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>driver/gpio.h</label>
+      </node>
+      <node id="6">
+        <label>driver/spi_master.h</label>
+      </node>
+      <node id="7">
+        <label>esp_err.h</label>
+      </node>
+      <node id="8">
+        <label>freertos/FreeRTOS.h</label>
+      </node>
+      <node id="9">
+        <label>freertos/ringbuf.h</label>
+      </node>
+      <node id="10">
+        <label>freertos/semphr.h</label>
+      </node>
+      <node id="11">
+        <label>freertos/task.h</label>
+      </node>
+      <node id="2">
+        <label>stdbool.h</label>
+      </node>
+      <node id="3">
+        <label>stddef.h</label>
+      </node>
+      <node id="4">
+        <label>stdint.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/home/carlos/dev/ads1299-esp/ads1299.c</label>
+        <link refid="ads1299_8c"/>
+      </node>
+      <node id="1">
+        <label>/home/carlos/dev/ads1299-esp/include/ads1299.h</label>
+        <link refid="ads1299_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structads1299__sample__t" prot="public">ads1299_sample_t</innerclass>
+    <innerclass refid="structads1299__chunk__t" prot="public">ads1299_chunk_t</innerclass>
+    <innerclass refid="structads1299__config__t" prot="public">ads1299_config_t</innerclass>
+    <innerclass refid="structads1299__continuous__config__t" prot="public">ads1299_continuous_config_t</innerclass>
+    <innerclass refid="structads1299__chunkring__t" prot="public">ads1299_chunkring_t</innerclass>
+    <innerclass refid="structads1299__t" prot="public">ads1299_t</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="ads1299_8h_1af422f450db03c79e916c3010cc3d6316" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* ads1299_chunk_cb_t) (const ads1299_chunk_t *chunk, void *ctx)</definition>
+        <argsstring>)(const ads1299_chunk_t *chunk, void *ctx)</argsstring>
+        <name>ads1299_chunk_cb_t</name>
+        <briefdescription>
+<para>Called from the driver&apos;s handler task (NOT ISR context) each time a full chunk is ready. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>chunk-&gt;samples is valid only during this call.</para>
+<para><itemizedlist>
+<listitem><para>Execution context: driver handler task on task_core at task_priority.</para>
+</listitem><listitem><para>Keep this short — hand off to your processing task via a queue or ring buffer rather than filtering or running inference here.</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>chunk</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completed chunk of parsed samples </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ctx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>User context pointer from <ref refid="structads1299__continuous__config__t" kindref="compound">ads1299_continuous_config_t</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="68" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="ads1299_8h_1a138db55a2954a65c8fd6c380de1b318e" prot="public" static="no">
+        <type>void(*</type>
+        <definition>typedef void(* ads1299_error_cb_t) (esp_err_t err, void *ctx)</definition>
+        <argsstring>)(esp_err_t err, void *ctx)</argsstring>
+        <name>ads1299_error_cb_t</name>
+        <briefdescription>
+<para>Called from the driver&apos;s handler task when a recoverable error occurs (DMA overrun, SPI transaction failure, ring buffer full). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>err</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ESP-IDF error code </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ctx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>User context pointer from <ref refid="structads1299__continuous__config__t" kindref="compound">ads1299_continuous_config_t</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="77" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="ads1299_8h_1a81979448b1cc1758dac7f6f1469fa6a1" prot="public" static="no">
+        <type>struct <ref refid="structads1299__dma__ctx" kindref="compound">ads1299_dma_ctx</ref></type>
+        <definition>typedef struct ads1299_dma_ctx ads1299_dma_ctx_t</definition>
+        <argsstring></argsstring>
+        <name>ads1299_dma_ctx_t</name>
+        <briefdescription>
+<para>Opaque continuous-mode context. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Defined only in <ref refid="ads1299_8c" kindref="compound">ads1299.c</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="178" column="30" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="178" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="ads1299_8h_1adbb09ae0e34074b737d4ca89bc106342" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref></type>
+        <definition>ads1299_t ads1299_create</definition>
+        <argsstring>(const ads1299_config_t *cfg)</argsstring>
+        <name>ads1299_create</name>
+        <param>
+          <type>const <ref refid="structads1299__config__t" kindref="compound">ads1299_config_t</ref> *</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+<para>Creates and initialises an ADS1299 device handle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">cfg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to configuration structure containing pin maps. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><itemizedlist>
+<listitem><para><ref refid="structads1299__t" kindref="compound">ads1299_t</ref>: Object</para>
+</listitem><listitem><para>Null: Invalid arguments </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="214" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="191" bodyend="199" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="214" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1ae8b134a209854c477ed5f76149f39c07" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_init</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_init</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+<para>Initialise hardware: configure GPIO outputs, add SPI device, create mutex, run the ADS1299 power-up sequence (reset, SDATAC, register config, test signal). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Prerequisites:<itemizedlist>
+<listitem><para>spi_bus_initialize() called by the application for cfg-&gt;spi_host</para>
+</listitem><listitem><para>Power rails stable, VCAP1 will reach 1.1V within ~350ms</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="return"><para>ESP_OK on success ESP_ERR_INVALID_ARG if dev is NULL ESP_ERR_INVALID_STATE if already initialised ESP_ERR_NO_MEM if mutex allocation fails propagated SPI / GPIO errors</para>
+</simplesect>
+Initialize the ADS1299 driver.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">config</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to driver configuration. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>ESP_OK on success, or an error code. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="239" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="202" bodyend="398" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="239" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1ad88f943e9582ff284ffdbe0648a2897a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_deinit</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_deinit</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+<para>Stop any active continuous acquisition, remove SPI device, delete mutex, free all driver-owned memory. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Safe to call from any task context. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="245" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="402" bodyend="441" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="245" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a60e89947d83083a2cbd231839273eaf8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_write_register</definition>
+        <argsstring>(ads1299_t *dev, uint8_t reg, uint8_t value)</argsstring>
+        <name>ads1299_write_register</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>reg</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Write a single register. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Not valid while continuous mode is active (device must be in SDATAC). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="253" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="443" bodyend="465" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="253" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1ab99c6a54cf07fa36bed1fedc862f6045" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_read_register</definition>
+        <argsstring>(ads1299_t *dev, uint8_t reg, uint8_t *value)</argsstring>
+        <name>ads1299_read_register</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>reg</declname>
+        </param>
+        <param>
+          <type>uint8_t *</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="254" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="467" bodyend="496" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="254" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1af0ffd5db95adfc9b1ac2ee4766d518b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_write_registers</definition>
+        <argsstring>(ads1299_t *dev, uint8_t start_reg, const uint8_t *data, size_t count)</argsstring>
+        <name>ads1299_write_registers</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>start_reg</declname>
+        </param>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+<para>Burst register access — wraps WREG/RREG with count. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="257" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="498" bodyend="518" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="257" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1af8fb5f8a6572a651620d5cf1c233aae8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_read_registers</definition>
+        <argsstring>(ads1299_t *dev, uint8_t start_reg, uint8_t *data, size_t count)</argsstring>
+        <name>ads1299_read_registers</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>start_reg</declname>
+        </param>
+        <param>
+          <type>uint8_t *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="259" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="520" bodyend="553" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="259" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1abf77b51cfa5423c9d7f7f4af55d43ace" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_send_command</definition>
+        <argsstring>(ads1299_t *dev, uint8_t command)</argsstring>
+        <name>ads1299_send_command</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>command</declname>
+        </param>
+        <briefdescription>
+<para>Send a raw SPI command byte (WAKEUP, STANDBY, RESET, START, STOP, RDATAC, SDATAC, RDATA). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Use named wrappers below where possible. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="268" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="555" bodyend="579" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="268" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a3c131374bfcc9cecab7761afada854ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_read_data</definition>
+        <argsstring>(ads1299_t *dev, uint8_t *buffer)</argsstring>
+        <name>ads1299_read_data</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>uint8_t *</type>
+          <declname>buffer</declname>
+        </param>
+        <briefdescription>
+<para>Read raw 27-byte frame into caller-provided buffer. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="276" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="581" bodyend="616" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="276" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a6d66c94be327388742119a2492257075" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_read_sample</definition>
+        <argsstring>(ads1299_t *dev, ads1299_sample_t *sample)</argsstring>
+        <name>ads1299_read_sample</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type><ref refid="structads1299__sample__t" kindref="compound">ads1299_sample_t</ref> *</type>
+          <declname>sample</declname>
+        </param>
+        <briefdescription>
+<para>Read and parse one sample. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>DRDY must already be low. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="279" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="618" bodyend="645" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="279" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a78ce61bd6db92e3420b5c68cfe955442" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_start</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_start</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="285" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="647" bodyend="650" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="285" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a4907f03db1d7e1a4280cc102d9953111" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_stop</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_stop</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="286" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="652" bodyend="656" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="286" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a4c7b99b6071504c66b736327a2cc84a9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_reset_hardware</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_reset_hardware</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="287" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="658" bodyend="665" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="287" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a52fdad57d75121dc3579b7e2572cb75d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_reset_software</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_reset_software</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="288" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="667" bodyend="672" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="288" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1ad1f91fc7918ed380d8efe7ea8ed474ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_standby</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_standby</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="289" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="674" bodyend="677" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="289" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1ac2e50836a3ae5c51328ead75384b6354" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_wakeup</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_wakeup</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="290" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="679" bodyend="684" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="290" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1ae290f8486378b434da9fd553e8f2d118" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_enable_continuous_read</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_enable_continuous_read</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+<para>Enter continuous read mode (RDATAC). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Required before <ref refid="ads1299_8h_1aa9d9a25b8b6b449b24befabbf79a0c3c" kindref="member">ads1299_start_continuous()</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="297" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="686" bodyend="691" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="297" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a18188ed6331325b62586560d8c359b94" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_disable_continuous_read</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_disable_continuous_read</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+<para>Exit continuous read mode (SDATAC). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Required before register writes. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="300" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="693" bodyend="698" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="300" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1aa9d9a25b8b6b449b24befabbf79a0c3c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_start_continuous</definition>
+        <argsstring>(ads1299_t *dev, const ads1299_continuous_config_t *cfg)</argsstring>
+        <name>ads1299_start_continuous</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structads1299__continuous__config__t" kindref="compound">ads1299_continuous_config_t</ref> *</type>
+          <declname>cfg</declname>
+        </param>
+        <briefdescription>
+<para>Begin DMA-driven continuous acquisition. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Internally:<orderedlist>
+<listitem><para>Computes chunk_samples = sample_rate_hz * chunk_duration_ms / 1000</para>
+</listitem><listitem><para>Allocates two DMA-capable ping-pong buffers of chunk_samples * 27 bytes</para>
+</listitem><listitem><para>Allocates ring buffer of ADS1299_RING_BUF_SLOTS * chunk_bytes</para>
+</listitem><listitem><para>Installs falling-edge ISR on drdy_pin</para>
+</listitem><listitem><para>Spawns handler task (task_core, task_priority)</para>
+</listitem><listitem><para>ISR → xTaskNotifyFromISR → handler task → on_chunk callback</para>
+</listitem></orderedlist>
+</para>
+<para><ref refid="ads1299_8h_1ae290f8486378b434da9fd553e8f2d118" kindref="member">ads1299_enable_continuous_read()</ref> must be called before this. Register writes are not permitted while acquisition is active.</para>
+<para><simplesect kind="return"><para>ESP_ERR_INVALID_STATE if not initialised or already running ESP_ERR_INVALID_ARG if on_chunk is NULL ESP_ERR_NO_MEM if buffer allocation fails </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="324" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="821" bodyend="937" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="324" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a4fb63c4269bef955208946a30ed9bf07" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>esp_err_t</type>
+        <definition>esp_err_t ads1299_stop_continuous</definition>
+        <argsstring>(ads1299_t *dev)</argsstring>
+        <name>ads1299_stop_continuous</name>
+        <param>
+          <type><ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+<para>Stop acquisition cleanly: </para>
+        </briefdescription>
+        <detaileddescription>
+<para><itemizedlist>
+<listitem><para>Disables DRDY ISR</para>
+</listitem><listitem><para>Signals handler task to exit and waits for it</para>
+</listitem><listitem><para>Frees ping-pong DMA buffers and ring buffer</para>
+</listitem><listitem><para>Sets dma_ctx to NULL</para>
+</listitem></itemizedlist>
+</para>
+<para>Blocks until the handler task has exited. Safe to call from any task. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="336" column="11" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="939" bodyend="997" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="336" declcolumn="11"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1af8e6948875c0bd9a21682a9fb766aa1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool ads1299_is_running</definition>
+        <argsstring>(const ads1299_t *dev)</argsstring>
+        <name>ads1299_is_running</name>
+        <param>
+          <type>const <ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>true if <ref refid="ads1299_8h_1aa9d9a25b8b6b449b24befabbf79a0c3c" kindref="member">ads1299_start_continuous()</ref> is active </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="339" column="6" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="999" bodyend="1005" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="339" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a676054b0614ce4e217bc9168ce90f14f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>RingbufHandle_t</type>
+        <definition>RingbufHandle_t ads1299_get_ring_buffer</definition>
+        <argsstring>(const ads1299_t *dev)</argsstring>
+        <name>ads1299_get_ring_buffer</name>
+        <param>
+          <type>const <ref refid="structads1299__t" kindref="compound">ads1299_t</ref> *</type>
+          <declname>dev</declname>
+        </param>
+        <briefdescription>
+<para>Optional: expose the ring buffer handle for applications that want to consume chunks directly via xRingbufferReceive() rather than the callback. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns NULL if continuous mode is not active.</para>
+<para>Ownership: the ring buffer is owned by the driver. Do not delete it. Call xRingbufferReturnItem() after processing each received item. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="349" column="17" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="349" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1a2c422271f3506623f26b7d235ebcdb82" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void ads1299_parse_frame</definition>
+        <argsstring>(const uint8_t *raw, int64_t timestamp, ads1299_sample_t *out)</argsstring>
+        <name>ads1299_parse_frame</name>
+        <param>
+          <type>const uint8_t *</type>
+          <declname>raw</declname>
+        </param>
+        <param>
+          <type>int64_t</type>
+          <declname>timestamp</declname>
+        </param>
+        <param>
+          <type><ref refid="structads1299__sample__t" kindref="compound">ads1299_sample_t</ref> *</type>
+          <declname>out</declname>
+        </param>
+        <briefdescription>
+<para>Parse a raw 27-byte ADS1299 frame into an <ref refid="structads1299__sample__t" kindref="compound">ads1299_sample_t</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Exposed for unit testing. Not needed in normal application code.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>raw</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>27-byte frame: 3 status + 8 * 3 channel bytes (big-endian) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timestamp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>esp_timer_get_time() value to embed in the sample </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>destination sample struct </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="363" column="6" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="1007" bodyend="1026" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="363" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="ads1299_8h_1afd0296da5bb5f169928d123217a2d135" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>uint32_t</type>
+        <definition>uint32_t ads1299_sample_rate_to_hz</definition>
+        <argsstring>(ads1299_sample_rate_t rate)</argsstring>
+        <name>ads1299_sample_rate_to_hz</name>
+        <param>
+          <type><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169a" kindref="member">ads1299_sample_rate_t</ref></type>
+          <declname>rate</declname>
+        </param>
+        <briefdescription>
+<para>Return the sample rate in Hz for a given <ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169a" kindref="member">ads1299_sample_rate_t</ref> enum value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Useful for computing chunk sizes and window dimensions in application code. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="370" column="10" bodyfile="/home/carlos/dev/ads1299-esp/ads1299.c" bodystart="1028" bodyend="1041" declfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" declline="370" declcolumn="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>ADS1299_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdbool.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stddef.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;driver/gpio.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;driver/spi_master.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;esp_err.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;freertos/FreeRTOS.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;freertos/ringbuf.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;freertos/semphr.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;freertos/task.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="ads1299__defs_8h" kindref="compound">ads1299_defs.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>DATA<sp/>TYPES</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="structads1299__sample__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="34" refid="structads1299__sample__t_1af3ce649cf1158a2b6f600c32ee6df81b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint8_t<sp/><sp/><ref refid="structads1299__sample__t_1af3ce649cf1158a2b6f600c32ee6df81b" kindref="member">status</ref>[<ref refid="ads1299__defs_8h_1aff0792cefe5097011c0542aab87583ca" kindref="member">ADS1299_STATUS_BYTES</ref>];<sp/></highlight><highlight class="comment">//<sp/>GPIO,<sp/>lead-off,<sp/>lock<sp/>bits</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="structads1299__sample__t_1a3b9c0b5b6256d184d8cfa88e9ef5d052" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int32_t<sp/><sp/><ref refid="structads1299__sample__t_1a3b9c0b5b6256d184d8cfa88e9ef5d052" kindref="member">channels</ref>[<ref refid="ads1299__defs_8h_1ad6f91558e026b9d580cca74fd9a98e84" kindref="member">ADS1299_NUM_CHANNELS</ref>];</highlight></codeline>
+<codeline lineno="36" refid="structads1299__sample__t_1a6d5ab02c36e9759c307c2ad8f3ccf8ea" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int64_t<sp/><sp/><ref refid="structads1299__sample__t_1a6d5ab02c36e9759c307c2ad8f3ccf8ea" kindref="member">timestamp_us</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>esp_timer_get_time()<sp/>at<sp/>DRDY<sp/>fall</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal">}<sp/><ref refid="structads1299__sample__t" kindref="compound">ads1299_sample_t</ref>;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44" refid="structads1299__chunk__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="45" refid="structads1299__chunk__t_1ae450d574e203185863b535008300f686" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structads1299__sample__t" kindref="compound">ads1299_sample_t</ref><sp/>*<ref refid="structads1299__chunk__t_1ae450d574e203185863b535008300f686" kindref="member">samples</ref>;</highlight></codeline>
+<codeline lineno="46" refid="structads1299__chunk__t_1aca0eb86a1c3d79595ac5f586e004dda1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__chunk__t_1aca0eb86a1c3d79595ac5f586e004dda1" kindref="member">n_samples</ref>;</highlight></codeline>
+<codeline lineno="47" refid="structads1299__chunk__t_1a2a23bf430cf0846e675442d96bafc46a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int64_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__chunk__t_1a2a23bf430cf0846e675442d96bafc46a" kindref="member">first_timestamp_us</ref>;</highlight></codeline>
+<codeline lineno="48" refid="structads1299__chunk__t_1a494c445d1ad5f9ccfd9f6e08b9d77afa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int64_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__chunk__t_1a494c445d1ad5f9ccfd9f6e08b9d77afa" kindref="member">last_timestamp_us</ref>;</highlight></codeline>
+<codeline lineno="49" refid="structads1299__chunk__t_1af519c784a058006e56702a8c5e0ad5b6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int64_t<sp/><ref refid="structads1299__chunk__t_1af519c784a058006e56702a8c5e0ad5b6" kindref="member">dropped_count</ref>;</highlight></codeline>
+<codeline lineno="50" refid="structads1299__chunk__t_1a87197f2cbfc31c07f6a05f8f30b68d53" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>int64_t<sp/><ref refid="structads1299__chunk__t_1a87197f2cbfc31c07f6a05f8f30b68d53" kindref="member">overflow_count</ref>;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal">}<sp/><ref refid="structads1299__chunk__t" kindref="compound">ads1299_chunk_t</ref>;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>CALLBACKS</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="ads1299_8h_1af422f450db03c79e916c3010cc3d6316" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="ads1299_8h_1af422f450db03c79e916c3010cc3d6316" kindref="member">ads1299_chunk_cb_t</ref>)(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structads1299__chunk__t" kindref="compound">ads1299_chunk_t</ref><sp/>*chunk,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*ctx);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="ads1299_8h_1a138db55a2954a65c8fd6c380de1b318e" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>void<sp/>(*<ref refid="ads1299_8h_1a138db55a2954a65c8fd6c380de1b318e" kindref="member">ads1299_error_cb_t</ref>)(esp_err_t<sp/>err,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>*ctx);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/>CONFIGURATION</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="structads1299__config__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="96" refid="structads1299__config__t_1ae1f2fbeb41fe81a3d089f124a57c208e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>spi_host_device_t<sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__config__t_1ae1f2fbeb41fe81a3d089f124a57c208e" kindref="member">spi_host</ref>;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>SPI2_HOST<sp/>or<sp/>SPI3_HOST</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97" refid="structads1299__config__t_1a5373be241ff791b8488a9408fec00c8f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio_num_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__config__t_1a5373be241ff791b8488a9408fec00c8f" kindref="member">cs_pin</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>chip<sp/>select<sp/>(active<sp/>low)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="structads1299__config__t_1afd602de03640196af95df4a89f35d1ce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio_num_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__config__t_1afd602de03640196af95df4a89f35d1ce" kindref="member">drdy_pin</ref>;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>data<sp/>ready<sp/>(active<sp/>low,<sp/>falling<sp/>edge)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="structads1299__config__t_1a1cce1b68457f6d67f356f21266ac274d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio_num_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__config__t_1a1cce1b68457f6d67f356f21266ac274d" kindref="member">reset_pin</ref>;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>hardware<sp/>reset<sp/>(active<sp/>low)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="structads1299__config__t_1aba54ee79759708b95fcefb52c7fc91d3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>gpio_num_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__config__t_1aba54ee79759708b95fcefb52c7fc91d3" kindref="member">start_pin</ref>;<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>conversion<sp/>start</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="structads1299__config__t_1ab12407be6478a5d8250920e73ceb9ff7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169a" kindref="member">ads1299_sample_rate_t</ref><sp/><ref refid="structads1299__config__t_1ab12407be6478a5d8250920e73ceb9ff7" kindref="member">sample_rate</ref>;<sp/></highlight><highlight class="comment">//<sp/>ADS1299_DR_250SPS<sp/>-<sp/>ADS1299_DR_16KSPS</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/><ref refid="structads1299__config__t" kindref="compound">ads1299_config_t</ref>;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109" refid="structads1299__continuous__config__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="110" refid="structads1299__continuous__config__t_1a46420117af5f838542cc8d0c2f98ebb9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299_8h_1af422f450db03c79e916c3010cc3d6316" kindref="member">ads1299_chunk_cb_t</ref><sp/><ref refid="structads1299__continuous__config__t_1a46420117af5f838542cc8d0c2f98ebb9" kindref="member">on_chunk</ref>;</highlight></codeline>
+<codeline lineno="111" refid="structads1299__continuous__config__t_1ac2ef9d63859de1e005b8f283d8fffbf1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299_8h_1a138db55a2954a65c8fd6c380de1b318e" kindref="member">ads1299_error_cb_t</ref><sp/><ref refid="structads1299__continuous__config__t_1ac2ef9d63859de1e005b8f283d8fffbf1" kindref="member">on_error</ref>;</highlight></codeline>
+<codeline lineno="112" refid="structads1299__continuous__config__t_1a5af3dc3511cc441c07c64e3cc7b0d254" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*<ref refid="structads1299__continuous__config__t_1a5af3dc3511cc441c07c64e3cc7b0d254" kindref="member">ctx</ref>;</highlight></codeline>
+<codeline lineno="113" refid="structads1299__continuous__config__t_1a0d803b98fde218abb87a15c9f9965eac" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__continuous__config__t_1a0d803b98fde218abb87a15c9f9965eac" kindref="member">chunk_duration_ms</ref>;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133" refid="structads1299__continuous__config__t_1a93db9c124ee88b669d56081530171ea2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><ref refid="structads1299__continuous__config__t_1a93db9c124ee88b669d56081530171ea2" kindref="member">ring_buffer_chunks</ref>;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135" refid="structads1299__continuous__config__t_1add6d40348e9a1b8596023f1c945bac7b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>UBaseType_t<sp/><ref refid="structads1299__continuous__config__t_1add6d40348e9a1b8596023f1c945bac7b" kindref="member">task_priority</ref>;</highlight></codeline>
+<codeline lineno="136" refid="structads1299__continuous__config__t_1a799a043538e080f6914823a34818b086" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>BaseType_t<sp/><sp/><ref refid="structads1299__continuous__config__t_1a799a043538e080f6914823a34818b086" kindref="member">task_core</ref>;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal">}<sp/><ref refid="structads1299__continuous__config__t" kindref="compound">ads1299_continuous_config_t</ref>;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/>*<sp/>Circular<sp/>buffer<sp/>of<sp/>fully<sp/>parsed<sp/>ADS1299<sp/>chunks.</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/>*<sp/>Layout<sp/>of<sp/>buf[]:</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/>*<sp/><sp/><sp/>slot<sp/>0<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>slot<sp/>1</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/>*<sp/><sp/><sp/>[s0|s1|...|sN-1]<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[s0|s1|...|sN-1]<sp/><sp/><sp/><sp/>...</highlight></codeline>
+<codeline lineno="148"><highlight class="comment"><sp/>*<sp/><sp/><sp/>^<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>^</highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/>*<sp/><sp/><sp/>buf[0]<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>buf[chunk_samples]</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="151"><highlight class="comment"><sp/>*<sp/>A<sp/>slot<sp/>is<sp/>addressed<sp/>as:<sp/>buf[(index<sp/>&amp;<sp/>mask)<sp/>*<sp/>chunk_samples<sp/>+<sp/>sample_i]</highlight></codeline>
+<codeline lineno="152"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="153"><highlight class="comment"><sp/>*<sp/>capacity<sp/>slots<sp/>are<sp/>physically<sp/>allocated.</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/>*<sp/>capacity-1<sp/>slots<sp/>are<sp/>usable<sp/>(one<sp/>sentinel<sp/>slot<sp/>disambiguates<sp/>full<sp/>from<sp/>empty).</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="156"><highlight class="comment"><sp/>*<sp/>SPSC<sp/>ownership:</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/>*<sp/><sp/><sp/>head<sp/>—<sp/>written<sp/>exclusively<sp/>by<sp/>ISR<sp/>(post_cb)</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/>*<sp/><sp/><sp/>tail<sp/>—<sp/>written<sp/>exclusively<sp/>by<sp/>handler<sp/>task</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160" refid="structads1299__chunkring__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="161" refid="structads1299__chunkring__t_1a1e3f155ff4bca8b31778ae40fccc03ee" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structads1299__sample__t" kindref="compound">ads1299_sample_t</ref><sp/>*<ref refid="structads1299__chunkring__t_1a1e3f155ff4bca8b31778ae40fccc03ee" kindref="member">buf</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>flat<sp/>array:<sp/>capacity<sp/>*<sp/>chunk_samples<sp/>entries<sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162" refid="structads1299__chunkring__t_1add9c7c0c5819bb9abedb42ee9df3f914" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__chunkring__t_1add9c7c0c5819bb9abedb42ee9df3f914" kindref="member">capacity</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>total<sp/>slot<sp/>count;<sp/>must<sp/>be<sp/>power-of-2,<sp/>&gt;=<sp/>2<sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163" refid="structads1299__chunkring__t_1a99898fdf302f56efd86708dfe537d54d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__chunkring__t_1a99898fdf302f56efd86708dfe537d54d" kindref="member">chunk_samples</ref>;<sp/></highlight><highlight class="comment">/*<sp/>samples<sp/>per<sp/>slot<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164" refid="structads1299__chunkring__t_1a52ff4d45fe32048b1557e1e2e7e73c90" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>uint32_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__chunkring__t_1a52ff4d45fe32048b1557e1e2e7e73c90" kindref="member">mask</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>capacity<sp/>-<sp/>1;<sp/>used<sp/>for<sp/>slot<sp/>index<sp/>modulo<sp/><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="165" refid="structads1299__chunkring__t_1ae63def9c12ec4a1650af15c525b872b0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">volatile</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="structads1299__chunkring__t_1ae63def9c12ec4a1650af15c525b872b0" kindref="member">head</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>next<sp/>write<sp/>slot<sp/>index;<sp/>ISR-owned<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166" refid="structads1299__chunkring__t_1a6c8f0d02cb3c4bdd73222a579dde0211" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">volatile</highlight><highlight class="normal"><sp/>uint32_t<sp/><ref refid="structads1299__chunkring__t_1a6c8f0d02cb3c4bdd73222a579dde0211" kindref="member">tail</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>next<sp/>read<sp/>slot<sp/>index;<sp/>task-owned<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal">}<sp/><ref refid="structads1299__chunkring__t" kindref="compound">ads1299_chunkring_t</ref>;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/>*<sp/>DEVICE<sp/>HANDLE</highlight></codeline>
+<codeline lineno="172"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178" refid="ads1299_8h_1a81979448b1cc1758dac7f6f1469fa6a1" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structads1299__dma__ctx" kindref="compound">ads1299_dma_ctx</ref><sp/><ref refid="ads1299_8h_1a81979448b1cc1758dac7f6f1469fa6a1" kindref="member">ads1299_dma_ctx_t</ref>;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187" refid="structads1299__t" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="188" refid="structads1299__t_1af9690bbbbc20ff7eb7d49791dac6e1ff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structads1299__config__t" kindref="compound">ads1299_config_t</ref><sp/><sp/><sp/><sp/><ref refid="structads1299__t_1af9690bbbbc20ff7eb7d49791dac6e1ff" kindref="member">config</ref>;</highlight></codeline>
+<codeline lineno="189" refid="structads1299__t_1af0de59d2feeb97871e4d7e93832d0374" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>spi_device_handle_t<sp/><ref refid="structads1299__t_1af0de59d2feeb97871e4d7e93832d0374" kindref="member">spi_handle</ref>;</highlight></codeline>
+<codeline lineno="190" refid="structads1299__t_1aaf3d138417bb404237bc7ec7f356116b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>SemaphoreHandle_t<sp/><sp/><sp/><ref refid="structads1299__t_1aaf3d138417bb404237bc7ec7f356116b" kindref="member">mutex</ref>;</highlight></codeline>
+<codeline lineno="191" refid="structads1299__t_1a542d0f917ea7de637b2a9a878d1f27c1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__t_1a542d0f917ea7de637b2a9a878d1f27c1" kindref="member">initialized</ref>;</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194" refid="structads1299__t_1ac7572609bc568c59d8270b3433e6b353" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299_8h_1a81979448b1cc1758dac7f6f1469fa6a1" kindref="member">ads1299_dma_ctx_t</ref><sp/><sp/>*<ref refid="structads1299__t_1ac7572609bc568c59d8270b3433e6b353" kindref="member">dma_ctx</ref>;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal">}<sp/><ref refid="structads1299__t" kindref="compound">ads1299_t</ref>;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="202"><highlight class="comment"><sp/>*<sp/>LIFECYCLE</highlight></codeline>
+<codeline lineno="203"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"><ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/><ref refid="ads1299_8h_1adbb09ae0e34074b737d4ca89bc106342" kindref="member">ads1299_create</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structads1299__config__t" kindref="compound">ads1299_config_t</ref><sp/>*cfg);</highlight></codeline>
+<codeline lineno="215"><highlight class="normal"></highlight></codeline>
+<codeline lineno="230"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"></highlight></codeline>
+<codeline lineno="232"><highlight class="normal"></highlight></codeline>
+<codeline lineno="239"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1ae8b134a209854c477ed5f76149f39c07" kindref="member">ads1299_init</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="240"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1ad88f943e9582ff284ffdbe0648a2897a" kindref="member">ads1299_deinit</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="246"><highlight class="normal"></highlight></codeline>
+<codeline lineno="247"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="248"><highlight class="comment"><sp/>*<sp/>REGISTER<sp/>ACCESS</highlight></codeline>
+<codeline lineno="249"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="250"><highlight class="normal"></highlight></codeline>
+<codeline lineno="253"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1a60e89947d83083a2cbd231839273eaf8" kindref="member">ads1299_write_register</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev,<sp/>uint8_t<sp/>reg,<sp/>uint8_t<sp/>value);</highlight></codeline>
+<codeline lineno="254"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1ab99c6a54cf07fa36bed1fedc862f6045" kindref="member">ads1299_read_register</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev,<sp/>uint8_t<sp/>reg,<sp/>uint8_t<sp/>*value);</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"></highlight></codeline>
+<codeline lineno="257"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1af0ffd5db95adfc9b1ac2ee4766d518b7" kindref="member">ads1299_write_registers</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev,<sp/>uint8_t<sp/>start_reg,</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>*data,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>count);</highlight></codeline>
+<codeline lineno="259"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1af8fb5f8a6572a651620d5cf1c233aae8" kindref="member">ads1299_read_registers</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev,<sp/>uint8_t<sp/>start_reg,</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uint8_t<sp/>*data,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>count);</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"></highlight></codeline>
+<codeline lineno="262"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="263"><highlight class="comment"><sp/>*<sp/>COMMANDS</highlight></codeline>
+<codeline lineno="264"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="265"><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1abf77b51cfa5423c9d7f7f4af55d43ace" kindref="member">ads1299_send_command</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev,<sp/>uint8_t<sp/>command);</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"></highlight></codeline>
+<codeline lineno="270"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="271"><highlight class="comment"><sp/>*<sp/>ONE-SHOT<sp/>DATA<sp/>READ</highlight></codeline>
+<codeline lineno="272"><highlight class="comment"><sp/>*<sp/>Only<sp/>valid<sp/>when<sp/>NOT<sp/>in<sp/>continuous<sp/>mode.<sp/>Blocks<sp/>until<sp/>SPI<sp/>completes.</highlight></codeline>
+<codeline lineno="273"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal"></highlight></codeline>
+<codeline lineno="276"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1a3c131374bfcc9cecab7761afada854ac" kindref="member">ads1299_read_data</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev,<sp/>uint8_t<sp/>*buffer);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1a6d66c94be327388742119a2492257075" kindref="member">ads1299_read_sample</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev,<sp/><ref refid="structads1299__sample__t" kindref="compound">ads1299_sample_t</ref><sp/>*sample);</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="282"><highlight class="comment"><sp/>*<sp/>DEVICE<sp/>CONTROL</highlight></codeline>
+<codeline lineno="283"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1a78ce61bd6db92e3420b5c68cfe955442" kindref="member">ads1299_start</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>assert<sp/>START<sp/>pin</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1a4907f03db1d7e1a4280cc102d9953111" kindref="member">ads1299_stop</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>deassert<sp/>START<sp/>pin</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="287"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1a4c7b99b6071504c66b736327a2cc84a9" kindref="member">ads1299_reset_hardware</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);<sp/><sp/></highlight><highlight class="comment">//<sp/>pulse<sp/>RESET<sp/>pin</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="288"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1a52fdad57d75121dc3579b7e2572cb75d" kindref="member">ads1299_reset_software</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);<sp/><sp/></highlight><highlight class="comment">//<sp/>send<sp/>RESET<sp/>command</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="289"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1ad1f91fc7918ed380d8efe7ea8ed474ba" kindref="member">ads1299_standby</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>send<sp/>STANDBY<sp/>command</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="290"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1ac2e50836a3ae5c51328ead75384b6354" kindref="member">ads1299_wakeup</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>send<sp/>WAKEUP<sp/>command</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="293"><highlight class="comment"><sp/>*<sp/>RDATAC<sp/>/<sp/>SDATAC</highlight></codeline>
+<codeline lineno="294"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="295"><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1ae290f8486378b434da9fd553e8f2d118" kindref="member">ads1299_enable_continuous_read</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="300"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1a18188ed6331325b62586560d8c359b94" kindref="member">ads1299_disable_continuous_read</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="303"><highlight class="comment"><sp/>*<sp/>CONTINUOUS<sp/>ACQUISITION<sp/><sp/>(DMA<sp/>+<sp/>TaskNotify<sp/>+<sp/>ring<sp/>buffer)</highlight></codeline>
+<codeline lineno="304"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"></highlight></codeline>
+<codeline lineno="324"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1aa9d9a25b8b6b449b24befabbf79a0c3c" kindref="member">ads1299_start_continuous</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev,</highlight></codeline>
+<codeline lineno="325"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structads1299__continuous__config__t" kindref="compound">ads1299_continuous_config_t</ref><sp/>*cfg);</highlight></codeline>
+<codeline lineno="326"><highlight class="normal"></highlight></codeline>
+<codeline lineno="336"><highlight class="normal">esp_err_t<sp/><ref refid="ads1299_8h_1a4fb63c4269bef955208946a30ed9bf07" kindref="member">ads1299_stop_continuous</ref>(<ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"></highlight></codeline>
+<codeline lineno="339"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="ads1299_8h_1af8e6948875c0bd9a21682a9fb766aa1d" kindref="member">ads1299_is_running</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight></codeline>
+<codeline lineno="349" refid="ads1299_8h_1a676054b0614ce4e217bc9168ce90f14f" refkind="member"><highlight class="normal">RingbufHandle_t<sp/><ref refid="ads1299_8h_1a676054b0614ce4e217bc9168ce90f14f" kindref="member">ads1299_get_ring_buffer</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structads1299__t" kindref="compound">ads1299_t</ref><sp/>*dev);</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>================================================================</highlight></codeline>
+<codeline lineno="352"><highlight class="comment"><sp/>*<sp/>UTILITY</highlight></codeline>
+<codeline lineno="353"><highlight class="comment"><sp/>*<sp/>================================================================<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="354"><highlight class="normal"></highlight></codeline>
+<codeline lineno="363"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="ads1299_8h_1a2c422271f3506623f26b7d235ebcdb82" kindref="member">ads1299_parse_frame</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>uint8_t<sp/>*raw,<sp/>int64_t<sp/>timestamp,</highlight></codeline>
+<codeline lineno="364"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structads1299__sample__t" kindref="compound">ads1299_sample_t</ref><sp/>*out);</highlight></codeline>
+<codeline lineno="365"><highlight class="normal"></highlight></codeline>
+<codeline lineno="370"><highlight class="normal">uint32_t<sp/><ref refid="ads1299_8h_1afd0296da5bb5f169928d123217a2d135" kindref="member">ads1299_sample_rate_to_hz</ref>(<ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169a" kindref="member">ads1299_sample_rate_t</ref><sp/>rate);</highlight></codeline>
+<codeline lineno="371"><highlight class="normal"></highlight></codeline>
+<codeline lineno="372"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="373"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="374"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="375"><highlight class="normal"></highlight></codeline>
+<codeline lineno="376"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ADS1299_H<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
+    </programlisting>
+    <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h"/>
+  </compounddef>
+</doxygen>

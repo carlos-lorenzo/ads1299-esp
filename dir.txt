@@ -1,0 +1,58 @@
+❯ tree -I 'examples'
+.
+├── activate_idf.sh
+├── ads1299.c
+├── _build
+│   ├── en
+│   │   ├── esp32s3
+│   │   │   ├── sphinx-build-output-html.txt
+│   │   │   └── sphinx-warning-log.txt
+│   │   └── generic
+│   │       ├── sphinx-build-output-html.txt
+│   │       └── sphinx-warning-log.txt
+│   └── zh_CN
+│       ├── esp32s3
+│       │   ├── sphinx-build-output-html.txt
+│       │   └── sphinx-warning-log.txt
+│       └── generic
+│           ├── sphinx-build-output-html.txt
+│           └── sphinx-warning-log.txt
+├── CMakeLists.txt
+├── dir.txt
+├── docs
+│   ├── api_reference.rst
+│   ├── _build
+│   │   ├── en
+│   │   │   ├── esp32s3
+│   │   │   │   ├── sphinx-build-output-html.txt
+│   │   │   │   └── sphinx-warning-log.txt
+│   │   │   └── generic
+│   │   │       ├── sphinx-build-output-html.txt
+│   │   │       └── sphinx-warning-log.txt
+│   │   └── zh_CN
+│   │       └── generic
+│   │           ├── sphinx-build-output-html.txt
+│   │           └── sphinx-warning-log.txt
+│   ├── conf.py
+│   ├── index.rst
+│   ├── requirements.xt
+│   └── _static
+├── idf_component-yml
+├── include
+│   ├── ads1299_defs.h
+│   └── ads1299.h
+├── LICENSE
+├── output.txt
+├── personal_references
+│   ├── info.md
+│   ├── pin_mappings.md
+│   └── plan.md
+├── pyproject.toml
+├── README.md
+├── sdkconfig
+├── src
+│   └── ads1299_esp
+│       ├── __init__.py
+│       └── py.typed
+├── test
+└── uv.lock
