@@ -33,22 +33,6 @@
     <member refid="structads1299__continuous__config__t_1add6d40348e9a1b8596023f1c945bac7b" kind="variable"><name>task_priority</name></member>
     <member refid="structads1299__continuous__config__t_1a799a043538e080f6914823a34818b086" kind="variable"><name>task_core</name></member>
   </compound>
-  <compound refid="structads1299__dma__ctx" kind="struct"><name>ads1299_dma_ctx</name>
-    <member refid="structads1299__dma__ctx_1a0766bf5d654e782f2bdf8663761b76f6" kind="variable"><name>dma_buf</name></member>
-    <member refid="structads1299__dma__ctx_1a8922bf6b387ab8c215dc36af6fc25aba" kind="variable"><name>trans</name></member>
-    <member refid="structads1299__dma__ctx_1abfebd66bbd54d6fbeec2182ae858dbaf" kind="variable"><name>spi_busy</name></member>
-    <member refid="structads1299__dma__ctx_1a431e5af936f60ac4dc0a254ca30a4ff6" kind="variable"><name>current_timestamp</name></member>
-    <member refid="structads1299__dma__ctx_1ac4fdb889c1d759095b17dcfc48d87af1" kind="variable"><name>ring</name></member>
-    <member refid="structads1299__dma__ctx_1a38ff125e0ed6997ea85a31b0c33ba8c2" kind="variable"><name>sample_count</name></member>
-    <member refid="structads1299__dma__ctx_1ace3282c975765a94f9dc6b5efbcb7793" kind="variable"><name>handler_task</name></member>
-    <member refid="structads1299__dma__ctx_1af0849b466e432ee17c88b1c0a009c86e" kind="variable"><name>done_sem</name></member>
-    <member refid="structads1299__dma__ctx_1a9de60ba6ebf94acecd977f92e7ad1f6b" kind="variable"><name>stop_requested</name></member>
-    <member refid="structads1299__dma__ctx_1ade88f20e90f59234a4190a08066d59e8" kind="variable"><name>on_chunk</name></member>
-    <member refid="structads1299__dma__ctx_1ac7a35ae18cfeed2a1fa7830ea06e5d76" kind="variable"><name>on_error</name></member>
-    <member refid="structads1299__dma__ctx_1a5989017943e606293f4c4cbbc3bd913a" kind="variable"><name>cb_ctx</name></member>
-    <member refid="structads1299__dma__ctx_1a35d087f02ca8d7785e5cd753940026b4" kind="variable"><name>dropped_count</name></member>
-    <member refid="structads1299__dma__ctx_1a873598f2503243a4472c7c7d3c1276f4" kind="variable"><name>overflow_count</name></member>
-  </compound>
   <compound refid="structads1299__sample__t" kind="struct"><name>ads1299_sample_t</name>
     <member refid="structads1299__sample__t_1af3ce649cf1158a2b6f600c32ee6df81b" kind="variable"><name>status</name></member>
     <member refid="structads1299__sample__t_1a3b9c0b5b6256d184d8cfa88e9ef5d052" kind="variable"><name>channels</name></member>
@@ -60,43 +44,6 @@
     <member refid="structads1299__t_1aaf3d138417bb404237bc7ec7f356116b" kind="variable"><name>mutex</name></member>
     <member refid="structads1299__t_1a542d0f917ea7de637b2a9a878d1f27c1" kind="variable"><name>initialized</name></member>
     <member refid="structads1299__t_1ac7572609bc568c59d8270b3433e6b353" kind="variable"><name>dma_ctx</name></member>
-  </compound>
-  <compound refid="ads1299_8c" kind="file"><name>ads1299.c</name>
-    <member refid="ads1299_8c_1a5a85b9c772bbeb480b209a3e6ea92b4c" kind="variable"><name>TAG</name></member>
-    <member refid="ads1299_8c_1a674ca61ab43cf428ba421f0894beabf1" kind="function"><name>ads1299_chunkring_init</name></member>
-    <member refid="ads1299_8c_1ad1b98b880c7544fb42b49d95c501c506" kind="function"><name>ads1299_chunkring_free</name></member>
-    <member refid="ads1299_8c_1a60b1044b94679a1f7156c7dd5d721537" kind="function"><name>ads1299_chunkring_available</name></member>
-    <member refid="ads1299_8c_1ac96171c123090a5bf34eb0541469dde9" kind="function"><name>ads1299_chunkring_free_slots</name></member>
-    <member refid="ads1299_8c_1a2dca851afc9e18654215de4523c0a1f4" kind="function"><name>ads1299_chunkring_write_ptr</name></member>
-    <member refid="ads1299_8c_1a1329a406c1473c5710e21a7b7c2637de" kind="function"><name>ads1299_chunkring_commit</name></member>
-    <member refid="ads1299_8c_1a8add36d8bb6eea487cefe1f5bbdca16e" kind="function"><name>ads1299_chunkring_read_ptr</name></member>
-    <member refid="ads1299_8c_1abafe34385902a98662999933537ed956" kind="function"><name>ads1299_chunkring_release</name></member>
-    <member refid="ads1299_8c_1a5d06a71f3b2d327f1b8186a433785f2c" kind="function"><name>spi_post_transfer_cb</name></member>
-    <member refid="ads1299_8c_1adbb09ae0e34074b737d4ca89bc106342" kind="function"><name>ads1299_create</name></member>
-    <member refid="ads1299_8c_1ae8b134a209854c477ed5f76149f39c07" kind="function"><name>ads1299_init</name></member>
-    <member refid="ads1299_8c_1ad88f943e9582ff284ffdbe0648a2897a" kind="function"><name>ads1299_deinit</name></member>
-    <member refid="ads1299_8c_1a60e89947d83083a2cbd231839273eaf8" kind="function"><name>ads1299_write_register</name></member>
-    <member refid="ads1299_8c_1ab99c6a54cf07fa36bed1fedc862f6045" kind="function"><name>ads1299_read_register</name></member>
-    <member refid="ads1299_8c_1af0ffd5db95adfc9b1ac2ee4766d518b7" kind="function"><name>ads1299_write_registers</name></member>
-    <member refid="ads1299_8c_1af8fb5f8a6572a651620d5cf1c233aae8" kind="function"><name>ads1299_read_registers</name></member>
-    <member refid="ads1299_8c_1abf77b51cfa5423c9d7f7f4af55d43ace" kind="function"><name>ads1299_send_command</name></member>
-    <member refid="ads1299_8c_1a3c131374bfcc9cecab7761afada854ac" kind="function"><name>ads1299_read_data</name></member>
-    <member refid="ads1299_8c_1a6d66c94be327388742119a2492257075" kind="function"><name>ads1299_read_sample</name></member>
-    <member refid="ads1299_8c_1a78ce61bd6db92e3420b5c68cfe955442" kind="function"><name>ads1299_start</name></member>
-    <member refid="ads1299_8c_1a4907f03db1d7e1a4280cc102d9953111" kind="function"><name>ads1299_stop</name></member>
-    <member refid="ads1299_8c_1a4c7b99b6071504c66b736327a2cc84a9" kind="function"><name>ads1299_reset_hardware</name></member>
-    <member refid="ads1299_8c_1a52fdad57d75121dc3579b7e2572cb75d" kind="function"><name>ads1299_reset_software</name></member>
-    <member refid="ads1299_8c_1ad1f91fc7918ed380d8efe7ea8ed474ba" kind="function"><name>ads1299_standby</name></member>
-    <member refid="ads1299_8c_1ac2e50836a3ae5c51328ead75384b6354" kind="function"><name>ads1299_wakeup</name></member>
-    <member refid="ads1299_8c_1ae290f8486378b434da9fd553e8f2d118" kind="function"><name>ads1299_enable_continuous_read</name></member>
-    <member refid="ads1299_8c_1a18188ed6331325b62586560d8c359b94" kind="function"><name>ads1299_disable_continuous_read</name></member>
-    <member refid="ads1299_8c_1a17a798b44cfd6a651ce1a4f744a07530" kind="function"><name>drdy_isr_handler</name></member>
-    <member refid="ads1299_8c_1a0366ab0da87c3d251b43aaa6fbffcd9d" kind="function"><name>ads1299_handler_task</name></member>
-    <member refid="ads1299_8c_1aa9d9a25b8b6b449b24befabbf79a0c3c" kind="function"><name>ads1299_start_continuous</name></member>
-    <member refid="ads1299_8c_1a4fb63c4269bef955208946a30ed9bf07" kind="function"><name>ads1299_stop_continuous</name></member>
-    <member refid="ads1299_8c_1af8e6948875c0bd9a21682a9fb766aa1d" kind="function"><name>ads1299_is_running</name></member>
-    <member refid="ads1299_8c_1a2c422271f3506623f26b7d235ebcdb82" kind="function"><name>ads1299_parse_frame</name></member>
-    <member refid="ads1299_8c_1afd0296da5bb5f169928d123217a2d135" kind="function"><name>ads1299_sample_rate_to_hz</name></member>
   </compound>
   <compound refid="ads1299_8h" kind="file"><name>ads1299.h</name>
     <member refid="ads1299_8h_1af422f450db03c79e916c3010cc3d6316" kind="typedef"><name>ads1299_chunk_cb_t</name></member>
@@ -196,6 +143,6 @@
     <member refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189ae2a35cac583e0ba7b9bcbbb3163602ba" kind="enumvalue"><name>ADS1299_INPUT_TEMP</name></member>
     <member refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a92e24d75a12fdb5746cd9b477a5e2c4d" kind="enumvalue"><name>ADS1299_INPUT_TEST_SIGNAL</name></member>
   </compound>
-  <compound refid="dir_d44c64559bbebec7f509842c48db8b23" kind="dir"><name>/home/carlos/dev/ads1299-esp/include</name>
+  <compound refid="dir_d44c64559bbebec7f509842c48db8b23" kind="dir"><name>include</name>
   </compound>
 </doxygenindex>

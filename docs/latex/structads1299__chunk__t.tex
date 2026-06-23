@@ -1,0 +1,42 @@
+\doxysection{ads1299\+\_\+chunk\+\_\+t Struct Reference}
+\hypertarget{structads1299__chunk__t}{}\label{structads1299__chunk__t}\index{ads1299\_chunk\_t@{ads1299\_chunk\_t}}
+
+
+A chunk of parsed ADS1299 samples delivered by the driver.  
+
+
+
+
+{\ttfamily \+\#include $<$ads1299.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structads1299__chunk__t_ae450d574e203185863b535008300f686}\label{structads1299__chunk__t_ae450d574e203185863b535008300f686} 
+const \doxymbox{\hyperlink{structads1299__sample__t}{ads1299\+\_\+sample\+\_\+t}} \texorpdfstring{$\ast$}{*} {\bfseries samples}
+\begin{DoxyCompactList}\small\item\em Pointer to the first sample in the chunk. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__chunk__t_aca0eb86a1c3d79595ac5f586e004dda1}\label{structads1299__chunk__t_aca0eb86a1c3d79595ac5f586e004dda1} 
+size\+\_\+t {\bfseries n\+\_\+samples}
+\begin{DoxyCompactList}\small\item\em Number of samples in the chunk. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__chunk__t_a2a23bf430cf0846e675442d96bafc46a}\label{structads1299__chunk__t_a2a23bf430cf0846e675442d96bafc46a} 
+int64\+\_\+t {\bfseries first\+\_\+timestamp\+\_\+us}
+\begin{DoxyCompactList}\small\item\em Timestamp of the first sample. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__chunk__t_a494c445d1ad5f9ccfd9f6e08b9d77afa}\label{structads1299__chunk__t_a494c445d1ad5f9ccfd9f6e08b9d77afa} 
+int64\+\_\+t {\bfseries last\+\_\+timestamp\+\_\+us}
+\begin{DoxyCompactList}\small\item\em Timestamp of the last sample. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__chunk__t_af519c784a058006e56702a8c5e0ad5b6}\label{structads1299__chunk__t_af519c784a058006e56702a8c5e0ad5b6} 
+int64\+\_\+t {\bfseries dropped\+\_\+count}
+\begin{DoxyCompactList}\small\item\em Total number of samples dropped by the driver. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__chunk__t_a87197f2cbfc31c07f6a05f8f30b68d53}\label{structads1299__chunk__t_a87197f2cbfc31c07f6a05f8f30b68d53} 
+int64\+\_\+t {\bfseries overflow\+\_\+count}
+\begin{DoxyCompactList}\small\item\em Total number of ring or DMA overflows. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A chunk of parsed ADS1299 samples delivered by the driver. 
+
+The samples pointer references driver-\/managed storage and is valid only for the duration of the chunk callback. Copy samples that must outlive the callback. 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+include/\+\doxymbox{\hyperlink{ads1299_8h}{ads1299.\+h}}\end{DoxyCompactItemize}

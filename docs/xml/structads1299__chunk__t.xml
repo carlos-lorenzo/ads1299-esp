@@ -11,12 +11,13 @@
         <name>samples</name>
         <qualifiedname>ads1299_chunk_t::samples</qualifiedname>
         <briefdescription>
+<para>Pointer to the first sample in the chunk. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="45" column="28" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="45" bodyend="-1"/>
+        <location file="include/ads1299.h" line="50" column="28" bodyfile="include/ads1299.h" bodystart="50" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunk__t_1aca0eb86a1c3d79595ac5f586e004dda1" prot="public" static="no" mutable="no">
         <type>size_t</type>
@@ -25,12 +26,13 @@
         <name>n_samples</name>
         <qualifiedname>ads1299_chunk_t::n_samples</qualifiedname>
         <briefdescription>
+<para>Number of samples in the chunk. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="46" column="29" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="46" bodyend="-1"/>
+        <location file="include/ads1299.h" line="51" column="12" bodyfile="include/ads1299.h" bodystart="51" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunk__t_1a2a23bf430cf0846e675442d96bafc46a" prot="public" static="no" mutable="no">
         <type>int64_t</type>
@@ -39,12 +41,13 @@
         <name>first_timestamp_us</name>
         <qualifiedname>ads1299_chunk_t::first_timestamp_us</qualifiedname>
         <briefdescription>
+<para>Timestamp of the first sample. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="47" column="29" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="47" bodyend="-1"/>
+        <location file="include/ads1299.h" line="52" column="13" bodyfile="include/ads1299.h" bodystart="52" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunk__t_1a494c445d1ad5f9ccfd9f6e08b9d77afa" prot="public" static="no" mutable="no">
         <type>int64_t</type>
@@ -53,12 +56,13 @@
         <name>last_timestamp_us</name>
         <qualifiedname>ads1299_chunk_t::last_timestamp_us</qualifiedname>
         <briefdescription>
+<para>Timestamp of the last sample. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="48" column="29" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="48" bodyend="-1"/>
+        <location file="include/ads1299.h" line="53" column="13" bodyfile="include/ads1299.h" bodystart="53" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunk__t_1af519c784a058006e56702a8c5e0ad5b6" prot="public" static="no" mutable="no">
         <type>int64_t</type>
@@ -67,12 +71,13 @@
         <name>dropped_count</name>
         <qualifiedname>ads1299_chunk_t::dropped_count</qualifiedname>
         <briefdescription>
+<para>Total number of samples dropped by the driver. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="49" column="13" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="49" bodyend="-1"/>
+        <location file="include/ads1299.h" line="54" column="13" bodyfile="include/ads1299.h" bodystart="54" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunk__t_1a87197f2cbfc31c07f6a05f8f30b68d53" prot="public" static="no" mutable="no">
         <type>int64_t</type>
@@ -81,22 +86,20 @@
         <name>overflow_count</name>
         <qualifiedname>ads1299_chunk_t::overflow_count</qualifiedname>
         <briefdescription>
+<para>Total number of ring or DMA overflows. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="50" column="13" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="50" bodyend="-1"/>
+        <location file="include/ads1299.h" line="55" column="13" bodyfile="include/ads1299.h" bodystart="55" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>A chunk of parsed ADS1299 samples delivered by the driver. </para>
     </briefdescription>
     <detaileddescription>
-<para><itemizedlist>
-<listitem><para>One chunk — chunk_samples parsed samples delivered per callback.</para>
-</listitem><listitem><para>The samples pointer is into the driver-managed ring buffer and is valid only for the duration of on_chunk(). Copy if needed beyond that. </para>
-</listitem></itemizedlist>
-</para>
+<para>The samples pointer references driver-managed storage and is valid only for the duration of the chunk callback. Copy samples that must outlive the callback. </para>
     </detaileddescription>
     <collaborationgraph>
       <node id="1">
@@ -111,7 +114,7 @@
         <link refid="structads1299__sample__t"/>
       </node>
     </collaborationgraph>
-    <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="44" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="44" bodyend="51"/>
+    <location file="include/ads1299.h" line="49" column="1" bodyfile="include/ads1299.h" bodystart="49" bodyend="56"/>
     <listofallmembers>
       <member refid="structads1299__chunk__t_1af519c784a058006e56702a8c5e0ad5b6" prot="public" virt="non-virtual"><scope>ads1299_chunk_t</scope><name>dropped_count</name></member>
       <member refid="structads1299__chunk__t_1a2a23bf430cf0846e675442d96bafc46a" prot="public" virt="non-virtual"><scope>ads1299_chunk_t</scope><name>first_timestamp_us</name></member>

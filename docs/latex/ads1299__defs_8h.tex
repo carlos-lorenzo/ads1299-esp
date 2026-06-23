@@ -1,0 +1,372 @@
+\doxysection{include/\+ads1299\+\_\+defs.h File Reference}
+\hypertarget{ads1299__defs_8h}{}\label{ads1299__defs_8h}\index{include/ads1299\_defs.h@{include/ads1299\_defs.h}}
+
+
+Public constants and enums for the ADS1299 ESP-\/\+IDF driver.  
+
+
+{\ttfamily \+\#include $<$stdint.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{ads1299__defs_8h_a90b24fb5f64f05ddeb5ba49b0fccbace}\label{ads1299__defs_8h_a90b24fb5f64f05ddeb5ba49b0fccbace} 
+\+\#define {\bfseries ADS1299\+\_\+\+CLK\+\_\+\+FREQ}~2048000\+UL
+\begin{DoxyCompactList}\small\item\em ADS1299 internal clock frequency in hertz. \end{DoxyCompactList}\item 
+\+\#define \doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(ticks)
+\begin{DoxyCompactList}\small\item\em Convert ADS1299 clock ticks to microseconds, rounded up. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a212b27ca554a7316db323ebe52a2842c}\label{ads1299__defs_8h_a212b27ca554a7316db323ebe52a2842c} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+CLK\+\_\+\+US}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(1)
+\begin{DoxyCompactList}\small\item\em One ADS1299 clock period in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_ae0d98ca9a623cf5e21ebc690f490e780}\label{ads1299__defs_8h_ae0d98ca9a623cf5e21ebc690f490e780} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+RESET}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(18)
+\begin{DoxyCompactList}\small\item\em Hardware reset pulse timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_ac0aef774a2329aa9efd7b9ad3e12c23d}\label{ads1299__defs_8h_ac0aef774a2329aa9efd7b9ad3e12c23d} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+PULSE}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(2)
+\begin{DoxyCompactList}\small\item\em START or RESET pulse timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a6d8613e189720733aae8cb70ea0b2a55}\label{ads1299__defs_8h_a6d8613e189720733aae8cb70ea0b2a55} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+SDATAC}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(2)
+\begin{DoxyCompactList}\small\item\em SDATAC command timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a33986726d2ecabde33fb3becd1a49a81}\label{ads1299__defs_8h_a33986726d2ecabde33fb3becd1a49a81} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+RDATAC}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(2)
+\begin{DoxyCompactList}\small\item\em RDATAC command timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a59cefeb5ca6f40c2f0e768f0b3b26a2a}\label{ads1299__defs_8h_a59cefeb5ca6f40c2f0e768f0b3b26a2a} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+WAKEUP}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(4)
+\begin{DoxyCompactList}\small\item\em WAKEUP command timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_aa7d72f9d539757520cd424e6e9e63786}\label{ads1299__defs_8h_aa7d72f9d539757520cd424e6e9e63786} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+CSSC}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(1)
+\begin{DoxyCompactList}\small\item\em Chip-\/select setup timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a03185e1eee9fa4661558dff6b31025f3}\label{ads1299__defs_8h_a03185e1eee9fa4661558dff6b31025f3} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+SCLK}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(1)
+\begin{DoxyCompactList}\small\item\em SCLK timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a9b86682c80ea61856b43e6512b2c29e3}\label{ads1299__defs_8h_a9b86682c80ea61856b43e6512b2c29e3} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+CSH}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(2)
+\begin{DoxyCompactList}\small\item\em Chip-\/select hold timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_ab7528a386936333f27faf0ca2710c28a}\label{ads1299__defs_8h_ab7528a386936333f27faf0ca2710c28a} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+SCCS}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(4)
+\begin{DoxyCompactList}\small\item\em SCLK-\/to-\/chip-\/select timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a105ebc25f6d55812335d0dbfbfc0f768}\label{ads1299__defs_8h_a105ebc25f6d55812335d0dbfbfc0f768} 
+\+\#define {\bfseries ADS1299\+\_\+\+T\+\_\+\+SDECODE}~\doxymbox{\hyperlink{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}{ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US}}(4)
+\begin{DoxyCompactList}\small\item\em Command decode timing in microseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_ad6f91558e026b9d580cca74fd9a98e84}\label{ads1299__defs_8h_ad6f91558e026b9d580cca74fd9a98e84} 
+\+\#define {\bfseries ADS1299\+\_\+\+NUM\+\_\+\+CHANNELS}~8
+\begin{DoxyCompactList}\small\item\em Number of ADS1299 channels. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_aff0792cefe5097011c0542aab87583ca}\label{ads1299__defs_8h_aff0792cefe5097011c0542aab87583ca} 
+\+\#define {\bfseries ADS1299\+\_\+\+STATUS\+\_\+\+BYTES}~3
+\begin{DoxyCompactList}\small\item\em Number of status bytes at the start of each ADS1299 frame. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_aea060163b5d4d0cf5ccc2d1b85d59cf7}\label{ads1299__defs_8h_aea060163b5d4d0cf5ccc2d1b85d59cf7} 
+\+\#define {\bfseries ADS1299\+\_\+\+BYTES\+\_\+\+PER\+\_\+\+CHANNEL}~3
+\begin{DoxyCompactList}\small\item\em Number of bytes per ADS1299 channel sample. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_aa0e51ed38c111361542cf6500f4a2293}\label{ads1299__defs_8h_aa0e51ed38c111361542cf6500f4a2293} 
+\+\#define {\bfseries ADS1299\+\_\+\+FRAME\+\_\+\+SIZE}~(\doxymbox{\hyperlink{ads1299__defs_8h_aff0792cefe5097011c0542aab87583ca}{ADS1299\+\_\+\+STATUS\+\_\+\+BYTES}} + \doxymbox{\hyperlink{ads1299__defs_8h_ad6f91558e026b9d580cca74fd9a98e84}{ADS1299\+\_\+\+NUM\+\_\+\+CHANNELS}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{ads1299__defs_8h_aea060163b5d4d0cf5ccc2d1b85d59cf7}{ADS1299\+\_\+\+BYTES\+\_\+\+PER\+\_\+\+CHANNEL}})
+\begin{DoxyCompactList}\small\item\em Total ADS1299 frame size in bytes. \end{DoxyCompactList}\item 
+\+\#define \doxymbox{\hyperlink{ads1299__defs_8h_a99f5a23ea1cf5a52b12a16e04b8597f8}{ADS1299\+\_\+\+DEFAULT\+\_\+\+CHUNK\+\_\+\+MS}}~100
+\begin{DoxyCompactList}\small\item\em Default DMA chunk duration in milliseconds. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a02539f1183e47805d15c50c4365046d5}\label{ads1299__defs_8h_a02539f1183e47805d15c50c4365046d5} 
+\+\#define {\bfseries ADS1299\+\_\+\+RING\+\_\+\+BUF\+\_\+\+SLOTS}~8
+\begin{DoxyCompactList}\small\item\em Default number of chunk slots allocated for continuous acquisition. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a235d213b5739c4909fc031452ad204bf}\label{ads1299__defs_8h_a235d213b5739c4909fc031452ad204bf} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+WAKEUP}~0x02
+\begin{DoxyCompactList}\small\item\em ADS1299 WAKEUP command opcode. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a31cb82290671a6b3b66df28708aff655}\label{ads1299__defs_8h_a31cb82290671a6b3b66df28708aff655} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+STANDBY}~0x04
+\begin{DoxyCompactList}\small\item\em ADS1299 STANDBY command opcode. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a00776ec906782ac8033c507cdf31f424}\label{ads1299__defs_8h_a00776ec906782ac8033c507cdf31f424} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+RESET}~0x06
+\begin{DoxyCompactList}\small\item\em ADS1299 RESET command opcode. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a16d3867ac65f5db84d88881fa0acb88e}\label{ads1299__defs_8h_a16d3867ac65f5db84d88881fa0acb88e} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+START}~0x08
+\begin{DoxyCompactList}\small\item\em ADS1299 START command opcode. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_ad03d1a75e264848d5fc6371cdbc8b4ee}\label{ads1299__defs_8h_ad03d1a75e264848d5fc6371cdbc8b4ee} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+STOP}~0x0A
+\begin{DoxyCompactList}\small\item\em ADS1299 STOP command opcode. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a4364907579f72f80ad0b80cce9aa608f}\label{ads1299__defs_8h_a4364907579f72f80ad0b80cce9aa608f} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+RDATAC}~0x10
+\begin{DoxyCompactList}\small\item\em ADS1299 RDATAC command opcode. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_ab65f5431988ba481197ce0399b3b7119}\label{ads1299__defs_8h_ab65f5431988ba481197ce0399b3b7119} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+SDATAC}~0x11
+\begin{DoxyCompactList}\small\item\em ADS1299 SDATAC command opcode. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a9744521cf805adfd764c05330da7eaf1}\label{ads1299__defs_8h_a9744521cf805adfd764c05330da7eaf1} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+RDATA}~0x12
+\begin{DoxyCompactList}\small\item\em ADS1299 RDATA command opcode. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a58a4474ebd2670ae7ac3c52b77c900ef}\label{ads1299__defs_8h_a58a4474ebd2670ae7ac3c52b77c900ef} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+RREG}~0x20
+\begin{DoxyCompactList}\small\item\em ADS1299 RREG command base opcode; OR with the register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_ad66cc78c1e0f3a935811de98685c92a4}\label{ads1299__defs_8h_ad66cc78c1e0f3a935811de98685c92a4} 
+\+\#define {\bfseries ADS1299\+\_\+\+CMD\+\_\+\+WREG}~0x40
+\begin{DoxyCompactList}\small\item\em ADS1299 WREG command base opcode; OR with the register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_abfecfe40ac3a32cf099e60625a8fd2d1}\label{ads1299__defs_8h_abfecfe40ac3a32cf099e60625a8fd2d1} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+ID}~0x00
+\begin{DoxyCompactList}\small\item\em ADS1299 ID register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a245d695b158018b6704b7fa2d90d2c69}\label{ads1299__defs_8h_a245d695b158018b6704b7fa2d90d2c69} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CONFIG1}~0x01
+\begin{DoxyCompactList}\small\item\em ADS1299 CONFIG1 register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a3dbe2ea00a023cf2020c08b8cb821625}\label{ads1299__defs_8h_a3dbe2ea00a023cf2020c08b8cb821625} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CONFIG2}~0x02
+\begin{DoxyCompactList}\small\item\em ADS1299 CONFIG2 register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_afa06af2edfade7277f60eaedf9f7e3a2}\label{ads1299__defs_8h_afa06af2edfade7277f60eaedf9f7e3a2} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CONFIG3}~0x03
+\begin{DoxyCompactList}\small\item\em ADS1299 CONFIG3 register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_af26cb9aec19f197221de04b2a7f9ea7e}\label{ads1299__defs_8h_af26cb9aec19f197221de04b2a7f9ea7e} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+LOFF}~0x04
+\begin{DoxyCompactList}\small\item\em ADS1299 lead-\/off control register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a9289a7271b9e0aabc6bc2ed8b64559f4}\label{ads1299__defs_8h_a9289a7271b9e0aabc6bc2ed8b64559f4} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CH1\+SET}~0x05
+\begin{DoxyCompactList}\small\item\em ADS1299 channel 1 settings register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a70f04941018d4012ee9abf2b91fbb8cd}\label{ads1299__defs_8h_a70f04941018d4012ee9abf2b91fbb8cd} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CH2\+SET}~0x06
+\begin{DoxyCompactList}\small\item\em ADS1299 channel 2 settings register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a35783486a2a4e38848ceee4ec381a3ed}\label{ads1299__defs_8h_a35783486a2a4e38848ceee4ec381a3ed} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CH3\+SET}~0x07
+\begin{DoxyCompactList}\small\item\em ADS1299 channel 3 settings register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a066046fafd1fae0923b63304357760fb}\label{ads1299__defs_8h_a066046fafd1fae0923b63304357760fb} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CH4\+SET}~0x08
+\begin{DoxyCompactList}\small\item\em ADS1299 channel 4 settings register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a08f3fdb2898a0e839a0997afe2578716}\label{ads1299__defs_8h_a08f3fdb2898a0e839a0997afe2578716} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CH5\+SET}~0x09
+\begin{DoxyCompactList}\small\item\em ADS1299 channel 5 settings register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a3bec2c5324f48460fdf63e5fc6dced14}\label{ads1299__defs_8h_a3bec2c5324f48460fdf63e5fc6dced14} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CH6\+SET}~0x0A
+\begin{DoxyCompactList}\small\item\em ADS1299 channel 6 settings register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a28750c9a4ddba01f6b28e67ae657e217}\label{ads1299__defs_8h_a28750c9a4ddba01f6b28e67ae657e217} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CH7\+SET}~0x0B
+\begin{DoxyCompactList}\small\item\em ADS1299 channel 7 settings register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a2dc3d67a4aeb8a400700e5eff40fd849}\label{ads1299__defs_8h_a2dc3d67a4aeb8a400700e5eff40fd849} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+CH8\+SET}~0x0C
+\begin{DoxyCompactList}\small\item\em ADS1299 channel 8 settings register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_a0476c20e2c6fe294b4af07b197ef17a6}\label{ads1299__defs_8h_a0476c20e2c6fe294b4af07b197ef17a6} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+BIAS\+\_\+\+SENSP}~0x0D
+\begin{DoxyCompactList}\small\item\em ADS1299 positive BIAS sense register address. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299__defs_8h_aca19d4af16e03cf6f267f4b061a8e14b}\label{ads1299__defs_8h_aca19d4af16e03cf6f267f4b061a8e14b} 
+\+\#define {\bfseries ADS1299\+\_\+\+REG\+\_\+\+BIAS\+\_\+\+SENSN}~0x0E
+\begin{DoxyCompactList}\small\item\em ADS1299 negative BIAS sense register address. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169a}{ads1299\+\_\+sample\+\_\+rate\+\_\+t}} \{ \newline
+\doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa528ed39081991b4f7627360e84d0a865}{ADS1299\+\_\+\+DR\+\_\+16k\+SPS}} = 0x00
+, \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa3d1537a4ae53120598cd02ccd8fee7a9}{ADS1299\+\_\+\+DR\+\_\+8k\+SPS}} = 0x01
+, \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aad46568381460c2e8639ca36536aacdab}{ADS1299\+\_\+\+DR\+\_\+4k\+SPS}} = 0x02
+, \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aade95fcc2d99d284d8e2f552dc9db7045}{ADS1299\+\_\+\+DR\+\_\+2k\+SPS}} = 0x03
+, \newline
+\doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aaf77a2c31fc7c9db39e5e699f753ddbc1}{ADS1299\+\_\+\+DR\+\_\+1k\+SPS}} = 0x04
+, \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aab7e4f8a49db7e90e6dae2cfb051fced6}{ADS1299\+\_\+\+DR\+\_\+500\+SPS}} = 0x05
+, \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa1d531b8062e098085df882f6f426ff75}{ADS1299\+\_\+\+DR\+\_\+250\+SPS}} = 0x06
+ \}
+\begin{DoxyCompactList}\small\item\em ADS1299 output data rates. \end{DoxyCompactList}\item 
+enum \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3}{ads1299\+\_\+pga\+\_\+gain\+\_\+t}} \{ \newline
+\doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a28d1fbc0c992f293fbbca2ebfe9a7a9b}{ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+1}} = 0x00
+, \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a235a29aeaf18ade843cc588c09e7cf5e}{ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+2}} = 0x10
+, \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a0903544578c12ab84bf6b0f0d11c20f8}{ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+4}} = 0x20
+, \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3ad2be442a5695a7bef84488397fd2f0f8}{ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+6}} = 0x30
+, \newline
+\doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a42f8c9356f88696c5aaea5a66fa9d60a}{ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+8}} = 0x40
+, \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a93053ed8bb2dd4eed2e629dde05af2d1}{ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+12}} = 0x50
+, \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a68a1d702961444489eaa67c23bcc2d9d}{ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+24}} = 0x60
+ \}
+\begin{DoxyCompactList}\small\item\em ADS1299 programmable gain amplifier settings. \end{DoxyCompactList}\item 
+enum \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189}{ads1299\+\_\+input\+\_\+mux\+\_\+t}} \{ \newline
+\doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a3c8d999b1d8aa764d879ca848170fb97}{ADS1299\+\_\+\+INPUT\+\_\+\+NORMAL}} = 0x00
+, \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a96a7f3198e3c616c522fc27143801d1a}{ADS1299\+\_\+\+INPUT\+\_\+\+SHORTED}} = 0x01
+, \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a5a452dcec86350dc2af71171b212dba5}{ADS1299\+\_\+\+INPUT\+\_\+\+BIAS\+\_\+\+MEAS}} = 0x02
+, \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189ab04c149557f8097dac075756b7fde0c6}{ADS1299\+\_\+\+INPUT\+\_\+\+MVDD}} = 0x03
+, \newline
+\doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189ae2a35cac583e0ba7b9bcbbb3163602ba}{ADS1299\+\_\+\+INPUT\+\_\+\+TEMP}} = 0x04
+, \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a92e24d75a12fdb5746cd9b477a5e2c4d}{ADS1299\+\_\+\+INPUT\+\_\+\+TEST\+\_\+\+SIGNAL}} = 0x05
+ \}
+\begin{DoxyCompactList}\small\item\em ADS1299 channel input mux settings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Public constants and enums for the ADS1299 ESP-\/\+IDF driver. 
+
+
+
+\label{doc-define-members}
+\Hypertarget{ads1299__defs_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{ads1299__defs_8h_a99f5a23ea1cf5a52b12a16e04b8597f8}\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_DEFAULT\_CHUNK\_MS@{ADS1299\_DEFAULT\_CHUNK\_MS}}
+\index{ADS1299\_DEFAULT\_CHUNK\_MS@{ADS1299\_DEFAULT\_CHUNK\_MS}!ads1299\_defs.h@{ads1299\_defs.h}}
+\doxysubsubsection{\texorpdfstring{ADS1299\_DEFAULT\_CHUNK\_MS}{ADS1299\_DEFAULT\_CHUNK\_MS}}
+{\footnotesize\ttfamily \label{ads1299__defs_8h_a99f5a23ea1cf5a52b12a16e04b8597f8} 
+\+\#define ADS1299\+\_\+\+DEFAULT\+\_\+\+CHUNK\+\_\+\+MS~100}
+
+
+
+Default DMA chunk duration in milliseconds. 
+
+At 250 SPS this yields 25 samples per chunk. Override with \doxylink{structads1299__continuous__config__t_a0d803b98fde218abb87a15c9f9965eac}{ads1299\+\_\+continuous\+\_\+config\+\_\+t::\+chunk\+\_\+duration\+\_\+ms}. \Hypertarget{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77}\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_TICKS\_TO\_US@{ADS1299\_TICKS\_TO\_US}}
+\index{ADS1299\_TICKS\_TO\_US@{ADS1299\_TICKS\_TO\_US}!ads1299\_defs.h@{ads1299\_defs.h}}
+\doxysubsubsection{\texorpdfstring{ADS1299\_TICKS\_TO\_US}{ADS1299\_TICKS\_TO\_US}}
+{\footnotesize\ttfamily \label{ads1299__defs_8h_ab4d41c6ad6fc5ddb87c5b28ec9cf5b77} 
+\+\#define ADS1299\+\_\+\+TICKS\+\_\+\+TO\+\_\+\+US(\begin{DoxyParamCaption}\item[{}]{ticks}{}\end{DoxyParamCaption})}
+
+{\bfseries Value:\+}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{(((ticks)\ *\ 1000000UL\ +\ (\doxymbox{\hyperlink{ads1299__defs_8h_a90b24fb5f64f05ddeb5ba49b0fccbace}{ADS1299\_CLK\_FREQ}}\ -\/\ 1))\ /\ \doxymbox{\hyperlink{ads1299__defs_8h_a90b24fb5f64f05ddeb5ba49b0fccbace}{ADS1299\_CLK\_FREQ}})}
+
+\end{DoxyCode}
+
+
+Convert ADS1299 clock ticks to microseconds, rounded up. 
+
+
+
+\label{doc-enum-members}
+\Hypertarget{ads1299__defs_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189}\index{ads1299\_defs.h@{ads1299\_defs.h}!ads1299\_input\_mux\_t@{ads1299\_input\_mux\_t}}
+\index{ads1299\_input\_mux\_t@{ads1299\_input\_mux\_t}!ads1299\_defs.h@{ads1299\_defs.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_input\_mux\_t}{ads1299\_input\_mux\_t}}
+{\footnotesize\ttfamily \label{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189} 
+enum \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189}{ads1299\+\_\+input\+\_\+mux\+\_\+t}}}
+
+
+
+ADS1299 channel input mux settings. 
+
+Values match CHn\+SET register bits \+[2:\+0]\+. \begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_INPUT\_NORMAL@{ADS1299\_INPUT\_NORMAL}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_INPUT\_NORMAL@{ADS1299\_INPUT\_NORMAL}}
+}\Hypertarget{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a3c8d999b1d8aa764d879ca848170fb97}\label{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a3c8d999b1d8aa764d879ca848170fb97} 
+ADS1299\+\_\+\+INPUT\+\_\+\+NORMAL&Normal electrode input. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_INPUT\_SHORTED@{ADS1299\_INPUT\_SHORTED}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_INPUT\_SHORTED@{ADS1299\_INPUT\_SHORTED}}
+}\Hypertarget{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a96a7f3198e3c616c522fc27143801d1a}\label{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a96a7f3198e3c616c522fc27143801d1a} 
+ADS1299\+\_\+\+INPUT\+\_\+\+SHORTED&Shorted input for noise measurements. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_INPUT\_BIAS\_MEAS@{ADS1299\_INPUT\_BIAS\_MEAS}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_INPUT\_BIAS\_MEAS@{ADS1299\_INPUT\_BIAS\_MEAS}}
+}\Hypertarget{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a5a452dcec86350dc2af71171b212dba5}\label{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a5a452dcec86350dc2af71171b212dba5} 
+ADS1299\+\_\+\+INPUT\+\_\+\+BIAS\+\_\+\+MEAS&BIAS drive measurement input. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_INPUT\_MVDD@{ADS1299\_INPUT\_MVDD}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_INPUT\_MVDD@{ADS1299\_INPUT\_MVDD}}
+}\Hypertarget{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189ab04c149557f8097dac075756b7fde0c6}\label{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189ab04c149557f8097dac075756b7fde0c6} 
+ADS1299\+\_\+\+INPUT\+\_\+\+MVDD&Supply voltage measurement input. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_INPUT\_TEMP@{ADS1299\_INPUT\_TEMP}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_INPUT\_TEMP@{ADS1299\_INPUT\_TEMP}}
+}\Hypertarget{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189ae2a35cac583e0ba7b9bcbbb3163602ba}\label{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189ae2a35cac583e0ba7b9bcbbb3163602ba} 
+ADS1299\+\_\+\+INPUT\+\_\+\+TEMP&Internal temperature sensor input. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_INPUT\_TEST\_SIGNAL@{ADS1299\_INPUT\_TEST\_SIGNAL}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_INPUT\_TEST\_SIGNAL@{ADS1299\_INPUT\_TEST\_SIGNAL}}
+}\Hypertarget{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a92e24d75a12fdb5746cd9b477a5e2c4d}\label{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a92e24d75a12fdb5746cd9b477a5e2c4d} 
+ADS1299\+\_\+\+INPUT\+\_\+\+TEST\+\_\+\+SIGNAL&Internal test signal input. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3}\index{ads1299\_defs.h@{ads1299\_defs.h}!ads1299\_pga\_gain\_t@{ads1299\_pga\_gain\_t}}
+\index{ads1299\_pga\_gain\_t@{ads1299\_pga\_gain\_t}!ads1299\_defs.h@{ads1299\_defs.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_pga\_gain\_t}{ads1299\_pga\_gain\_t}}
+{\footnotesize\ttfamily \label{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3} 
+enum \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3}{ads1299\+\_\+pga\+\_\+gain\+\_\+t}}}
+
+
+
+ADS1299 programmable gain amplifier settings. 
+
+Values match CHn\+SET register bits \+[6:\+4]\+. \begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_PGA\_GAIN\_1@{ADS1299\_PGA\_GAIN\_1}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_PGA\_GAIN\_1@{ADS1299\_PGA\_GAIN\_1}}
+}\Hypertarget{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a28d1fbc0c992f293fbbca2ebfe9a7a9b}\label{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a28d1fbc0c992f293fbbca2ebfe9a7a9b} 
+ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+1&Gain of 1. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_PGA\_GAIN\_2@{ADS1299\_PGA\_GAIN\_2}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_PGA\_GAIN\_2@{ADS1299\_PGA\_GAIN\_2}}
+}\Hypertarget{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a235a29aeaf18ade843cc588c09e7cf5e}\label{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a235a29aeaf18ade843cc588c09e7cf5e} 
+ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+2&Gain of 2. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_PGA\_GAIN\_4@{ADS1299\_PGA\_GAIN\_4}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_PGA\_GAIN\_4@{ADS1299\_PGA\_GAIN\_4}}
+}\Hypertarget{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a0903544578c12ab84bf6b0f0d11c20f8}\label{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a0903544578c12ab84bf6b0f0d11c20f8} 
+ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+4&Gain of 4. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_PGA\_GAIN\_6@{ADS1299\_PGA\_GAIN\_6}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_PGA\_GAIN\_6@{ADS1299\_PGA\_GAIN\_6}}
+}\Hypertarget{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3ad2be442a5695a7bef84488397fd2f0f8}\label{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3ad2be442a5695a7bef84488397fd2f0f8} 
+ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+6&Gain of 6. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_PGA\_GAIN\_8@{ADS1299\_PGA\_GAIN\_8}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_PGA\_GAIN\_8@{ADS1299\_PGA\_GAIN\_8}}
+}\Hypertarget{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a42f8c9356f88696c5aaea5a66fa9d60a}\label{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a42f8c9356f88696c5aaea5a66fa9d60a} 
+ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+8&Gain of 8. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_PGA\_GAIN\_12@{ADS1299\_PGA\_GAIN\_12}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_PGA\_GAIN\_12@{ADS1299\_PGA\_GAIN\_12}}
+}\Hypertarget{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a93053ed8bb2dd4eed2e629dde05af2d1}\label{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a93053ed8bb2dd4eed2e629dde05af2d1} 
+ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+12&Gain of 12. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_PGA\_GAIN\_24@{ADS1299\_PGA\_GAIN\_24}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_PGA\_GAIN\_24@{ADS1299\_PGA\_GAIN\_24}}
+}\Hypertarget{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a68a1d702961444489eaa67c23bcc2d9d}\label{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a68a1d702961444489eaa67c23bcc2d9d} 
+ADS1299\+\_\+\+PGA\+\_\+\+GAIN\+\_\+24&Gain of 24. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169a}\index{ads1299\_defs.h@{ads1299\_defs.h}!ads1299\_sample\_rate\_t@{ads1299\_sample\_rate\_t}}
+\index{ads1299\_sample\_rate\_t@{ads1299\_sample\_rate\_t}!ads1299\_defs.h@{ads1299\_defs.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_sample\_rate\_t}{ads1299\_sample\_rate\_t}}
+{\footnotesize\ttfamily \label{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169a} 
+enum \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169a}{ads1299\+\_\+sample\+\_\+rate\+\_\+t}}}
+
+
+
+ADS1299 output data rates. 
+
+Values match CONFIG1 register bits \+[2:\+0]\+. \begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_DR\_16kSPS@{ADS1299\_DR\_16kSPS}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_DR\_16kSPS@{ADS1299\_DR\_16kSPS}}
+}\Hypertarget{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa528ed39081991b4f7627360e84d0a865}\label{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa528ed39081991b4f7627360e84d0a865} 
+ADS1299\+\_\+\+DR\+\_\+16k\+SPS&16000 samples per second. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_DR\_8kSPS@{ADS1299\_DR\_8kSPS}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_DR\_8kSPS@{ADS1299\_DR\_8kSPS}}
+}\Hypertarget{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa3d1537a4ae53120598cd02ccd8fee7a9}\label{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa3d1537a4ae53120598cd02ccd8fee7a9} 
+ADS1299\+\_\+\+DR\+\_\+8k\+SPS&8000 samples per second. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_DR\_4kSPS@{ADS1299\_DR\_4kSPS}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_DR\_4kSPS@{ADS1299\_DR\_4kSPS}}
+}\Hypertarget{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aad46568381460c2e8639ca36536aacdab}\label{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aad46568381460c2e8639ca36536aacdab} 
+ADS1299\+\_\+\+DR\+\_\+4k\+SPS&4000 samples per second. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_DR\_2kSPS@{ADS1299\_DR\_2kSPS}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_DR\_2kSPS@{ADS1299\_DR\_2kSPS}}
+}\Hypertarget{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aade95fcc2d99d284d8e2f552dc9db7045}\label{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aade95fcc2d99d284d8e2f552dc9db7045} 
+ADS1299\+\_\+\+DR\+\_\+2k\+SPS&2000 samples per second. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_DR\_1kSPS@{ADS1299\_DR\_1kSPS}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_DR\_1kSPS@{ADS1299\_DR\_1kSPS}}
+}\Hypertarget{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aaf77a2c31fc7c9db39e5e699f753ddbc1}\label{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aaf77a2c31fc7c9db39e5e699f753ddbc1} 
+ADS1299\+\_\+\+DR\+\_\+1k\+SPS&1000 samples per second. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_DR\_500SPS@{ADS1299\_DR\_500SPS}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_DR\_500SPS@{ADS1299\_DR\_500SPS}}
+}\Hypertarget{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aab7e4f8a49db7e90e6dae2cfb051fced6}\label{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aab7e4f8a49db7e90e6dae2cfb051fced6} 
+ADS1299\+\_\+\+DR\+\_\+500\+SPS&500 samples per second. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADS1299\_DR\_250SPS@{ADS1299\_DR\_250SPS}!ads1299\_defs.h@{ads1299\_defs.h}}
+\index{ads1299\_defs.h@{ads1299\_defs.h}!ADS1299\_DR\_250SPS@{ADS1299\_DR\_250SPS}}
+}\Hypertarget{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa1d531b8062e098085df882f6f426ff75}\label{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa1d531b8062e098085df882f6f426ff75} 
+ADS1299\+\_\+\+DR\+\_\+250\+SPS&250 samples per second. \\
+\hline
+
+\end{DoxyEnumFields}

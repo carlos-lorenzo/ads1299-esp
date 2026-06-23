@@ -1,0 +1,45 @@
+\doxysection{ads1299\+\_\+continuous\+\_\+config\+\_\+t Struct Reference}
+\hypertarget{structads1299__continuous__config__t}{}\label{structads1299__continuous__config__t}\index{ads1299\_continuous\_config\_t@{ads1299\_continuous\_config\_t}}
+
+
+Continuous-\/acquisition configuration.  
+
+
+
+
+{\ttfamily \+\#include $<$ads1299.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structads1299__continuous__config__t_a46420117af5f838542cc8d0c2f98ebb9}\label{structads1299__continuous__config__t_a46420117af5f838542cc8d0c2f98ebb9} 
+\doxymbox{\hyperlink{ads1299_8h_af422f450db03c79e916c3010cc3d6316}{ads1299\+\_\+chunk\+\_\+cb\+\_\+t}} {\bfseries on\+\_\+chunk}
+\begin{DoxyCompactList}\small\item\em Required callback for completed chunks. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__continuous__config__t_ac2ef9d63859de1e005b8f283d8fffbf1}\label{structads1299__continuous__config__t_ac2ef9d63859de1e005b8f283d8fffbf1} 
+\doxymbox{\hyperlink{ads1299_8h_a138db55a2954a65c8fd6c380de1b318e}{ads1299\+\_\+error\+\_\+cb\+\_\+t}} {\bfseries on\+\_\+error}
+\begin{DoxyCompactList}\small\item\em Optional callback for recoverable errors. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__continuous__config__t_a5af3dc3511cc441c07c64e3cc7b0d254}\label{structads1299__continuous__config__t_a5af3dc3511cc441c07c64e3cc7b0d254} 
+void \texorpdfstring{$\ast$}{*} {\bfseries ctx}
+\begin{DoxyCompactList}\small\item\em User context passed to callbacks. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__continuous__config__t_a0d803b98fde218abb87a15c9f9965eac}\label{structads1299__continuous__config__t_a0d803b98fde218abb87a15c9f9965eac} 
+uint32\+\_\+t {\bfseries chunk\+\_\+duration\+\_\+ms}
+\begin{DoxyCompactList}\small\item\em Chunk length in milliseconds. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__continuous__config__t_a93db9c124ee88b669d56081530171ea2}\label{structads1299__continuous__config__t_a93db9c124ee88b669d56081530171ea2} 
+uint32\+\_\+t {\bfseries ring\+\_\+buffer\+\_\+chunks}
+\begin{DoxyCompactList}\small\item\em Chunk slots; 0 selects ADS1299\+\_\+\+RING\+\_\+\+BUF\+\_\+\+SLOTS. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__continuous__config__t_add6d40348e9a1b8596023f1c945bac7b}\label{structads1299__continuous__config__t_add6d40348e9a1b8596023f1c945bac7b} 
+UBase\+Type\+\_\+t {\bfseries task\+\_\+priority}
+\begin{DoxyCompactList}\small\item\em Free\+RTOS priority for the handler task. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__continuous__config__t_a799a043538e080f6914823a34818b086}\label{structads1299__continuous__config__t_a799a043538e080f6914823a34818b086} 
+Base\+Type\+\_\+t {\bfseries task\+\_\+core}
+\begin{DoxyCompactList}\small\item\em Free\+RTOS core affinity for the handler task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Continuous-\/acquisition configuration. 
+
+Buffer sizing is derived from sample\+\_\+rate and chunk\+\_\+duration\+\_\+ms. The caller does not manage DMA or chunk storage directly. 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+include/\+\doxymbox{\hyperlink{ads1299_8h}{ads1299.\+h}}\end{DoxyCompactItemize}

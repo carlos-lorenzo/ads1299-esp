@@ -1,0 +1,620 @@
+\doxysection{include/\+ads1299.h File Reference}
+\hypertarget{ads1299_8h}{}\label{ads1299_8h}\index{include/ads1299.h@{include/ads1299.h}}
+
+
+Public API for the ADS1299 ESP-\/\+IDF driver.  
+
+
+{\ttfamily \+\#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \+\#include $<$stddef.\+h$>$}\newline
+{\ttfamily \+\#include $<$stdint.\+h$>$}\newline
+{\ttfamily \+\#include "{}driver/\+gpio.\+h"{}}\newline
+{\ttfamily \+\#include "{}driver/\+spi\+\_\+master.\+h"{}}\newline
+{\ttfamily \+\#include "{}esp\+\_\+err.\+h"{}}\newline
+{\ttfamily \+\#include "{}freertos/\+\+Free\+RTOS.\+h"{}}\newline
+{\ttfamily \+\#include "{}freertos/\+ringbuf.\+h"{}}\newline
+{\ttfamily \+\#include "{}freertos/\+semphr.\+h"{}}\newline
+{\ttfamily \+\#include "{}freertos/\+task.\+h"{}}\newline
+{\ttfamily \+\#include "{}ads1299\+\_\+defs.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{structads1299__sample__t}{ads1299\+\_\+sample\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em One fully parsed sample from the ADS1299. \end{DoxyCompactList}\item 
+struct \doxymbox{\hyperlink{structads1299__chunk__t}{ads1299\+\_\+chunk\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em A chunk of parsed ADS1299 samples delivered by the driver. \end{DoxyCompactList}\item 
+struct \doxymbox{\hyperlink{structads1299__config__t}{ads1299\+\_\+config\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Static device configuration. \end{DoxyCompactList}\item 
+struct \doxymbox{\hyperlink{structads1299__continuous__config__t}{ads1299\+\_\+continuous\+\_\+config\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Continuous-\/acquisition configuration. \end{DoxyCompactList}\item 
+struct \doxymbox{\hyperlink{structads1299__chunkring__t}{ads1299\+\_\+chunkring\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Internal single-\/producer single-\/consumer chunk ring. \end{DoxyCompactList}\item 
+struct \doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em ADS1299 device handle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef void(\texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{ads1299_8h_af422f450db03c79e916c3010cc3d6316}{ads1299\+\_\+chunk\+\_\+cb\+\_\+t}}) (const \doxymbox{\hyperlink{structads1299__chunk__t}{ads1299\+\_\+chunk\+\_\+t}} \texorpdfstring{$\ast$}{*}chunk, void \texorpdfstring{$\ast$}{*}ctx)
+\begin{DoxyCompactList}\small\item\em Called when a full continuous-\/acquisition chunk is ready. \end{DoxyCompactList}\item 
+typedef void(\texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{ads1299_8h_a138db55a2954a65c8fd6c380de1b318e}{ads1299\+\_\+error\+\_\+cb\+\_\+t}}) (esp\+\_\+err\+\_\+t err, void \texorpdfstring{$\ast$}{*}ctx)
+\begin{DoxyCompactList}\small\item\em Called when the continuous-\/acquisition task sees a recoverable error. \end{DoxyCompactList}\item 
+\Hypertarget{ads1299_8h_a81979448b1cc1758dac7f6f1469fa6a1}\label{ads1299_8h_a81979448b1cc1758dac7f6f1469fa6a1} 
+typedef struct ads1299\+\_\+dma\+\_\+ctx {\bfseries ads1299\+\_\+dma\+\_\+ctx\+\_\+t}
+\begin{DoxyCompactList}\small\item\em Opaque continuous-\/mode context. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \doxymbox{\hyperlink{ads1299_8h_adbb09ae0e34074b737d4ca89bc106342}{ads1299\+\_\+create}} (const \doxymbox{\hyperlink{structads1299__config__t}{ads1299\+\_\+config\+\_\+t}} \texorpdfstring{$\ast$}{*}cfg)
+\begin{DoxyCompactList}\small\item\em Create an ADS1299 device handle from static configuration. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_ae8b134a209854c477ed5f76149f39c07}{ads1299\+\_\+init}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Initialize the ADS1299 device. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_ad88f943e9582ff284ffdbe0648a2897a}{ads1299\+\_\+deinit}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Deinitialize the ADS1299 device and free driver-\/owned resources. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a60e89947d83083a2cbd231839273eaf8}{ads1299\+\_\+write\+\_\+register}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev, uint8\+\_\+t reg, uint8\+\_\+t value)
+\begin{DoxyCompactList}\small\item\em Write one ADS1299 register. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_ab99c6a54cf07fa36bed1fedc862f6045}{ads1299\+\_\+read\+\_\+register}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev, uint8\+\_\+t reg, uint8\+\_\+t \texorpdfstring{$\ast$}{*}value)
+\begin{DoxyCompactList}\small\item\em Read one ADS1299 register. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_af0ffd5db95adfc9b1ac2ee4766d518b7}{ads1299\+\_\+write\+\_\+registers}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev, uint8\+\_\+t start\+\_\+reg, const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, size\+\_\+t count)
+\begin{DoxyCompactList}\small\item\em Write a contiguous ADS1299 register range. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_af8fb5f8a6572a651620d5cf1c233aae8}{ads1299\+\_\+read\+\_\+registers}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev, uint8\+\_\+t start\+\_\+reg, uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, size\+\_\+t count)
+\begin{DoxyCompactList}\small\item\em Read a contiguous ADS1299 register range. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_abf77b51cfa5423c9d7f7f4af55d43ace}{ads1299\+\_\+send\+\_\+command}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev, uint8\+\_\+t command)
+\begin{DoxyCompactList}\small\item\em Send a raw ADS1299 SPI command byte. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a3c131374bfcc9cecab7761afada854ac}{ads1299\+\_\+read\+\_\+data}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev, uint8\+\_\+t \texorpdfstring{$\ast$}{*}buffer)
+\begin{DoxyCompactList}\small\item\em Read one raw 27-\/byte ADS1299 frame. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a6d66c94be327388742119a2492257075}{ads1299\+\_\+read\+\_\+sample}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev, \doxymbox{\hyperlink{structads1299__sample__t}{ads1299\+\_\+sample\+\_\+t}} \texorpdfstring{$\ast$}{*}sample)
+\begin{DoxyCompactList}\small\item\em Read and parse one ADS1299 sample. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a78ce61bd6db92e3420b5c68cfe955442}{ads1299\+\_\+start}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Assert the START pin. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a4907f03db1d7e1a4280cc102d9953111}{ads1299\+\_\+stop}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Deassert the START pin. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a4c7b99b6071504c66b736327a2cc84a9}{ads1299\+\_\+reset\+\_\+hardware}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Pulse the ADS1299 hardware RESET pin. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a52fdad57d75121dc3579b7e2572cb75d}{ads1299\+\_\+reset\+\_\+software}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Send the ADS1299 RESET command. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_ad1f91fc7918ed380d8efe7ea8ed474ba}{ads1299\+\_\+standby}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Send the ADS1299 STANDBY command. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_ac2e50836a3ae5c51328ead75384b6354}{ads1299\+\_\+wakeup}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Send the ADS1299 WAKEUP command. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_ae290f8486378b434da9fd553e8f2d118}{ads1299\+\_\+enable\+\_\+continuous\+\_\+read}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Enter ADS1299 continuous read mode. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a18188ed6331325b62586560d8c359b94}{ads1299\+\_\+disable\+\_\+continuous\+\_\+read}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Exit ADS1299 continuous read mode. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_aa9d9a25b8b6b449b24befabbf79a0c3c}{ads1299\+\_\+start\+\_\+continuous}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev, const \doxymbox{\hyperlink{structads1299__continuous__config__t}{ads1299\+\_\+continuous\+\_\+config\+\_\+t}} \texorpdfstring{$\ast$}{*}cfg)
+\begin{DoxyCompactList}\small\item\em Begin DMA-\/driven continuous acquisition. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a4fb63c4269bef955208946a30ed9bf07}{ads1299\+\_\+stop\+\_\+continuous}} (\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Stop continuous acquisition and free acquisition resources. \end{DoxyCompactList}\item 
+bool \doxymbox{\hyperlink{ads1299_8h_af8e6948875c0bd9a21682a9fb766aa1d}{ads1299\+\_\+is\+\_\+running}} (const \doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Check whether continuous acquisition is active. \end{DoxyCompactList}\item 
+Ringbuf\+Handle\+\_\+t \doxymbox{\hyperlink{ads1299_8h_a676054b0614ce4e217bc9168ce90f14f}{ads1299\+\_\+get\+\_\+ring\+\_\+buffer}} (const \doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}dev)
+\begin{DoxyCompactList}\small\item\em Get the driver-\/owned Free\+RTOS ring buffer handle. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{ads1299_8h_a2c422271f3506623f26b7d235ebcdb82}{ads1299\+\_\+parse\+\_\+frame}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}raw, int64\+\_\+t timestamp, \doxymbox{\hyperlink{structads1299__sample__t}{ads1299\+\_\+sample\+\_\+t}} \texorpdfstring{$\ast$}{*}out)
+\begin{DoxyCompactList}\small\item\em Parse a raw ADS1299 frame. \end{DoxyCompactList}\item 
+uint32\+\_\+t \doxymbox{\hyperlink{ads1299_8h_afd0296da5bb5f169928d123217a2d135}{ads1299\+\_\+sample\+\_\+rate\+\_\+to\+\_\+hz}} (\doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169a}{ads1299\+\_\+sample\+\_\+rate\+\_\+t}} rate)
+\begin{DoxyCompactList}\small\item\em Convert an ADS1299 sample-\/rate enum to hertz. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Public API for the ADS1299 ESP-\/\+IDF driver. 
+
+The driver controls a Texas Instruments ADS1299 analog front-\/end over SPI. Applications own SPI bus initialization. The driver owns the ADS1299 SPI device handle, GPIO setup, and continuous acquisition resources. 
+
+\label{doc-typedef-members}
+\Hypertarget{ads1299_8h_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{ads1299_8h_af422f450db03c79e916c3010cc3d6316}\index{ads1299.h@{ads1299.h}!ads1299\_chunk\_cb\_t@{ads1299\_chunk\_cb\_t}}
+\index{ads1299\_chunk\_cb\_t@{ads1299\_chunk\_cb\_t}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_chunk\_cb\_t}{ads1299\_chunk\_cb\_t}}
+{\footnotesize\ttfamily \label{ads1299_8h_af422f450db03c79e916c3010cc3d6316} 
+typedef void(\texorpdfstring{$\ast$}{*} ads1299\+\_\+chunk\+\_\+cb\+\_\+t) (const \doxymbox{\hyperlink{structads1299__chunk__t}{ads1299\+\_\+chunk\+\_\+t}} \texorpdfstring{$\ast$}{*}chunk, void \texorpdfstring{$\ast$}{*}ctx)}
+
+
+
+Called when a full continuous-\/acquisition chunk is ready. 
+
+The callback runs from the driver\textquotesingle{}s handler task, not from ISR context. Keep callback work short and hand samples to an application task if processing is expensive.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em chunk} & Completed chunk of parsed samples. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em ctx} & User context pointer from \doxylink{structads1299__continuous__config__t}{ads1299\+\_\+continuous\+\_\+config\+\_\+t}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{ads1299_8h_a138db55a2954a65c8fd6c380de1b318e}\index{ads1299.h@{ads1299.h}!ads1299\_error\_cb\_t@{ads1299\_error\_cb\_t}}
+\index{ads1299\_error\_cb\_t@{ads1299\_error\_cb\_t}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_error\_cb\_t}{ads1299\_error\_cb\_t}}
+{\footnotesize\ttfamily \label{ads1299_8h_a138db55a2954a65c8fd6c380de1b318e} 
+typedef void(\texorpdfstring{$\ast$}{*} ads1299\+\_\+error\+\_\+cb\+\_\+t) (esp\+\_\+err\+\_\+t err, void \texorpdfstring{$\ast$}{*}ctx)}
+
+
+
+Called when the continuous-\/acquisition task sees a recoverable error. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em err} & ESP-\/\+IDF error code. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em ctx} & User context pointer from \doxylink{structads1299__continuous__config__t}{ads1299\+\_\+continuous\+\_\+config\+\_\+t}. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{ads1299_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{ads1299_8h_adbb09ae0e34074b737d4ca89bc106342}\index{ads1299.h@{ads1299.h}!ads1299\_create@{ads1299\_create}}
+\index{ads1299\_create@{ads1299\_create}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_create()}{ads1299\_create()}}
+{\footnotesize\ttfamily \label{ads1299_8h_adbb09ae0e34074b737d4ca89bc106342} 
+\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} ads1299\+\_\+create (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{structads1299__config__t}{ads1299\+\_\+config\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{cfg}{}\end{DoxyParamCaption})}
+
+
+
+Create an ADS1299 device handle from static configuration. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em cfg} & Pointer to the device configuration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Initialized handle value. If cfg is NULL, the returned handle is zero-\/initialized and not ready for \doxylink{ads1299_8h_ae8b134a209854c477ed5f76149f39c07}{ads1299\+\_\+init()}. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_ad88f943e9582ff284ffdbe0648a2897a}\index{ads1299.h@{ads1299.h}!ads1299\_deinit@{ads1299\_deinit}}
+\index{ads1299\_deinit@{ads1299\_deinit}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_deinit()}{ads1299\_deinit()}}
+{\footnotesize\ttfamily \label{ads1299_8h_ad88f943e9582ff284ffdbe0648a2897a} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+deinit (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Deinitialize the ADS1299 device and free driver-\/owned resources. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a18188ed6331325b62586560d8c359b94}\index{ads1299.h@{ads1299.h}!ads1299\_disable\_continuous\_read@{ads1299\_disable\_continuous\_read}}
+\index{ads1299\_disable\_continuous\_read@{ads1299\_disable\_continuous\_read}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_disable\_continuous\_read()}{ads1299\_disable\_continuous\_read()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a18188ed6331325b62586560d8c359b94} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+disable\+\_\+continuous\+\_\+read (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Exit ADS1299 continuous read mode. 
+
+This sends SDATAC and is required before register writes.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_ae290f8486378b434da9fd553e8f2d118}\index{ads1299.h@{ads1299.h}!ads1299\_enable\_continuous\_read@{ads1299\_enable\_continuous\_read}}
+\index{ads1299\_enable\_continuous\_read@{ads1299\_enable\_continuous\_read}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_enable\_continuous\_read()}{ads1299\_enable\_continuous\_read()}}
+{\footnotesize\ttfamily \label{ads1299_8h_ae290f8486378b434da9fd553e8f2d118} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+enable\+\_\+continuous\+\_\+read (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Enter ADS1299 continuous read mode. 
+
+This sends RDATAC and is required before \doxylink{ads1299_8h_aa9d9a25b8b6b449b24befabbf79a0c3c}{ads1299\+\_\+start\+\_\+continuous()}.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a676054b0614ce4e217bc9168ce90f14f}\index{ads1299.h@{ads1299.h}!ads1299\_get\_ring\_buffer@{ads1299\_get\_ring\_buffer}}
+\index{ads1299\_get\_ring\_buffer@{ads1299\_get\_ring\_buffer}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_get\_ring\_buffer()}{ads1299\_get\_ring\_buffer()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a676054b0614ce4e217bc9168ce90f14f} 
+Ringbuf\+Handle\+\_\+t ads1299\+\_\+get\+\_\+ring\+\_\+buffer (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Get the driver-\/owned Free\+RTOS ring buffer handle. 
+
+The returned handle is owned by the driver. Applications must not delete it.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Ring buffer handle, or NULL when continuous mode is inactive. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_ae8b134a209854c477ed5f76149f39c07}\index{ads1299.h@{ads1299.h}!ads1299\_init@{ads1299\_init}}
+\index{ads1299\_init@{ads1299\_init}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_init()}{ads1299\_init()}}
+{\footnotesize\ttfamily \label{ads1299_8h_ae8b134a209854c477ed5f76149f39c07} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+init (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Initialize the ADS1299 device. 
+
+This configures GPIOs, adds the ADS1299 SPI device, creates the driver mutex, and runs the power-\/up sequence. The SPI bus must already be initialized by the application.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle created by \doxylink{ads1299_8h_adbb09ae0e34074b737d4ca89bc106342}{ads1299\+\_\+create()}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_af8e6948875c0bd9a21682a9fb766aa1d}\index{ads1299.h@{ads1299.h}!ads1299\_is\_running@{ads1299\_is\_running}}
+\index{ads1299\_is\_running@{ads1299\_is\_running}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_is\_running()}{ads1299\_is\_running()}}
+{\footnotesize\ttfamily \label{ads1299_8h_af8e6948875c0bd9a21682a9fb766aa1d} 
+bool ads1299\+\_\+is\+\_\+running (\begin{DoxyParamCaption}\item[{const \doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Check whether continuous acquisition is active. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if continuous acquisition is active, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a2c422271f3506623f26b7d235ebcdb82}\index{ads1299.h@{ads1299.h}!ads1299\_parse\_frame@{ads1299\_parse\_frame}}
+\index{ads1299\_parse\_frame@{ads1299\_parse\_frame}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_parse\_frame()}{ads1299\_parse\_frame()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a2c422271f3506623f26b7d235ebcdb82} 
+void ads1299\+\_\+parse\+\_\+frame (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{raw}{, }\item[{int64\+\_\+t}]{timestamp}{, }\item[{\doxymbox{\hyperlink{structads1299__sample__t}{ads1299\+\_\+sample\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{out}{}\end{DoxyParamCaption})}
+
+
+
+Parse a raw ADS1299 frame. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em raw} & Raw ADS1299 frame of ADS1299\+\_\+\+FRAME\+\_\+\+SIZE bytes. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em timestamp} & Timestamp to store in the parsed sample. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em out} & Parsed sample destination. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{ads1299_8h_a3c131374bfcc9cecab7761afada854ac}\index{ads1299.h@{ads1299.h}!ads1299\_read\_data@{ads1299\_read\_data}}
+\index{ads1299\_read\_data@{ads1299\_read\_data}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_read\_data()}{ads1299\_read\_data()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a3c131374bfcc9cecab7761afada854ac} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+read\+\_\+data (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{buffer}{}\end{DoxyParamCaption})}
+
+
+
+Read one raw 27-\/byte ADS1299 frame. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em buffer} & Destination buffer of at least ADS1299\+\_\+\+FRAME\+\_\+\+SIZE bytes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_ab99c6a54cf07fa36bed1fedc862f6045}\index{ads1299.h@{ads1299.h}!ads1299\_read\_register@{ads1299\_read\_register}}
+\index{ads1299\_read\_register@{ads1299\_read\_register}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_read\_register()}{ads1299\_read\_register()}}
+{\footnotesize\ttfamily \label{ads1299_8h_ab99c6a54cf07fa36bed1fedc862f6045} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+read\+\_\+register (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{uint8\+\_\+t}]{reg}{, }\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{value}{}\end{DoxyParamCaption})}
+
+
+
+Read one ADS1299 register. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em reg} & Register address. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em value} & Destination for the register value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_af8fb5f8a6572a651620d5cf1c233aae8}\index{ads1299.h@{ads1299.h}!ads1299\_read\_registers@{ads1299\_read\_registers}}
+\index{ads1299\_read\_registers@{ads1299\_read\_registers}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_read\_registers()}{ads1299\_read\_registers()}}
+{\footnotesize\ttfamily \label{ads1299_8h_af8fb5f8a6572a651620d5cf1c233aae8} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+read\+\_\+registers (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{uint8\+\_\+t}]{start\+\_\+reg}{, }\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{size\+\_\+t}]{count}{}\end{DoxyParamCaption})}
+
+
+
+Read a contiguous ADS1299 register range. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em start\+\_\+reg} & First register address. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em data} & Destination buffer. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em count} & Number of register values to read. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a6d66c94be327388742119a2492257075}\index{ads1299.h@{ads1299.h}!ads1299\_read\_sample@{ads1299\_read\_sample}}
+\index{ads1299\_read\_sample@{ads1299\_read\_sample}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_read\_sample()}{ads1299\_read\_sample()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a6d66c94be327388742119a2492257075} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+read\+\_\+sample (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{\doxymbox{\hyperlink{structads1299__sample__t}{ads1299\+\_\+sample\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{sample}{}\end{DoxyParamCaption})}
+
+
+
+Read and parse one ADS1299 sample. 
+
+DRDY must already be low before this function is called.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\doxymbox{\texttt{out}}  & {\em sample} & Parsed sample destination. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a4c7b99b6071504c66b736327a2cc84a9}\index{ads1299.h@{ads1299.h}!ads1299\_reset\_hardware@{ads1299\_reset\_hardware}}
+\index{ads1299\_reset\_hardware@{ads1299\_reset\_hardware}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_reset\_hardware()}{ads1299\_reset\_hardware()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a4c7b99b6071504c66b736327a2cc84a9} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+reset\+\_\+hardware (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Pulse the ADS1299 hardware RESET pin. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a52fdad57d75121dc3579b7e2572cb75d}\index{ads1299.h@{ads1299.h}!ads1299\_reset\_software@{ads1299\_reset\_software}}
+\index{ads1299\_reset\_software@{ads1299\_reset\_software}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_reset\_software()}{ads1299\_reset\_software()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a52fdad57d75121dc3579b7e2572cb75d} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+reset\+\_\+software (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Send the ADS1299 RESET command. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_afd0296da5bb5f169928d123217a2d135}\index{ads1299.h@{ads1299.h}!ads1299\_sample\_rate\_to\_hz@{ads1299\_sample\_rate\_to\_hz}}
+\index{ads1299\_sample\_rate\_to\_hz@{ads1299\_sample\_rate\_to\_hz}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_sample\_rate\_to\_hz()}{ads1299\_sample\_rate\_to\_hz()}}
+{\footnotesize\ttfamily \label{ads1299_8h_afd0296da5bb5f169928d123217a2d135} 
+uint32\+\_\+t ads1299\+\_\+sample\+\_\+rate\+\_\+to\+\_\+hz (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169a}{ads1299\+\_\+sample\+\_\+rate\+\_\+t}}}]{rate}{}\end{DoxyParamCaption})}
+
+
+
+Convert an ADS1299 sample-\/rate enum to hertz. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em rate} & ADS1299 sample-\/rate enum value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Sample rate in hertz, or 0 for an invalid value. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_abf77b51cfa5423c9d7f7f4af55d43ace}\index{ads1299.h@{ads1299.h}!ads1299\_send\_command@{ads1299\_send\_command}}
+\index{ads1299\_send\_command@{ads1299\_send\_command}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_send\_command()}{ads1299\_send\_command()}}
+{\footnotesize\ttfamily \label{ads1299_8h_abf77b51cfa5423c9d7f7f4af55d43ace} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+send\+\_\+command (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{uint8\+\_\+t}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Send a raw ADS1299 SPI command byte. 
+
+Prefer named helper functions for common device-\/control commands.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em command} & ADS1299 command opcode. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_ad1f91fc7918ed380d8efe7ea8ed474ba}\index{ads1299.h@{ads1299.h}!ads1299\_standby@{ads1299\_standby}}
+\index{ads1299\_standby@{ads1299\_standby}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_standby()}{ads1299\_standby()}}
+{\footnotesize\ttfamily \label{ads1299_8h_ad1f91fc7918ed380d8efe7ea8ed474ba} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+standby (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Send the ADS1299 STANDBY command. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a78ce61bd6db92e3420b5c68cfe955442}\index{ads1299.h@{ads1299.h}!ads1299\_start@{ads1299\_start}}
+\index{ads1299\_start@{ads1299\_start}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_start()}{ads1299\_start()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a78ce61bd6db92e3420b5c68cfe955442} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+start (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Assert the START pin. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_aa9d9a25b8b6b449b24befabbf79a0c3c}\index{ads1299.h@{ads1299.h}!ads1299\_start\_continuous@{ads1299\_start\_continuous}}
+\index{ads1299\_start\_continuous@{ads1299\_start\_continuous}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_start\_continuous()}{ads1299\_start\_continuous()}}
+{\footnotesize\ttfamily \label{ads1299_8h_aa9d9a25b8b6b449b24befabbf79a0c3c} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+start\+\_\+continuous (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{const \doxymbox{\hyperlink{structads1299__continuous__config__t}{ads1299\+\_\+continuous\+\_\+config\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{cfg}{}\end{DoxyParamCaption})}
+
+
+
+Begin DMA-\/driven continuous acquisition. 
+
+The driver allocates DMA buffers and chunk storage, installs the DRDY ISR, starts a handler task, and calls on\+\_\+chunk as chunks complete.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em cfg} & Continuous-\/acquisition configuration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a4907f03db1d7e1a4280cc102d9953111}\index{ads1299.h@{ads1299.h}!ads1299\_stop@{ads1299\_stop}}
+\index{ads1299\_stop@{ads1299\_stop}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_stop()}{ads1299\_stop()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a4907f03db1d7e1a4280cc102d9953111} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+stop (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Deassert the START pin. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a4fb63c4269bef955208946a30ed9bf07}\index{ads1299.h@{ads1299.h}!ads1299\_stop\_continuous@{ads1299\_stop\_continuous}}
+\index{ads1299\_stop\_continuous@{ads1299\_stop\_continuous}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_stop\_continuous()}{ads1299\_stop\_continuous()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a4fb63c4269bef955208946a30ed9bf07} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+stop\+\_\+continuous (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Stop continuous acquisition and free acquisition resources. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_ac2e50836a3ae5c51328ead75384b6354}\index{ads1299.h@{ads1299.h}!ads1299\_wakeup@{ads1299\_wakeup}}
+\index{ads1299\_wakeup@{ads1299\_wakeup}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_wakeup()}{ads1299\_wakeup()}}
+{\footnotesize\ttfamily \label{ads1299_8h_ac2e50836a3ae5c51328ead75384b6354} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+wakeup (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{}\end{DoxyParamCaption})}
+
+
+
+Send the ADS1299 WAKEUP command. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_a60e89947d83083a2cbd231839273eaf8}\index{ads1299.h@{ads1299.h}!ads1299\_write\_register@{ads1299\_write\_register}}
+\index{ads1299\_write\_register@{ads1299\_write\_register}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_write\_register()}{ads1299\_write\_register()}}
+{\footnotesize\ttfamily \label{ads1299_8h_a60e89947d83083a2cbd231839273eaf8} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+write\+\_\+register (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{uint8\+\_\+t}]{reg}{, }\item[{uint8\+\_\+t}]{value}{}\end{DoxyParamCaption})}
+
+
+
+Write one ADS1299 register. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em reg} & Register address. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em value} & Register value to write. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}
+\Hypertarget{ads1299_8h_af0ffd5db95adfc9b1ac2ee4766d518b7}\index{ads1299.h@{ads1299.h}!ads1299\_write\_registers@{ads1299\_write\_registers}}
+\index{ads1299\_write\_registers@{ads1299\_write\_registers}!ads1299.h@{ads1299.h}}
+\doxysubsubsection{\texorpdfstring{ads1299\_write\_registers()}{ads1299\_write\_registers()}}
+{\footnotesize\ttfamily \label{ads1299_8h_af0ffd5db95adfc9b1ac2ee4766d518b7} 
+esp\+\_\+err\+\_\+t ads1299\+\_\+write\+\_\+registers (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structads1299__t}{ads1299\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{dev}{, }\item[{uint8\+\_\+t}]{start\+\_\+reg}{, }\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{size\+\_\+t}]{count}{}\end{DoxyParamCaption})}
+
+
+
+Write a contiguous ADS1299 register range. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in,out}}  & {\em dev} & Device handle. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em start\+\_\+reg} & First register address. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em data} & Values to write. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em count} & Number of register values in data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an ESP-\/\+IDF error code. 
+\end{DoxyReturn}

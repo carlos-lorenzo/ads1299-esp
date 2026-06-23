@@ -1,0 +1,103 @@
+\doxysection{ads1299\+\_\+defs.\+h}
+\hypertarget{ads1299__defs_8h_source}{}\label{ads1299__defs_8h_source}\index{include/ads1299\_defs.h@{include/ads1299\_defs.h}}
+\doxymbox{\hyperlink{ads1299__defs_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#ifndef\ ADS1299\_DEFS\_H}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ ADS1299\_DEFS\_H}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ ADS1299\_CLK\_FREQ\ 2048000UL}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ ADS1299\_TICKS\_TO\_US(ticks)\ (((ticks)\ *\ 1000000UL\ +\ (ADS1299\_CLK\_FREQ\ -\/\ 1))\ /\ ADS1299\_CLK\_FREQ)}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_CLK\_US\ ADS1299\_TICKS\_TO\_US(1)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_RESET\ ADS1299\_TICKS\_TO\_US(18)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_PULSE\ ADS1299\_TICKS\_TO\_US(2)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_SDATAC\ ADS1299\_TICKS\_TO\_US(2)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_RDATAC\ ADS1299\_TICKS\_TO\_US(2)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_WAKEUP\ ADS1299\_TICKS\_TO\_US(4)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_CSSC\ ADS1299\_TICKS\_TO\_US(1)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_SCLK\ ADS1299\_TICKS\_TO\_US(1)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_CSH\ ADS1299\_TICKS\_TO\_US(2)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_SCCS\ ADS1299\_TICKS\_TO\_US(4)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ ADS1299\_T\_SDECODE\ ADS1299\_TICKS\_TO\_US(4)}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ ADS1299\_NUM\_CHANNELS\ 8}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ ADS1299\_STATUS\_BYTES\ 3}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#define\ ADS1299\_BYTES\_PER\_CHANNEL\ 3}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ ADS1299\_FRAME\_SIZE\ (ADS1299\_STATUS\_BYTES\ +\ ADS1299\_NUM\_CHANNELS\ *\ ADS1299\_BYTES\_PER\_CHANNEL)}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ ADS1299\_DEFAULT\_CHUNK\_MS\ 100}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ ADS1299\_RING\_BUF\_SLOTS\ 8}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_WAKEUP\ 0x02}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_STANDBY\ 0x04}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_RESET\ 0x06}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_START\ 0x08}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_STOP\ 0x0A}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_RDATAC\ 0x10}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_SDATAC\ 0x11}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_RDATA\ 0x12}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_RREG\ 0x20}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ ADS1299\_CMD\_WREG\ 0x40}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_ID\ 0x00}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CONFIG1\ 0x01}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CONFIG2\ 0x02}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CONFIG3\ 0x03}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_LOFF\ 0x04}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CH1SET\ 0x05}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CH2SET\ 0x06}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CH3SET\ 0x07}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CH4SET\ 0x08}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CH5SET\ 0x09}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CH6SET\ 0x0A}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CH7SET\ 0x0B}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_CH8SET\ 0x0C}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_BIAS\_SENSP\ 0x0D}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ ADS1299\_REG\_BIAS\_SENSN\ 0x0E}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00121\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa528ed39081991b4f7627360e84d0a865}{ADS1299\_DR\_16kSPS}}\ =\ 0x00,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00123\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa3d1537a4ae53120598cd02ccd8fee7a9}{ADS1299\_DR\_8kSPS}}\ =\ 0x01,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00124\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aad46568381460c2e8639ca36536aacdab}{ADS1299\_DR\_4kSPS}}\ =\ 0x02,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00125\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aade95fcc2d99d284d8e2f552dc9db7045}{ADS1299\_DR\_2kSPS}}\ =\ 0x03,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00126\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aaf77a2c31fc7c9db39e5e699f753ddbc1}{ADS1299\_DR\_1kSPS}}\ =\ 0x04,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00127\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aab7e4f8a49db7e90e6dae2cfb051fced6}{ADS1299\_DR\_500SPS}}\ =\ 0x05,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00128\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169aa1d531b8062e098085df882f6f426ff75}{ADS1299\_DR\_250SPS}}\ =\ 0x06\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00129\ \}\ \doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169a}{ads1299\_sample\_rate\_t}};}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00136\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a28d1fbc0c992f293fbbca2ebfe9a7a9b}{ADS1299\_PGA\_GAIN\_1}}\ =\ 0x00,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00138\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a235a29aeaf18ade843cc588c09e7cf5e}{ADS1299\_PGA\_GAIN\_2}}\ =\ 0x10,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00139\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a0903544578c12ab84bf6b0f0d11c20f8}{ADS1299\_PGA\_GAIN\_4}}\ =\ 0x20,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00140\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3ad2be442a5695a7bef84488397fd2f0f8}{ADS1299\_PGA\_GAIN\_6}}\ =\ 0x30,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00141\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a42f8c9356f88696c5aaea5a66fa9d60a}{ADS1299\_PGA\_GAIN\_8}}\ =\ 0x40,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00142\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a93053ed8bb2dd4eed2e629dde05af2d1}{ADS1299\_PGA\_GAIN\_12}}\ =\ 0x50,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00143\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3a68a1d702961444489eaa67c23bcc2d9d}{ADS1299\_PGA\_GAIN\_24}}\ =\ 0x60\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00144\ \}\ \doxymbox{\hyperlink{ads1299__defs_8h_a1a268a9f9a45731713762309c06a03c3}{ads1299\_pga\_gain\_t}};}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00151\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a3c8d999b1d8aa764d879ca848170fb97}{ADS1299\_INPUT\_NORMAL}}\ =\ 0x00,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00153\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a96a7f3198e3c616c522fc27143801d1a}{ADS1299\_INPUT\_SHORTED}}\ =\ 0x01,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00154\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a5a452dcec86350dc2af71171b212dba5}{ADS1299\_INPUT\_BIAS\_MEAS}}\ =\ 0x02,\ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00155\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189ab04c149557f8097dac075756b7fde0c6}{ADS1299\_INPUT\_MVDD}}\ =\ 0x03,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00156\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189ae2a35cac583e0ba7b9bcbbb3163602ba}{ADS1299\_INPUT\_TEMP}}\ =\ 0x04,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00157\ \ \ \ \ \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189a92e24d75a12fdb5746cd9b477a5e2c4d}{ADS1299\_INPUT\_TEST\_SIGNAL}}\ =\ 0x05\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00158\ \}\ \doxymbox{\hyperlink{ads1299__defs_8h_a2a4c93bd3e34a637e0c972ec4b31e189}{ads1299\_input\_mux\_t}};}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00161\ \}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ ADS1299\_DEFS\_H\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

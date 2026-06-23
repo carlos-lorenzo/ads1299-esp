@@ -11,12 +11,13 @@
         <name>status</name>
         <qualifiedname>ads1299_sample_t::status</qualifiedname>
         <briefdescription>
+<para>Status bytes from the ADS1299 frame. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="34" column="14" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="34" bodyend="-1"/>
+        <location file="include/ads1299.h" line="37" column="13" bodyfile="include/ads1299.h" bodystart="37" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__sample__t_1a3b9c0b5b6256d184d8cfa88e9ef5d052" prot="public" static="no" mutable="no">
         <type>int32_t</type>
@@ -25,12 +26,13 @@
         <name>channels</name>
         <qualifiedname>ads1299_sample_t::channels</qualifiedname>
         <briefdescription>
+<para>Sign-extended channel samples. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="35" column="14" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="35" bodyend="-1"/>
+        <location file="include/ads1299.h" line="38" column="13" bodyfile="include/ads1299.h" bodystart="38" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__sample__t_1a6d5ab02c36e9759c307c2ad8f3ccf8ea" prot="public" static="no" mutable="no">
         <type>int64_t</type>
@@ -39,26 +41,22 @@
         <name>timestamp_us</name>
         <qualifiedname>ads1299_sample_t::timestamp_us</qualifiedname>
         <briefdescription>
+<para>Timestamp captured at DRDY falling edge. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="36" column="14" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="36" bodyend="-1"/>
+        <location file="include/ads1299.h" line="39" column="13" bodyfile="include/ads1299.h" bodystart="39" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>One fully parsed sample from the ADS1299. </para>
     </briefdescription>
     <detaileddescription>
-<para><itemizedlist>
-<listitem><para>channels[] contain sign-extended 24-bit values in LSB units.</para>
-</listitem><listitem><para>Convert to microvolts: uV = channels[n] * (VREF / gain / 8388607.0)</para>
-</listitem><listitem><para>where VREF = 4.5V for ADS1299, and gain is set per channel in CHnSET. </para>
-</listitem></itemizedlist>
-</para>
+<para>Channel values are sign-extended 24-bit ADC values in LSB units. </para>
     </detaileddescription>
-    <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="33" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="33" bodyend="37"/>
+    <location file="include/ads1299.h" line="36" column="1" bodyfile="include/ads1299.h" bodystart="36" bodyend="40"/>
     <listofallmembers>
       <member refid="structads1299__sample__t_1a3b9c0b5b6256d184d8cfa88e9ef5d052" prot="public" virt="non-virtual"><scope>ads1299_sample_t</scope><name>channels</name></member>
       <member refid="structads1299__sample__t_1af3ce649cf1158a2b6f600c32ee6df81b" prot="public" virt="non-virtual"><scope>ads1299_sample_t</scope><name>status</name></member>

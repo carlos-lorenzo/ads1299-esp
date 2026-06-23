@@ -1,0 +1,33 @@
+\doxysection{ads1299\+\_\+sample\+\_\+t Struct Reference}
+\hypertarget{structads1299__sample__t}{}\label{structads1299__sample__t}\index{ads1299\_sample\_t@{ads1299\_sample\_t}}
+
+
+One fully parsed sample from the ADS1299.  
+
+
+
+
+{\ttfamily \+\#include $<$ads1299.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structads1299__sample__t_af3ce649cf1158a2b6f600c32ee6df81b}\label{structads1299__sample__t_af3ce649cf1158a2b6f600c32ee6df81b} 
+uint8\+\_\+t {\bfseries status} \+[\doxymbox{\hyperlink{ads1299__defs_8h_aff0792cefe5097011c0542aab87583ca}{ADS1299\+\_\+\+STATUS\+\_\+\+BYTES}}]\+
+\begin{DoxyCompactList}\small\item\em Status bytes from the ADS1299 frame. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__sample__t_a3b9c0b5b6256d184d8cfa88e9ef5d052}\label{structads1299__sample__t_a3b9c0b5b6256d184d8cfa88e9ef5d052} 
+int32\+\_\+t {\bfseries channels} \+[\doxymbox{\hyperlink{ads1299__defs_8h_ad6f91558e026b9d580cca74fd9a98e84}{ADS1299\+\_\+\+NUM\+\_\+\+CHANNELS}}]\+
+\begin{DoxyCompactList}\small\item\em Sign-\/extended channel samples. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__sample__t_a6d5ab02c36e9759c307c2ad8f3ccf8ea}\label{structads1299__sample__t_a6d5ab02c36e9759c307c2ad8f3ccf8ea} 
+int64\+\_\+t {\bfseries timestamp\+\_\+us}
+\begin{DoxyCompactList}\small\item\em Timestamp captured at DRDY falling edge. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+One fully parsed sample from the ADS1299. 
+
+Channel values are sign-\/extended 24-\/bit ADC values in LSB units. 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+include/\+\doxymbox{\hyperlink{ads1299_8h}{ads1299.\+h}}\end{DoxyCompactItemize}

@@ -11,12 +11,13 @@
         <name>buf</name>
         <qualifiedname>ads1299_chunkring_t::buf</qualifiedname>
         <briefdescription>
+<para>Flat array of capacity * chunk_samples entries. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="161" column="22" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="161" bodyend="-1"/>
+        <location file="include/ads1299.h" line="117" column="22" bodyfile="include/ads1299.h" bodystart="117" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunkring__t_1add9c7c0c5819bb9abedb42ee9df3f914" prot="public" static="no" mutable="no">
         <type>uint32_t</type>
@@ -25,12 +26,13 @@
         <name>capacity</name>
         <qualifiedname>ads1299_chunkring_t::capacity</qualifiedname>
         <briefdescription>
+<para>Total slot count; power of two and at least 2. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="162" column="23" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="162" bodyend="-1"/>
+        <location file="include/ads1299.h" line="118" column="14" bodyfile="include/ads1299.h" bodystart="118" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunkring__t_1a99898fdf302f56efd86708dfe537d54d" prot="public" static="no" mutable="no">
         <type>uint32_t</type>
@@ -39,12 +41,13 @@
         <name>chunk_samples</name>
         <qualifiedname>ads1299_chunkring_t::chunk_samples</qualifiedname>
         <briefdescription>
+<para>Samples per chunk slot. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="163" column="23" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="163" bodyend="-1"/>
+        <location file="include/ads1299.h" line="119" column="14" bodyfile="include/ads1299.h" bodystart="119" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunkring__t_1a52ff4d45fe32048b1557e1e2e7e73c90" prot="public" static="no" mutable="no">
         <type>uint32_t</type>
@@ -53,12 +56,13 @@
         <name>mask</name>
         <qualifiedname>ads1299_chunkring_t::mask</qualifiedname>
         <briefdescription>
+<para>capacity - 1, used for modulo indexing. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="164" column="23" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="164" bodyend="-1"/>
+        <location file="include/ads1299.h" line="120" column="14" bodyfile="include/ads1299.h" bodystart="120" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunkring__t_1ae63def9c12ec4a1650af15c525b872b0" prot="public" static="no" mutable="no">
         <type>volatile uint32_t</type>
@@ -67,12 +71,13 @@
         <name>head</name>
         <qualifiedname>ads1299_chunkring_t::head</qualifiedname>
         <briefdescription>
+<para>Next write slot index. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="165" column="23" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="165" bodyend="-1"/>
+        <location file="include/ads1299.h" line="121" column="23" bodyfile="include/ads1299.h" bodystart="121" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__chunkring__t_1a6c8f0d02cb3c4bdd73222a579dde0211" prot="public" static="no" mutable="no">
         <type>volatile uint32_t</type>
@@ -81,17 +86,20 @@
         <name>tail</name>
         <qualifiedname>ads1299_chunkring_t::tail</qualifiedname>
         <briefdescription>
+<para>Next read slot index. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="166" column="23" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="166" bodyend="-1"/>
+        <location file="include/ads1299.h" line="122" column="23" bodyfile="include/ads1299.h" bodystart="122" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>Internal single-producer single-consumer chunk ring. </para>
     </briefdescription>
     <detaileddescription>
+<para>This type is exposed only because the public handle is stack-allocatable. Applications should not access it directly. </para>
     </detaileddescription>
     <collaborationgraph>
       <node id="1">
@@ -106,7 +114,7 @@
         <link refid="structads1299__sample__t"/>
       </node>
     </collaborationgraph>
-    <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="160" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="160" bodyend="167"/>
+    <location file="include/ads1299.h" line="116" column="1" bodyfile="include/ads1299.h" bodystart="116" bodyend="123"/>
     <listofallmembers>
       <member refid="structads1299__chunkring__t_1a1e3f155ff4bca8b31778ae40fccc03ee" prot="public" virt="non-virtual"><scope>ads1299_chunkring_t</scope><name>buf</name></member>
       <member refid="structads1299__chunkring__t_1add9c7c0c5819bb9abedb42ee9df3f914" prot="public" virt="non-virtual"><scope>ads1299_chunkring_t</scope><name>capacity</name></member>

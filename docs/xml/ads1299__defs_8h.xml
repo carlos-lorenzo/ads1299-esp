@@ -3,10 +3,10 @@
   <compounddef id="ads1299__defs_8h" kind="file" language="C++">
     <compoundname>ads1299_defs.h</compoundname>
     <includes local="no">stdint.h</includes>
-    <includedby refid="ads1299_8h" local="yes">/home/carlos/dev/ads1299-esp/include/ads1299.h</includedby>
+    <includedby refid="ads1299_8h" local="yes">include/ads1299.h</includedby>
     <incdepgraph>
       <node id="1">
-        <label>/home/carlos/dev/ads1299-esp/include/ads1299_defs.h</label>
+        <label>include/ads1299_defs.h</label>
         <link refid="ads1299__defs_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
@@ -16,18 +16,12 @@
       </node>
     </incdepgraph>
     <invincdepgraph>
-      <node id="3">
-        <label>/home/carlos/dev/ads1299-esp/ads1299.c</label>
-        <link refid="ads1299_8c"/>
-      </node>
       <node id="2">
-        <label>/home/carlos/dev/ads1299-esp/include/ads1299.h</label>
+        <label>include/ads1299.h</label>
         <link refid="ads1299_8h"/>
-        <childnode refid="3" relation="include">
-        </childnode>
       </node>
       <node id="1">
-        <label>/home/carlos/dev/ads1299-esp/include/ads1299_defs.h</label>
+        <label>include/ads1299_defs.h</label>
         <link refid="ads1299__defs_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
@@ -38,190 +32,206 @@
         <name>ADS1299_CLK_FREQ</name>
         <initializer>2048000UL</initializer>
         <briefdescription>
-<para>ADS1299 timing constants Assuming an internal clock of 2.048 MHz. </para>
+<para>ADS1299 internal clock frequency in hertz. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="15" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="15" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="16" column="9" bodyfile="include/ads1299_defs.h" bodystart="16" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" prot="public" static="no">
         <name>ADS1299_TICKS_TO_US</name>
         <param><defname>ticks</defname></param>
         <initializer>(((ticks) * 1000000UL + (<ref refid="ads1299__defs_8h_1a90b24fb5f64f05ddeb5ba49b0fccbace" kindref="member">ADS1299_CLK_FREQ</ref> - 1)) / <ref refid="ads1299__defs_8h_1a90b24fb5f64f05ddeb5ba49b0fccbace" kindref="member">ADS1299_CLK_FREQ</ref>)</initializer>
         <briefdescription>
+<para>Convert ADS1299 clock ticks to microseconds, rounded up. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="19" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="19" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="19" column="9" bodyfile="include/ads1299_defs.h" bodystart="19" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a212b27ca554a7316db323ebe52a2842c" prot="public" static="no">
         <name>ADS1299_T_CLK_US</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(1)</initializer>
         <briefdescription>
+<para>One ADS1299 clock period in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="22" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="22" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="22" column="9" bodyfile="include/ads1299_defs.h" bodystart="22" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1ae0d98ca9a623cf5e21ebc690f490e780" prot="public" static="no">
         <name>ADS1299_T_RESET</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(18)</initializer>
         <briefdescription>
+<para>Hardware reset pulse timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="23" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="23" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="24" column="9" bodyfile="include/ads1299_defs.h" bodystart="24" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1ac0aef774a2329aa9efd7b9ad3e12c23d" prot="public" static="no">
         <name>ADS1299_T_PULSE</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(2)</initializer>
         <briefdescription>
+<para>START or RESET pulse timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="24" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="24" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="26" column="9" bodyfile="include/ads1299_defs.h" bodystart="26" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a6d8613e189720733aae8cb70ea0b2a55" prot="public" static="no">
         <name>ADS1299_T_SDATAC</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(2)</initializer>
         <briefdescription>
+<para>SDATAC command timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="25" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="25" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="28" column="9" bodyfile="include/ads1299_defs.h" bodystart="28" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a33986726d2ecabde33fb3becd1a49a81" prot="public" static="no">
         <name>ADS1299_T_RDATAC</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(2)</initializer>
         <briefdescription>
+<para>RDATAC command timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="26" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="26" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="30" column="9" bodyfile="include/ads1299_defs.h" bodystart="30" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a59cefeb5ca6f40c2f0e768f0b3b26a2a" prot="public" static="no">
         <name>ADS1299_T_WAKEUP</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(4)</initializer>
         <briefdescription>
+<para>WAKEUP command timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="27" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="27" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="32" column="9" bodyfile="include/ads1299_defs.h" bodystart="32" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1aa7d72f9d539757520cd424e6e9e63786" prot="public" static="no">
         <name>ADS1299_T_CSSC</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(1)</initializer>
         <briefdescription>
+<para>Chip-select setup timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="30" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="30" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="34" column="9" bodyfile="include/ads1299_defs.h" bodystart="34" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a03185e1eee9fa4661558dff6b31025f3" prot="public" static="no">
         <name>ADS1299_T_SCLK</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(1)</initializer>
         <briefdescription>
+<para>SCLK timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="31" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="31" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="36" column="9" bodyfile="include/ads1299_defs.h" bodystart="36" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a9b86682c80ea61856b43e6512b2c29e3" prot="public" static="no">
         <name>ADS1299_T_CSH</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(2)</initializer>
         <briefdescription>
+<para>Chip-select hold timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="33" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="33" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="38" column="9" bodyfile="include/ads1299_defs.h" bodystart="38" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1ab7528a386936333f27faf0ca2710c28a" prot="public" static="no">
         <name>ADS1299_T_SCCS</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(4)</initializer>
         <briefdescription>
+<para>SCLK-to-chip-select timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="34" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="34" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="40" column="9" bodyfile="include/ads1299_defs.h" bodystart="40" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a105ebc25f6d55812335d0dbfbfc0f768" prot="public" static="no">
         <name>ADS1299_T_SDECODE</name>
         <initializer><ref refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" kindref="member">ADS1299_TICKS_TO_US</ref>(4)</initializer>
         <briefdescription>
+<para>Command decode timing in microseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="35" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="35" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="42" column="9" bodyfile="include/ads1299_defs.h" bodystart="42" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1ad6f91558e026b9d580cca74fd9a98e84" prot="public" static="no">
         <name>ADS1299_NUM_CHANNELS</name>
         <initializer>8</initializer>
         <briefdescription>
+<para>Number of ADS1299 channels. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="38" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="38" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="45" column="9" bodyfile="include/ads1299_defs.h" bodystart="45" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1aff0792cefe5097011c0542aab87583ca" prot="public" static="no">
         <name>ADS1299_STATUS_BYTES</name>
         <initializer>3</initializer>
         <briefdescription>
+<para>Number of status bytes at the start of each ADS1299 frame. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="39" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="39" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="47" column="9" bodyfile="include/ads1299_defs.h" bodystart="47" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1aea060163b5d4d0cf5ccc2d1b85d59cf7" prot="public" static="no">
         <name>ADS1299_BYTES_PER_CHANNEL</name>
         <initializer>3</initializer>
         <briefdescription>
+<para>Number of bytes per ADS1299 channel sample. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="40" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="40" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="49" column="9" bodyfile="include/ads1299_defs.h" bodystart="49" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1aa0e51ed38c111361542cf6500f4a2293" prot="public" static="no">
         <name>ADS1299_FRAME_SIZE</name>
         <initializer>(<ref refid="ads1299__defs_8h_1aff0792cefe5097011c0542aab87583ca" kindref="member">ADS1299_STATUS_BYTES</ref> + <ref refid="ads1299__defs_8h_1ad6f91558e026b9d580cca74fd9a98e84" kindref="member">ADS1299_NUM_CHANNELS</ref> * <ref refid="ads1299__defs_8h_1aea060163b5d4d0cf5ccc2d1b85d59cf7" kindref="member">ADS1299_BYTES_PER_CHANNEL</ref>)</initializer>
         <briefdescription>
+<para>Total ADS1299 frame size in bytes. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="41" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="41" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="51" column="9" bodyfile="include/ads1299_defs.h" bodystart="51" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a99f5a23ea1cf5a52b12a16e04b8597f8" prot="public" static="no">
         <name>ADS1299_DEFAULT_CHUNK_MS</name>
@@ -230,301 +240,323 @@
 <para>Default DMA chunk duration in milliseconds. </para>
         </briefdescription>
         <detaileddescription>
-<para>At 250SPS this yields 25 samples per chunk (675 bytes per DMA buffer). Override via <ref refid="structads1299__continuous__config__t_1a0d803b98fde218abb87a15c9f9965eac" kindref="member">ads1299_continuous_config_t.chunk_duration_ms</ref>. </para>
+<para>At 250 SPS this yields 25 samples per chunk. Override with <ref refid="structads1299__continuous__config__t_1a0d803b98fde218abb87a15c9f9965eac" kindref="member">ads1299_continuous_config_t::chunk_duration_ms</ref>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="48" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="48" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="59" column="9" bodyfile="include/ads1299_defs.h" bodystart="59" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a02539f1183e47805d15c50c4365046d5" prot="public" static="no">
         <name>ADS1299_RING_BUF_SLOTS</name>
         <initializer>8</initializer>
         <briefdescription>
-<para>Minimum ring buffer slots. </para>
+<para>Default number of chunk slots allocated for continuous acquisition. </para>
         </briefdescription>
         <detaileddescription>
-<para>Driver allocates ADS1299_RING_BUF_SLOTS * chunk_bytes of memory at start_continuous(). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="52" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="52" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="62" column="9" bodyfile="include/ads1299_defs.h" bodystart="62" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a235d213b5739c4909fc031452ad204bf" prot="public" static="no">
         <name>ADS1299_CMD_WAKEUP</name>
         <initializer>0x02</initializer>
         <briefdescription>
-<para>ADS1299 SPI Command Opcodes (Datasheet Table 12) These are fixed single-byte or multibyte protocol bytes. </para>
+<para>ADS1299 WAKEUP command opcode. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="59" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="59" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="65" column="9" bodyfile="include/ads1299_defs.h" bodystart="65" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a31cb82290671a6b3b66df28708aff655" prot="public" static="no">
         <name>ADS1299_CMD_STANDBY</name>
         <initializer>0x04</initializer>
         <briefdescription>
+<para>ADS1299 STANDBY command opcode. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="60" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="60" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="67" column="9" bodyfile="include/ads1299_defs.h" bodystart="67" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a00776ec906782ac8033c507cdf31f424" prot="public" static="no">
         <name>ADS1299_CMD_RESET</name>
         <initializer>0x06</initializer>
         <briefdescription>
+<para>ADS1299 RESET command opcode. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="61" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="61" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="69" column="9" bodyfile="include/ads1299_defs.h" bodystart="69" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a16d3867ac65f5db84d88881fa0acb88e" prot="public" static="no">
         <name>ADS1299_CMD_START</name>
         <initializer>0x08</initializer>
         <briefdescription>
+<para>ADS1299 START command opcode. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="62" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="62" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="71" column="9" bodyfile="include/ads1299_defs.h" bodystart="71" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1ad03d1a75e264848d5fc6371cdbc8b4ee" prot="public" static="no">
         <name>ADS1299_CMD_STOP</name>
         <initializer>0x0A</initializer>
         <briefdescription>
+<para>ADS1299 STOP command opcode. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="63" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="63" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="73" column="9" bodyfile="include/ads1299_defs.h" bodystart="73" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a4364907579f72f80ad0b80cce9aa608f" prot="public" static="no">
         <name>ADS1299_CMD_RDATAC</name>
         <initializer>0x10</initializer>
         <briefdescription>
+<para>ADS1299 RDATAC command opcode. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="64" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="64" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="75" column="9" bodyfile="include/ads1299_defs.h" bodystart="75" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1ab65f5431988ba481197ce0399b3b7119" prot="public" static="no">
         <name>ADS1299_CMD_SDATAC</name>
         <initializer>0x11</initializer>
         <briefdescription>
+<para>ADS1299 SDATAC command opcode. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="65" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="65" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="77" column="9" bodyfile="include/ads1299_defs.h" bodystart="77" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a9744521cf805adfd764c05330da7eaf1" prot="public" static="no">
         <name>ADS1299_CMD_RDATA</name>
         <initializer>0x12</initializer>
         <briefdescription>
+<para>ADS1299 RDATA command opcode. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="66" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="66" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="79" column="9" bodyfile="include/ads1299_defs.h" bodystart="79" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a58a4474ebd2670ae7ac3c52b77c900ef" prot="public" static="no">
         <name>ADS1299_CMD_RREG</name>
         <initializer>0x20</initializer>
         <briefdescription>
+<para>ADS1299 RREG command base opcode; OR with the register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="67" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="67" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="81" column="9" bodyfile="include/ads1299_defs.h" bodystart="81" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1ad66cc78c1e0f3a935811de98685c92a4" prot="public" static="no">
         <name>ADS1299_CMD_WREG</name>
         <initializer>0x40</initializer>
         <briefdescription>
+<para>ADS1299 WREG command base opcode; OR with the register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="68" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="68" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="83" column="9" bodyfile="include/ads1299_defs.h" bodystart="83" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1abfecfe40ac3a32cf099e60625a8fd2d1" prot="public" static="no">
         <name>ADS1299_REG_ID</name>
         <initializer>0x00</initializer>
         <briefdescription>
-<para>ADS1299 Register Addresses (Datasheet Table 14). </para>
+<para>ADS1299 ID register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="73" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="73" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="86" column="9" bodyfile="include/ads1299_defs.h" bodystart="86" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a245d695b158018b6704b7fa2d90d2c69" prot="public" static="no">
         <name>ADS1299_REG_CONFIG1</name>
         <initializer>0x01</initializer>
         <briefdescription>
+<para>ADS1299 CONFIG1 register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="74" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="74" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="88" column="9" bodyfile="include/ads1299_defs.h" bodystart="88" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a3dbe2ea00a023cf2020c08b8cb821625" prot="public" static="no">
         <name>ADS1299_REG_CONFIG2</name>
         <initializer>0x02</initializer>
         <briefdescription>
+<para>ADS1299 CONFIG2 register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="75" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="75" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="90" column="9" bodyfile="include/ads1299_defs.h" bodystart="90" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1afa06af2edfade7277f60eaedf9f7e3a2" prot="public" static="no">
         <name>ADS1299_REG_CONFIG3</name>
         <initializer>0x03</initializer>
         <briefdescription>
+<para>ADS1299 CONFIG3 register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="76" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="76" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="92" column="9" bodyfile="include/ads1299_defs.h" bodystart="92" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1af26cb9aec19f197221de04b2a7f9ea7e" prot="public" static="no">
         <name>ADS1299_REG_LOFF</name>
         <initializer>0x04</initializer>
         <briefdescription>
+<para>ADS1299 lead-off control register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="77" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="77" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="94" column="9" bodyfile="include/ads1299_defs.h" bodystart="94" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a9289a7271b9e0aabc6bc2ed8b64559f4" prot="public" static="no">
         <name>ADS1299_REG_CH1SET</name>
         <initializer>0x05</initializer>
         <briefdescription>
+<para>ADS1299 channel 1 settings register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="78" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="78" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="96" column="9" bodyfile="include/ads1299_defs.h" bodystart="96" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a70f04941018d4012ee9abf2b91fbb8cd" prot="public" static="no">
         <name>ADS1299_REG_CH2SET</name>
         <initializer>0x06</initializer>
         <briefdescription>
+<para>ADS1299 channel 2 settings register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="79" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="79" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="98" column="9" bodyfile="include/ads1299_defs.h" bodystart="98" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a35783486a2a4e38848ceee4ec381a3ed" prot="public" static="no">
         <name>ADS1299_REG_CH3SET</name>
         <initializer>0x07</initializer>
         <briefdescription>
+<para>ADS1299 channel 3 settings register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="80" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="80" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="100" column="9" bodyfile="include/ads1299_defs.h" bodystart="100" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a066046fafd1fae0923b63304357760fb" prot="public" static="no">
         <name>ADS1299_REG_CH4SET</name>
         <initializer>0x08</initializer>
         <briefdescription>
+<para>ADS1299 channel 4 settings register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="81" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="81" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="102" column="9" bodyfile="include/ads1299_defs.h" bodystart="102" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a08f3fdb2898a0e839a0997afe2578716" prot="public" static="no">
         <name>ADS1299_REG_CH5SET</name>
         <initializer>0x09</initializer>
         <briefdescription>
+<para>ADS1299 channel 5 settings register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="82" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="82" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="104" column="9" bodyfile="include/ads1299_defs.h" bodystart="104" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a3bec2c5324f48460fdf63e5fc6dced14" prot="public" static="no">
         <name>ADS1299_REG_CH6SET</name>
         <initializer>0x0A</initializer>
         <briefdescription>
+<para>ADS1299 channel 6 settings register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="83" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="83" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="106" column="9" bodyfile="include/ads1299_defs.h" bodystart="106" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a28750c9a4ddba01f6b28e67ae657e217" prot="public" static="no">
         <name>ADS1299_REG_CH7SET</name>
         <initializer>0x0B</initializer>
         <briefdescription>
+<para>ADS1299 channel 7 settings register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="84" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="84" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="108" column="9" bodyfile="include/ads1299_defs.h" bodystart="108" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a2dc3d67a4aeb8a400700e5eff40fd849" prot="public" static="no">
         <name>ADS1299_REG_CH8SET</name>
         <initializer>0x0C</initializer>
         <briefdescription>
+<para>ADS1299 channel 8 settings register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="85" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="85" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="110" column="9" bodyfile="include/ads1299_defs.h" bodystart="110" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1a0476c20e2c6fe294b4af07b197ef17a6" prot="public" static="no">
         <name>ADS1299_REG_BIAS_SENSP</name>
         <initializer>0x0D</initializer>
         <briefdescription>
+<para>ADS1299 positive BIAS sense register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="86" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="86" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="112" column="9" bodyfile="include/ads1299_defs.h" bodystart="112" bodyend="-1"/>
       </memberdef>
       <memberdef kind="define" id="ads1299__defs_8h_1aca19d4af16e03cf6f267f4b061a8e14b" prot="public" static="no">
         <name>ADS1299_REG_BIAS_SENSN</name>
         <initializer>0x0E</initializer>
         <briefdescription>
+<para>ADS1299 negative BIAS sense register address. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="87" column="9" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="87" bodyend="-1"/>
+        <location file="include/ads1299_defs.h" line="114" column="9" bodyfile="include/ads1299_defs.h" bodystart="114" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="enum">
@@ -535,6 +567,7 @@
           <name>ADS1299_DR_16kSPS</name>
           <initializer>= 0x00</initializer>
           <briefdescription>
+<para>16000 samples per second. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -543,6 +576,7 @@
           <name>ADS1299_DR_8kSPS</name>
           <initializer>= 0x01</initializer>
           <briefdescription>
+<para>8000 samples per second. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -551,6 +585,7 @@
           <name>ADS1299_DR_4kSPS</name>
           <initializer>= 0x02</initializer>
           <briefdescription>
+<para>4000 samples per second. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -559,6 +594,7 @@
           <name>ADS1299_DR_2kSPS</name>
           <initializer>= 0x03</initializer>
           <briefdescription>
+<para>2000 samples per second. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -567,6 +603,7 @@
           <name>ADS1299_DR_1kSPS</name>
           <initializer>= 0x04</initializer>
           <briefdescription>
+<para>1000 samples per second. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -575,6 +612,7 @@
           <name>ADS1299_DR_500SPS</name>
           <initializer>= 0x05</initializer>
           <briefdescription>
+<para>500 samples per second. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -583,19 +621,20 @@
           <name>ADS1299_DR_250SPS</name>
           <initializer>= 0x06</initializer>
           <briefdescription>
+<para>250 samples per second. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
-<para>Configuration Enums for Type Safety Matching the exact bit shifts required by the registers. </para>
+<para>ADS1299 output data rates. </para>
         </briefdescription>
         <detaileddescription>
-<para>Data Output Rates (CONFIG1 Register Bits [2:0]) For EEG, 250 or 500 SPS are standard to reduce ambient noise. </para>
+<para>Values match CONFIG1 register bits [2:0]. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="98" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="98" bodyend="106"/>
+        <location file="include/ads1299_defs.h" line="121" column="1" bodyfile="include/ads1299_defs.h" bodystart="121" bodyend="129"/>
       </memberdef>
       <memberdef kind="enum" id="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3" prot="public" static="no" strong="no">
         <type></type>
@@ -604,6 +643,7 @@
           <name>ADS1299_PGA_GAIN_1</name>
           <initializer>= 0x00</initializer>
           <briefdescription>
+<para>Gain of 1. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -612,6 +652,7 @@
           <name>ADS1299_PGA_GAIN_2</name>
           <initializer>= 0x10</initializer>
           <briefdescription>
+<para>Gain of 2. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -620,6 +661,7 @@
           <name>ADS1299_PGA_GAIN_4</name>
           <initializer>= 0x20</initializer>
           <briefdescription>
+<para>Gain of 4. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -628,6 +670,7 @@
           <name>ADS1299_PGA_GAIN_6</name>
           <initializer>= 0x30</initializer>
           <briefdescription>
+<para>Gain of 6. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -636,6 +679,7 @@
           <name>ADS1299_PGA_GAIN_8</name>
           <initializer>= 0x40</initializer>
           <briefdescription>
+<para>Gain of 8. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -644,6 +688,7 @@
           <name>ADS1299_PGA_GAIN_12</name>
           <initializer>= 0x50</initializer>
           <briefdescription>
+<para>Gain of 12. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -652,18 +697,20 @@
           <name>ADS1299_PGA_GAIN_24</name>
           <initializer>= 0x60</initializer>
           <briefdescription>
+<para>Gain of 24. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
-<para>Programmable Gain Amplifier (PGA) Settings (CHxSET Register Bits [6:4]) EEG signals are tiny (~10-100uV), so you&apos;ll usually want a high gain like 12 or 24. </para>
+<para>ADS1299 programmable gain amplifier settings. </para>
         </briefdescription>
         <detaileddescription>
+<para>Values match CHnSET register bits [6:4]. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="112" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="112" bodyend="120"/>
+        <location file="include/ads1299_defs.h" line="136" column="1" bodyfile="include/ads1299_defs.h" bodystart="136" bodyend="144"/>
       </memberdef>
       <memberdef kind="enum" id="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189" prot="public" static="no" strong="no">
         <type></type>
@@ -672,6 +719,7 @@
           <name>ADS1299_INPUT_NORMAL</name>
           <initializer>= 0x00</initializer>
           <briefdescription>
+<para>Normal electrode input. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -680,6 +728,7 @@
           <name>ADS1299_INPUT_SHORTED</name>
           <initializer>= 0x01</initializer>
           <briefdescription>
+<para>Shorted input for noise measurements. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -688,6 +737,7 @@
           <name>ADS1299_INPUT_BIAS_MEAS</name>
           <initializer>= 0x02</initializer>
           <briefdescription>
+<para>BIAS drive measurement input. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -696,6 +746,7 @@
           <name>ADS1299_INPUT_MVDD</name>
           <initializer>= 0x03</initializer>
           <briefdescription>
+<para>Supply voltage measurement input. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -704,6 +755,7 @@
           <name>ADS1299_INPUT_TEMP</name>
           <initializer>= 0x04</initializer>
           <briefdescription>
+<para>Internal temperature sensor input. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -712,131 +764,126 @@
           <name>ADS1299_INPUT_TEST_SIGNAL</name>
           <initializer>= 0x05</initializer>
           <briefdescription>
+<para>Internal test signal input. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
-<para>Channel Input Mux Options (CHxSET Register Bits [2:0]). </para>
+<para>ADS1299 channel input mux settings. </para>
         </briefdescription>
         <detaileddescription>
+<para>Values match CHnSET register bits [2:0]. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" line="125" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h" bodystart="125" bodyend="132"/>
+        <location file="include/ads1299_defs.h" line="151" column="1" bodyfile="include/ads1299_defs.h" bodystart="151" bodyend="158"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>Public constants and enums for the ADS1299 ESP-IDF driver. </para>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
     <programlisting>
-<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>ADS1299_DEFS_H</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_DEFS_H</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="3"><highlight class="normal"></highlight></codeline>
-<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="7"><highlight class="normal"></highlight></codeline>
-<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="9"><highlight class="normal"></highlight></codeline>
-<codeline lineno="10"><highlight class="normal"></highlight></codeline>
-<codeline lineno="15" refid="ads1299__defs_8h_1a90b24fb5f64f05ddeb5ba49b0fccbace" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CLK_FREQ<sp/>2048000UL</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>ADS1299_DEFS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_DEFS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">extern</highlight><highlight class="normal"><sp/></highlight><highlight class="stringliteral">&quot;C&quot;</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdint.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="ads1299__defs_8h_1a90b24fb5f64f05ddeb5ba49b0fccbace" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CLK_FREQ<sp/>2048000UL</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="17"><highlight class="normal"></highlight></codeline>
-<codeline lineno="18"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Convert<sp/>clock<sp/>cycles<sp/>to<sp/>microseconds,<sp/>rounding<sp/>up</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="19" refid="ads1299__defs_8h_1ab4d41c6ad6fc5ddb87c5b28ec9cf5b77" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_TICKS_TO_US(ticks)<sp/>(((ticks)<sp/>*<sp/>1000000UL<sp/>+<sp/>(ADS1299_CLK_FREQ<sp/>-<sp/>1))<sp/>/<sp/>ADS1299_CLK_FREQ)</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="20"><highlight class="normal"></highlight></codeline>
-<codeline lineno="21"><highlight class="normal"></highlight></codeline>
-<codeline lineno="22" refid="ads1299__defs_8h_1a212b27ca554a7316db323ebe52a2842c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_CLK_US<sp/>ADS1299_TICKS_TO_US(1)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="23" refid="ads1299__defs_8h_1ae0d98ca9a623cf5e21ebc690f490e780" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_RESET<sp/>ADS1299_TICKS_TO_US(18)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="24" refid="ads1299__defs_8h_1ac0aef774a2329aa9efd7b9ad3e12c23d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_PULSE<sp/>ADS1299_TICKS_TO_US(2)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="25" refid="ads1299__defs_8h_1a6d8613e189720733aae8cb70ea0b2a55" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_SDATAC<sp/>ADS1299_TICKS_TO_US(2)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="26" refid="ads1299__defs_8h_1a33986726d2ecabde33fb3becd1a49a81" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_RDATAC<sp/>ADS1299_TICKS_TO_US(2)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="27" refid="ads1299__defs_8h_1a59cefeb5ca6f40c2f0e768f0b3b26a2a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_WAKEUP<sp/>ADS1299_TICKS_TO_US(4)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight></codeline>
-<codeline lineno="30" refid="ads1299__defs_8h_1aa7d72f9d539757520cd424e6e9e63786" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_CSSC<sp/>ADS1299_TICKS_TO_US(1)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31" refid="ads1299__defs_8h_1a03185e1eee9fa4661558dff6b31025f3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_SCLK<sp/>ADS1299_TICKS_TO_US(1)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33" refid="ads1299__defs_8h_1a9b86682c80ea61856b43e6512b2c29e3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_CSH<sp/>ADS1299_TICKS_TO_US(2)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="34" refid="ads1299__defs_8h_1ab7528a386936333f27faf0ca2710c28a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_SCCS<sp/>ADS1299_TICKS_TO_US(4)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="35" refid="ads1299__defs_8h_1a105ebc25f6d55812335d0dbfbfc0f768" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_SDECODE<sp/>ADS1299_TICKS_TO_US(4)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"></highlight></codeline>
-<codeline lineno="38" refid="ads1299__defs_8h_1ad6f91558e026b9d580cca74fd9a98e84" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_NUM_CHANNELS<sp/><sp/><sp/><sp/><sp/><sp/>8</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="39" refid="ads1299__defs_8h_1aff0792cefe5097011c0542aab87583ca" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_STATUS_BYTES<sp/><sp/><sp/><sp/><sp/><sp/>3</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="40" refid="ads1299__defs_8h_1aea060163b5d4d0cf5ccc2d1b85d59cf7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_BYTES_PER_CHANNEL<sp/>3</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="41" refid="ads1299__defs_8h_1aa0e51ed38c111361542cf6500f4a2293" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_FRAME_SIZE<sp/>(ADS1299_STATUS_BYTES<sp/>+<sp/>ADS1299_NUM_CHANNELS<sp/>*<sp/>ADS1299_BYTES_PER_CHANNEL)<sp/></highlight><highlight class="comment">//<sp/>27</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"></highlight></codeline>
-<codeline lineno="48" refid="ads1299__defs_8h_1a99f5a23ea1cf5a52b12a16e04b8597f8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_DEFAULT_CHUNK_MS<sp/><sp/>100</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="49"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52" refid="ads1299__defs_8h_1a02539f1183e47805d15c50c4365046d5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_RING_BUF_SLOTS<sp/><sp/><sp/><sp/>8</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="53"><highlight class="normal"></highlight></codeline>
-<codeline lineno="54"><highlight class="normal"></highlight></codeline>
-<codeline lineno="59" refid="ads1299__defs_8h_1a235d213b5739c4909fc031452ad204bf" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_WAKEUP<sp/><sp/><sp/>0x02</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="60" refid="ads1299__defs_8h_1a31cb82290671a6b3b66df28708aff655" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_STANDBY<sp/><sp/>0x04</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="61" refid="ads1299__defs_8h_1a00776ec906782ac8033c507cdf31f424" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_RESET<sp/><sp/><sp/><sp/>0x06</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="62" refid="ads1299__defs_8h_1a16d3867ac65f5db84d88881fa0acb88e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_START<sp/><sp/><sp/><sp/>0x08</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="63" refid="ads1299__defs_8h_1ad03d1a75e264848d5fc6371cdbc8b4ee" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_STOP<sp/><sp/><sp/><sp/><sp/>0x0A</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="64" refid="ads1299__defs_8h_1a4364907579f72f80ad0b80cce9aa608f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_RDATAC<sp/><sp/><sp/>0x10</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="65" refid="ads1299__defs_8h_1ab65f5431988ba481197ce0399b3b7119" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_SDATAC<sp/><sp/><sp/>0x11</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="66" refid="ads1299__defs_8h_1a9744521cf805adfd764c05330da7eaf1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_RDATA<sp/><sp/><sp/><sp/>0x12</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="67" refid="ads1299__defs_8h_1a58a4474ebd2670ae7ac3c52b77c900ef" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_RREG<sp/><sp/><sp/><sp/><sp/>0x20<sp/><sp/></highlight><highlight class="comment">//<sp/>Combine<sp/>with<sp/>register<sp/>address:<sp/>(0x20<sp/>|<sp/>reg)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="68" refid="ads1299__defs_8h_1ad66cc78c1e0f3a935811de98685c92a4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_WREG<sp/><sp/><sp/><sp/><sp/>0x40<sp/><sp/></highlight><highlight class="comment">//<sp/>Combine<sp/>with<sp/>register<sp/>address:<sp/>(0x40<sp/>|<sp/>reg)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight></codeline>
-<codeline lineno="73" refid="ads1299__defs_8h_1abfecfe40ac3a32cf099e60625a8fd2d1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_ID<sp/><sp/><sp/><sp/><sp/><sp/><sp/>0x00</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="74" refid="ads1299__defs_8h_1a245d695b158018b6704b7fa2d90d2c69" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CONFIG1<sp/><sp/>0x01</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="75" refid="ads1299__defs_8h_1a3dbe2ea00a023cf2020c08b8cb821625" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CONFIG2<sp/><sp/>0x02</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="76" refid="ads1299__defs_8h_1afa06af2edfade7277f60eaedf9f7e3a2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CONFIG3<sp/><sp/>0x03</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="77" refid="ads1299__defs_8h_1af26cb9aec19f197221de04b2a7f9ea7e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_LOFF<sp/><sp/><sp/><sp/><sp/>0x04</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="78" refid="ads1299__defs_8h_1a9289a7271b9e0aabc6bc2ed8b64559f4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH1SET<sp/><sp/><sp/>0x05</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="79" refid="ads1299__defs_8h_1a70f04941018d4012ee9abf2b91fbb8cd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH2SET<sp/><sp/><sp/>0x06</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="80" refid="ads1299__defs_8h_1a35783486a2a4e38848ceee4ec381a3ed" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH3SET<sp/><sp/><sp/>0x07</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="81" refid="ads1299__defs_8h_1a066046fafd1fae0923b63304357760fb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH4SET<sp/><sp/><sp/>0x08</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="82" refid="ads1299__defs_8h_1a08f3fdb2898a0e839a0997afe2578716" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH5SET<sp/><sp/><sp/>0x09</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="83" refid="ads1299__defs_8h_1a3bec2c5324f48460fdf63e5fc6dced14" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH6SET<sp/><sp/><sp/>0x0A</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="84" refid="ads1299__defs_8h_1a28750c9a4ddba01f6b28e67ae657e217" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH7SET<sp/><sp/><sp/>0x0B</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="85" refid="ads1299__defs_8h_1a2dc3d67a4aeb8a400700e5eff40fd849" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH8SET<sp/><sp/><sp/>0x0C</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="86" refid="ads1299__defs_8h_1a0476c20e2c6fe294b4af07b197ef17a6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_BIAS_SENSP<sp/>0x0D</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="87" refid="ads1299__defs_8h_1aca19d4af16e03cf6f267f4b061a8e14b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_BIAS_SENSN<sp/>0x0E</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"></highlight></codeline>
-<codeline lineno="98" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="99" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa528ed39081991b4f7627360e84d0a865" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa528ed39081991b4f7627360e84d0a865" kindref="member">ADS1299_DR_16kSPS</ref><sp/><sp/>=<sp/>0x00,</highlight></codeline>
-<codeline lineno="100" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa3d1537a4ae53120598cd02ccd8fee7a9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa3d1537a4ae53120598cd02ccd8fee7a9" kindref="member">ADS1299_DR_8kSPS</ref><sp/><sp/><sp/>=<sp/>0x01,</highlight></codeline>
-<codeline lineno="101" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aad46568381460c2e8639ca36536aacdab" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aad46568381460c2e8639ca36536aacdab" kindref="member">ADS1299_DR_4kSPS</ref><sp/><sp/><sp/>=<sp/>0x02,</highlight></codeline>
-<codeline lineno="102" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aade95fcc2d99d284d8e2f552dc9db7045" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aade95fcc2d99d284d8e2f552dc9db7045" kindref="member">ADS1299_DR_2kSPS</ref><sp/><sp/><sp/>=<sp/>0x03,</highlight></codeline>
-<codeline lineno="103" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aaf77a2c31fc7c9db39e5e699f753ddbc1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aaf77a2c31fc7c9db39e5e699f753ddbc1" kindref="member">ADS1299_DR_1kSPS</ref><sp/><sp/><sp/>=<sp/>0x04,</highlight></codeline>
-<codeline lineno="104" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aab7e4f8a49db7e90e6dae2cfb051fced6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aab7e4f8a49db7e90e6dae2cfb051fced6" kindref="member">ADS1299_DR_500SPS</ref><sp/><sp/>=<sp/>0x05,</highlight></codeline>
-<codeline lineno="105" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa1d531b8062e098085df882f6f426ff75" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa1d531b8062e098085df882f6f426ff75" kindref="member">ADS1299_DR_250SPS</ref><sp/><sp/>=<sp/>0x06</highlight></codeline>
-<codeline lineno="106"><highlight class="normal">}<sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169a" kindref="member">ads1299_sample_rate_t</ref>;</highlight></codeline>
-<codeline lineno="107"><highlight class="normal"></highlight></codeline>
-<codeline lineno="112" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="113" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a28d1fbc0c992f293fbbca2ebfe9a7a9b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a28d1fbc0c992f293fbbca2ebfe9a7a9b" kindref="member">ADS1299_PGA_GAIN_1</ref><sp/><sp/>=<sp/>0x00,</highlight></codeline>
-<codeline lineno="114" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a235a29aeaf18ade843cc588c09e7cf5e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a235a29aeaf18ade843cc588c09e7cf5e" kindref="member">ADS1299_PGA_GAIN_2</ref><sp/><sp/>=<sp/>0x10,</highlight></codeline>
-<codeline lineno="115" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a0903544578c12ab84bf6b0f0d11c20f8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a0903544578c12ab84bf6b0f0d11c20f8" kindref="member">ADS1299_PGA_GAIN_4</ref><sp/><sp/>=<sp/>0x20,</highlight></codeline>
-<codeline lineno="116" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3ad2be442a5695a7bef84488397fd2f0f8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3ad2be442a5695a7bef84488397fd2f0f8" kindref="member">ADS1299_PGA_GAIN_6</ref><sp/><sp/>=<sp/>0x30,</highlight></codeline>
-<codeline lineno="117" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a42f8c9356f88696c5aaea5a66fa9d60a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a42f8c9356f88696c5aaea5a66fa9d60a" kindref="member">ADS1299_PGA_GAIN_8</ref><sp/><sp/>=<sp/>0x40,</highlight></codeline>
-<codeline lineno="118" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a93053ed8bb2dd4eed2e629dde05af2d1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a93053ed8bb2dd4eed2e629dde05af2d1" kindref="member">ADS1299_PGA_GAIN_12</ref><sp/>=<sp/>0x50,</highlight></codeline>
-<codeline lineno="119" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a68a1d702961444489eaa67c23bcc2d9d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a68a1d702961444489eaa67c23bcc2d9d" kindref="member">ADS1299_PGA_GAIN_24</ref><sp/>=<sp/>0x60</highlight></codeline>
-<codeline lineno="120"><highlight class="normal">}<sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3" kindref="member">ads1299_pga_gain_t</ref>;</highlight></codeline>
-<codeline lineno="121"><highlight class="normal"></highlight></codeline>
-<codeline lineno="125" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
-<codeline lineno="126" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a3c8d999b1d8aa764d879ca848170fb97" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a3c8d999b1d8aa764d879ca848170fb97" kindref="member">ADS1299_INPUT_NORMAL</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x00,<sp/></highlight><highlight class="comment">//<sp/>Normal<sp/>electrode<sp/>input</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="127" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a96a7f3198e3c616c522fc27143801d1a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a96a7f3198e3c616c522fc27143801d1a" kindref="member">ADS1299_INPUT_SHORTED</ref><sp/><sp/><sp/><sp/><sp/>=<sp/>0x01,<sp/></highlight><highlight class="comment">//<sp/>Used<sp/>for<sp/>noise<sp/>measurements</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="128" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a5a452dcec86350dc2af71171b212dba5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a5a452dcec86350dc2af71171b212dba5" kindref="member">ADS1299_INPUT_BIAS_MEAS</ref><sp/><sp/><sp/>=<sp/>0x02,<sp/></highlight><highlight class="comment">//<sp/>Used<sp/>for<sp/>Bias<sp/>drive<sp/>measurement</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="129" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189ab04c149557f8097dac075756b7fde0c6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189ab04c149557f8097dac075756b7fde0c6" kindref="member">ADS1299_INPUT_MVDD</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x03,<sp/></highlight><highlight class="comment">//<sp/>Supply<sp/>voltage<sp/>measurement</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="130" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189ae2a35cac583e0ba7b9bcbbb3163602ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189ae2a35cac583e0ba7b9bcbbb3163602ba" kindref="member">ADS1299_INPUT_TEMP</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0x04,<sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>temperature<sp/>sensor</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="131" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a92e24d75a12fdb5746cd9b477a5e2c4d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a92e24d75a12fdb5746cd9b477a5e2c4d" kindref="member">ADS1299_INPUT_TEST_SIGNAL</ref><sp/>=<sp/>0x05<sp/><sp/></highlight><highlight class="comment">//<sp/>Internal<sp/>1Hz<sp/>square<sp/>wave<sp/>calibration<sp/>signal</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="132"><highlight class="normal">}<sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189" kindref="member">ads1299_input_mux_t</ref>;</highlight></codeline>
-<codeline lineno="133"><highlight class="normal"></highlight></codeline>
-<codeline lineno="134"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="135"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="136"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="137"><highlight class="normal"></highlight></codeline>
-<codeline lineno="138"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>ADS1299_DEFS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="ads1299__defs_8h_1a212b27ca554a7316db323ebe52a2842c" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_CLK_US<sp/>ADS1299_TICKS_TO_US(1)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="ads1299__defs_8h_1ae0d98ca9a623cf5e21ebc690f490e780" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_RESET<sp/>ADS1299_TICKS_TO_US(18)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26" refid="ads1299__defs_8h_1ac0aef774a2329aa9efd7b9ad3e12c23d" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_PULSE<sp/>ADS1299_TICKS_TO_US(2)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="ads1299__defs_8h_1a6d8613e189720733aae8cb70ea0b2a55" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_SDATAC<sp/>ADS1299_TICKS_TO_US(2)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30" refid="ads1299__defs_8h_1a33986726d2ecabde33fb3becd1a49a81" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_RDATAC<sp/>ADS1299_TICKS_TO_US(2)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32" refid="ads1299__defs_8h_1a59cefeb5ca6f40c2f0e768f0b3b26a2a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_WAKEUP<sp/>ADS1299_TICKS_TO_US(4)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="ads1299__defs_8h_1aa7d72f9d539757520cd424e6e9e63786" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_CSSC<sp/>ADS1299_TICKS_TO_US(1)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="ads1299__defs_8h_1a03185e1eee9fa4661558dff6b31025f3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_SCLK<sp/>ADS1299_TICKS_TO_US(1)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="ads1299__defs_8h_1a9b86682c80ea61856b43e6512b2c29e3" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_CSH<sp/>ADS1299_TICKS_TO_US(2)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="ads1299__defs_8h_1ab7528a386936333f27faf0ca2710c28a" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_SCCS<sp/>ADS1299_TICKS_TO_US(4)</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="ads1299__defs_8h_1a105ebc25f6d55812335d0dbfbfc0f768" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_T_SDECODE<sp/>ADS1299_TICKS_TO_US(4)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="ads1299__defs_8h_1ad6f91558e026b9d580cca74fd9a98e84" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_NUM_CHANNELS<sp/>8</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="ads1299__defs_8h_1aff0792cefe5097011c0542aab87583ca" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_STATUS_BYTES<sp/>3</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="ads1299__defs_8h_1aea060163b5d4d0cf5ccc2d1b85d59cf7" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_BYTES_PER_CHANNEL<sp/>3</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="ads1299__defs_8h_1aa0e51ed38c111361542cf6500f4a2293" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_FRAME_SIZE<sp/>(ADS1299_STATUS_BYTES<sp/>+<sp/>ADS1299_NUM_CHANNELS<sp/>*<sp/>ADS1299_BYTES_PER_CHANNEL)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="ads1299__defs_8h_1a99f5a23ea1cf5a52b12a16e04b8597f8" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_DEFAULT_CHUNK_MS<sp/>100</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="ads1299__defs_8h_1a02539f1183e47805d15c50c4365046d5" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_RING_BUF_SLOTS<sp/>8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65" refid="ads1299__defs_8h_1a235d213b5739c4909fc031452ad204bf" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_WAKEUP<sp/>0x02</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="ads1299__defs_8h_1a31cb82290671a6b3b66df28708aff655" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_STANDBY<sp/>0x04</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="ads1299__defs_8h_1a00776ec906782ac8033c507cdf31f424" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_RESET<sp/>0x06</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="ads1299__defs_8h_1a16d3867ac65f5db84d88881fa0acb88e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_START<sp/>0x08</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="ads1299__defs_8h_1ad03d1a75e264848d5fc6371cdbc8b4ee" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_STOP<sp/>0x0A</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="ads1299__defs_8h_1a4364907579f72f80ad0b80cce9aa608f" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_RDATAC<sp/>0x10</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="ads1299__defs_8h_1ab65f5431988ba481197ce0399b3b7119" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_SDATAC<sp/>0x11</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="ads1299__defs_8h_1a9744521cf805adfd764c05330da7eaf1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_RDATA<sp/>0x12</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="ads1299__defs_8h_1a58a4474ebd2670ae7ac3c52b77c900ef" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_RREG<sp/>0x20</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="ads1299__defs_8h_1ad66cc78c1e0f3a935811de98685c92a4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_CMD_WREG<sp/>0x40</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="ads1299__defs_8h_1abfecfe40ac3a32cf099e60625a8fd2d1" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_ID<sp/>0x00</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="ads1299__defs_8h_1a245d695b158018b6704b7fa2d90d2c69" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CONFIG1<sp/>0x01</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="ads1299__defs_8h_1a3dbe2ea00a023cf2020c08b8cb821625" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CONFIG2<sp/>0x02</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="ads1299__defs_8h_1afa06af2edfade7277f60eaedf9f7e3a2" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CONFIG3<sp/>0x03</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94" refid="ads1299__defs_8h_1af26cb9aec19f197221de04b2a7f9ea7e" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_LOFF<sp/>0x04</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="ads1299__defs_8h_1a9289a7271b9e0aabc6bc2ed8b64559f4" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH1SET<sp/>0x05</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="ads1299__defs_8h_1a70f04941018d4012ee9abf2b91fbb8cd" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH2SET<sp/>0x06</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100" refid="ads1299__defs_8h_1a35783486a2a4e38848ceee4ec381a3ed" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH3SET<sp/>0x07</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102" refid="ads1299__defs_8h_1a066046fafd1fae0923b63304357760fb" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH4SET<sp/>0x08</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="ads1299__defs_8h_1a08f3fdb2898a0e839a0997afe2578716" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH5SET<sp/>0x09</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="ads1299__defs_8h_1a3bec2c5324f48460fdf63e5fc6dced14" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH6SET<sp/>0x0A</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="ads1299__defs_8h_1a28750c9a4ddba01f6b28e67ae657e217" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH7SET<sp/>0x0B</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110" refid="ads1299__defs_8h_1a2dc3d67a4aeb8a400700e5eff40fd849" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_CH8SET<sp/>0x0C</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="ads1299__defs_8h_1a0476c20e2c6fe294b4af07b197ef17a6" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_BIAS_SENSP<sp/>0x0D</highlight><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114" refid="ads1299__defs_8h_1aca19d4af16e03cf6f267f4b061a8e14b" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>ADS1299_REG_BIAS_SENSN<sp/>0x0E</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169a" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="122" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa528ed39081991b4f7627360e84d0a865" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa528ed39081991b4f7627360e84d0a865" kindref="member">ADS1299_DR_16kSPS</ref><sp/>=<sp/>0x00,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="123" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa3d1537a4ae53120598cd02ccd8fee7a9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa3d1537a4ae53120598cd02ccd8fee7a9" kindref="member">ADS1299_DR_8kSPS</ref><sp/>=<sp/>0x01,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="124" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aad46568381460c2e8639ca36536aacdab" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aad46568381460c2e8639ca36536aacdab" kindref="member">ADS1299_DR_4kSPS</ref><sp/>=<sp/>0x02,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="125" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aade95fcc2d99d284d8e2f552dc9db7045" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aade95fcc2d99d284d8e2f552dc9db7045" kindref="member">ADS1299_DR_2kSPS</ref><sp/>=<sp/>0x03,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="126" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aaf77a2c31fc7c9db39e5e699f753ddbc1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aaf77a2c31fc7c9db39e5e699f753ddbc1" kindref="member">ADS1299_DR_1kSPS</ref><sp/>=<sp/>0x04,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="127" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aab7e4f8a49db7e90e6dae2cfb051fced6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aab7e4f8a49db7e90e6dae2cfb051fced6" kindref="member">ADS1299_DR_500SPS</ref><sp/>=<sp/>0x05,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="128" refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa1d531b8062e098085df882f6f426ff75" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169aa1d531b8062e098085df882f6f426ff75" kindref="member">ADS1299_DR_250SPS</ref><sp/>=<sp/>0x06<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}<sp/><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169a" kindref="member">ads1299_sample_rate_t</ref>;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="137" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a28d1fbc0c992f293fbbca2ebfe9a7a9b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a28d1fbc0c992f293fbbca2ebfe9a7a9b" kindref="member">ADS1299_PGA_GAIN_1</ref><sp/>=<sp/>0x00,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="138" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a235a29aeaf18ade843cc588c09e7cf5e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a235a29aeaf18ade843cc588c09e7cf5e" kindref="member">ADS1299_PGA_GAIN_2</ref><sp/>=<sp/>0x10,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="139" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a0903544578c12ab84bf6b0f0d11c20f8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a0903544578c12ab84bf6b0f0d11c20f8" kindref="member">ADS1299_PGA_GAIN_4</ref><sp/>=<sp/>0x20,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="140" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3ad2be442a5695a7bef84488397fd2f0f8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3ad2be442a5695a7bef84488397fd2f0f8" kindref="member">ADS1299_PGA_GAIN_6</ref><sp/>=<sp/>0x30,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="141" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a42f8c9356f88696c5aaea5a66fa9d60a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a42f8c9356f88696c5aaea5a66fa9d60a" kindref="member">ADS1299_PGA_GAIN_8</ref><sp/>=<sp/>0x40,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="142" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a93053ed8bb2dd4eed2e629dde05af2d1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a93053ed8bb2dd4eed2e629dde05af2d1" kindref="member">ADS1299_PGA_GAIN_12</ref><sp/>=<sp/>0x50,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="143" refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a68a1d702961444489eaa67c23bcc2d9d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3a68a1d702961444489eaa67c23bcc2d9d" kindref="member">ADS1299_PGA_GAIN_24</ref><sp/>=<sp/>0x60<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}<sp/><ref refid="ads1299__defs_8h_1a1a268a9f9a45731713762309c06a03c3" kindref="member">ads1299_pga_gain_t</ref>;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189" refkind="member"><highlight class="normal"></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="152" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a3c8d999b1d8aa764d879ca848170fb97" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a3c8d999b1d8aa764d879ca848170fb97" kindref="member">ADS1299_INPUT_NORMAL</ref><sp/>=<sp/>0x00,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="153" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a96a7f3198e3c616c522fc27143801d1a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a96a7f3198e3c616c522fc27143801d1a" kindref="member">ADS1299_INPUT_SHORTED</ref><sp/>=<sp/>0x01,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="154" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a5a452dcec86350dc2af71171b212dba5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a5a452dcec86350dc2af71171b212dba5" kindref="member">ADS1299_INPUT_BIAS_MEAS</ref><sp/>=<sp/>0x02,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="155" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189ab04c149557f8097dac075756b7fde0c6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189ab04c149557f8097dac075756b7fde0c6" kindref="member">ADS1299_INPUT_MVDD</ref><sp/>=<sp/>0x03,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="156" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189ae2a35cac583e0ba7b9bcbbb3163602ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189ae2a35cac583e0ba7b9bcbbb3163602ba" kindref="member">ADS1299_INPUT_TEMP</ref><sp/>=<sp/>0x04,<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="157" refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a92e24d75a12fdb5746cd9b477a5e2c4d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189a92e24d75a12fdb5746cd9b477a5e2c4d" kindref="member">ADS1299_INPUT_TEST_SIGNAL</ref><sp/>=<sp/>0x05<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="158"><highlight class="normal">}<sp/><ref refid="ads1299__defs_8h_1a2a4c93bd3e34a637e0c972ec4b31e189" kindref="member">ads1299_input_mux_t</ref>;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight><highlight class="preprocessor">#ifdef<sp/>__cplusplus</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="161"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">/*<sp/>ADS1299_DEFS_H<sp/>*/</highlight><highlight class="preprocessor"></highlight></codeline>
     </programlisting>
-    <location file="/home/carlos/dev/ads1299-esp/include/ads1299_defs.h"/>
+    <location file="include/ads1299_defs.h"/>
   </compounddef>
 </doxygen>

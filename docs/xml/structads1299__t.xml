@@ -11,12 +11,13 @@
         <name>config</name>
         <qualifiedname>ads1299_t::config</qualifiedname>
         <briefdescription>
+<para>Static device configuration. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="188" column="25" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="188" bodyend="-1"/>
+        <location file="include/ads1299.h" line="138" column="22" bodyfile="include/ads1299.h" bodystart="138" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__t_1af0de59d2feeb97871e4d7e93832d0374" prot="public" static="no" mutable="no">
         <type>spi_device_handle_t</type>
@@ -25,12 +26,13 @@
         <name>spi_handle</name>
         <qualifiedname>ads1299_t::spi_handle</qualifiedname>
         <briefdescription>
+<para>ESP-IDF SPI device handle. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="189" column="25" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="189" bodyend="-1"/>
+        <location file="include/ads1299.h" line="139" column="25" bodyfile="include/ads1299.h" bodystart="139" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__t_1aaf3d138417bb404237bc7ec7f356116b" prot="public" static="no" mutable="no">
         <type>SemaphoreHandle_t</type>
@@ -39,12 +41,13 @@
         <name>mutex</name>
         <qualifiedname>ads1299_t::mutex</qualifiedname>
         <briefdescription>
+<para>Driver mutex. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="190" column="25" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="190" bodyend="-1"/>
+        <location file="include/ads1299.h" line="140" column="23" bodyfile="include/ads1299.h" bodystart="140" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__t_1a542d0f917ea7de637b2a9a878d1f27c1" prot="public" static="no" mutable="no">
         <type>bool</type>
@@ -53,12 +56,13 @@
         <name>initialized</name>
         <qualifiedname>ads1299_t::initialized</qualifiedname>
         <briefdescription>
+<para>True after successful initialization. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="191" column="25" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="191" bodyend="-1"/>
+        <location file="include/ads1299.h" line="141" column="10" bodyfile="include/ads1299.h" bodystart="141" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__t_1ac7572609bc568c59d8270b3433e6b353" prot="public" static="no" mutable="no">
         <type><ref refid="ads1299_8h_1a81979448b1cc1758dac7f6f1469fa6a1" kindref="member">ads1299_dma_ctx_t</ref> *</type>
@@ -67,53 +71,25 @@
         <name>dma_ctx</name>
         <qualifiedname>ads1299_t::dma_ctx</qualifiedname>
         <briefdescription>
-<para>Non-NULL only while <ref refid="ads1299_8h_1aa9d9a25b8b6b449b24befabbf79a0c3c" kindref="member">ads1299_start_continuous()</ref> is active. </para>
+<para>Non-NULL while continuous acquisition is active. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="194" column="24" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="194" bodyend="-1"/>
+        <location file="include/ads1299.h" line="142" column="23" bodyfile="include/ads1299.h" bodystart="142" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Device handle. </para>
+<para>ADS1299 device handle. </para>
     </briefdescription>
     <detaileddescription>
-<para>Initialise with <ref refid="ads1299_8h_1adbb09ae0e34074b737d4ca89bc106342" kindref="member">ads1299_create()</ref>, then <ref refid="ads1299_8h_1ae8b134a209854c477ed5f76149f39c07" kindref="member">ads1299_init()</ref>. Do not access fields directly — they are public only to allow stack allocation. Use the API functions for all operations. </para>
+<para>Initialize with <ref refid="ads1299_8h_1adbb09ae0e34074b737d4ca89bc106342" kindref="member">ads1299_create()</ref>, then <ref refid="ads1299_8h_1ae8b134a209854c477ed5f76149f39c07" kindref="member">ads1299_init()</ref>. Fields are public only to allow stack allocation; applications should use the API functions for all operations. </para>
     </detaileddescription>
     <collaborationgraph>
-      <node id="6">
-        <label>ads1299_chunk_t</label>
-        <link refid="structads1299__chunk__t"/>
-        <childnode refid="5" relation="usage">
-          <edgelabel>samples</edgelabel>
-        </childnode>
-      </node>
-      <node id="4">
-        <label>ads1299_chunkring_t</label>
-        <link refid="structads1299__chunkring__t"/>
-        <childnode refid="5" relation="usage">
-          <edgelabel>buf</edgelabel>
-        </childnode>
-      </node>
       <node id="2">
         <label>ads1299_config_t</label>
         <link refid="structads1299__config__t"/>
-      </node>
-      <node id="3">
-        <label>ads1299_dma_ctx</label>
-        <link refid="structads1299__dma__ctx"/>
-        <childnode refid="4" relation="usage">
-          <edgelabel>ring</edgelabel>
-        </childnode>
-        <childnode refid="6" relation="usage">
-          <edgelabel>on_chunk</edgelabel>
-        </childnode>
-      </node>
-      <node id="5">
-        <label>ads1299_sample_t</label>
-        <link refid="structads1299__sample__t"/>
       </node>
       <node id="1">
         <label>ads1299_t</label>
@@ -121,12 +97,9 @@
         <childnode refid="2" relation="usage">
           <edgelabel>config</edgelabel>
         </childnode>
-        <childnode refid="3" relation="usage">
-          <edgelabel>dma_ctx</edgelabel>
-        </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="187" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="187" bodyend="195"/>
+    <location file="include/ads1299.h" line="137" column="1" bodyfile="include/ads1299.h" bodystart="137" bodyend="143"/>
     <listofallmembers>
       <member refid="structads1299__t_1af9690bbbbc20ff7eb7d49791dac6e1ff" prot="public" virt="non-virtual"><scope>ads1299_t</scope><name>config</name></member>
       <member refid="structads1299__t_1ac7572609bc568c59d8270b3433e6b353" prot="public" virt="non-virtual"><scope>ads1299_t</scope><name>dma_ctx</name></member>

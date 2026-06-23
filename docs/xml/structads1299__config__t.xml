@@ -11,12 +11,13 @@
         <name>spi_host</name>
         <qualifiedname>ads1299_config_t::spi_host</qualifiedname>
         <briefdescription>
+<para>SPI host, usually SPI2_HOST or SPI3_HOST. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="96" column="27" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="96" bodyend="-1"/>
+        <location file="include/ads1299.h" line="86" column="23" bodyfile="include/ads1299.h" bodystart="86" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__config__t_1a5373be241ff791b8488a9408fec00c8f" prot="public" static="no" mutable="no">
         <type>gpio_num_t</type>
@@ -25,12 +26,13 @@
         <name>cs_pin</name>
         <qualifiedname>ads1299_config_t::cs_pin</qualifiedname>
         <briefdescription>
+<para>Chip select pin, active low. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="97" column="27" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="97" bodyend="-1"/>
+        <location file="include/ads1299.h" line="87" column="16" bodyfile="include/ads1299.h" bodystart="87" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__config__t_1afd602de03640196af95df4a89f35d1ce" prot="public" static="no" mutable="no">
         <type>gpio_num_t</type>
@@ -39,12 +41,13 @@
         <name>drdy_pin</name>
         <qualifiedname>ads1299_config_t::drdy_pin</qualifiedname>
         <briefdescription>
+<para>Data-ready pin, active low falling edge. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="98" column="27" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="98" bodyend="-1"/>
+        <location file="include/ads1299.h" line="88" column="16" bodyfile="include/ads1299.h" bodystart="88" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__config__t_1a1cce1b68457f6d67f356f21266ac274d" prot="public" static="no" mutable="no">
         <type>gpio_num_t</type>
@@ -53,12 +56,13 @@
         <name>reset_pin</name>
         <qualifiedname>ads1299_config_t::reset_pin</qualifiedname>
         <briefdescription>
+<para>Hardware reset pin, active low. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="99" column="27" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="99" bodyend="-1"/>
+        <location file="include/ads1299.h" line="89" column="16" bodyfile="include/ads1299.h" bodystart="89" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__config__t_1aba54ee79759708b95fcefb52c7fc91d3" prot="public" static="no" mutable="no">
         <type>gpio_num_t</type>
@@ -67,12 +71,13 @@
         <name>start_pin</name>
         <qualifiedname>ads1299_config_t::start_pin</qualifiedname>
         <briefdescription>
+<para>Conversion start pin. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="100" column="27" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="100" bodyend="-1"/>
+        <location file="include/ads1299.h" line="90" column="16" bodyfile="include/ads1299.h" bodystart="90" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__config__t_1ab12407be6478a5d8250920e73ceb9ff7" prot="public" static="no" mutable="no">
         <type><ref refid="ads1299__defs_8h_1ad22d861d50e0705e058da6f59e2e169a" kindref="member">ads1299_sample_rate_t</ref></type>
@@ -81,22 +86,22 @@
         <name>sample_rate</name>
         <qualifiedname>ads1299_config_t::sample_rate</qualifiedname>
         <briefdescription>
+<para>Initial ADS1299 output data rate. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="101" column="27" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="101" bodyend="-1"/>
+        <location file="include/ads1299.h" line="91" column="27" bodyfile="include/ads1299.h" bodystart="91" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Static device configuration. </para>
     </briefdescription>
     <detaileddescription>
-<para>Provided once at <ref refid="ads1299_8h_1adbb09ae0e34074b737d4ca89bc106342" kindref="member">ads1299_create()</ref>. The SPI bus (spi_bus_initialize) must be initialised by the caller before <ref refid="ads1299_8h_1ae8b134a209854c477ed5f76149f39c07" kindref="member">ads1299_init()</ref> is called. The driver only calls spi_bus_add_device() / spi_bus_remove_device() internally.</para>
-<para>Driver configuration structure. </para>
+<para>The application must initialize the SPI bus for spi_host before calling <ref refid="ads1299_8h_1ae8b134a209854c477ed5f76149f39c07" kindref="member">ads1299_init()</ref>. The driver calls spi_bus_add_device() and spi_bus_remove_device() internally. </para>
     </detaileddescription>
-    <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="95" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="95" bodyend="102"/>
+    <location file="include/ads1299.h" line="85" column="1" bodyfile="include/ads1299.h" bodystart="85" bodyend="92"/>
     <listofallmembers>
       <member refid="structads1299__config__t_1a5373be241ff791b8488a9408fec00c8f" prot="public" virt="non-virtual"><scope>ads1299_config_t</scope><name>cs_pin</name></member>
       <member refid="structads1299__config__t_1afd602de03640196af95df4a89f35d1ce" prot="public" virt="non-virtual"><scope>ads1299_config_t</scope><name>drdy_pin</name></member>

@@ -1,0 +1,39 @@
+\doxysection{ads1299\+\_\+t Struct Reference}
+\hypertarget{structads1299__t}{}\label{structads1299__t}\index{ads1299\_t@{ads1299\_t}}
+
+
+ADS1299 device handle.  
+
+
+
+
+{\ttfamily \+\#include $<$ads1299.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structads1299__t_af9690bbbbc20ff7eb7d49791dac6e1ff}\label{structads1299__t_af9690bbbbc20ff7eb7d49791dac6e1ff} 
+\doxymbox{\hyperlink{structads1299__config__t}{ads1299\+\_\+config\+\_\+t}} {\bfseries config}
+\begin{DoxyCompactList}\small\item\em Static device configuration. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__t_af0de59d2feeb97871e4d7e93832d0374}\label{structads1299__t_af0de59d2feeb97871e4d7e93832d0374} 
+spi\+\_\+device\+\_\+handle\+\_\+t {\bfseries spi\+\_\+handle}
+\begin{DoxyCompactList}\small\item\em ESP-\/\+IDF SPI device handle. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__t_aaf3d138417bb404237bc7ec7f356116b}\label{structads1299__t_aaf3d138417bb404237bc7ec7f356116b} 
+Semaphore\+Handle\+\_\+t {\bfseries mutex}
+\begin{DoxyCompactList}\small\item\em Driver mutex. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__t_a542d0f917ea7de637b2a9a878d1f27c1}\label{structads1299__t_a542d0f917ea7de637b2a9a878d1f27c1} 
+bool {\bfseries initialized}
+\begin{DoxyCompactList}\small\item\em True after successful initialization. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__t_ac7572609bc568c59d8270b3433e6b353}\label{structads1299__t_ac7572609bc568c59d8270b3433e6b353} 
+\doxymbox{\hyperlink{ads1299_8h_a81979448b1cc1758dac7f6f1469fa6a1}{ads1299\+\_\+dma\+\_\+ctx\+\_\+t}} \texorpdfstring{$\ast$}{*} {\bfseries dma\+\_\+ctx}
+\begin{DoxyCompactList}\small\item\em Non-\/\+NULL while continuous acquisition is active. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+ADS1299 device handle. 
+
+Initialize with \doxylink{ads1299_8h_adbb09ae0e34074b737d4ca89bc106342}{ads1299\+\_\+create()}, then \doxylink{ads1299_8h_ae8b134a209854c477ed5f76149f39c07}{ads1299\+\_\+init()}. Fields are public only to allow stack allocation; applications should use the API functions for all operations. 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+include/\+\doxymbox{\hyperlink{ads1299_8h}{ads1299.\+h}}\end{DoxyCompactItemize}

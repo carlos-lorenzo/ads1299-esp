@@ -1,0 +1,42 @@
+\doxysection{ads1299\+\_\+config\+\_\+t Struct Reference}
+\hypertarget{structads1299__config__t}{}\label{structads1299__config__t}\index{ads1299\_config\_t@{ads1299\_config\_t}}
+
+
+Static device configuration.  
+
+
+
+
+{\ttfamily \+\#include $<$ads1299.\+h$>$}
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structads1299__config__t_ae1f2fbeb41fe81a3d089f124a57c208e}\label{structads1299__config__t_ae1f2fbeb41fe81a3d089f124a57c208e} 
+spi\+\_\+host\+\_\+device\+\_\+t {\bfseries spi\+\_\+host}
+\begin{DoxyCompactList}\small\item\em SPI host, usually SPI2\+\_\+\+HOST or SPI3\+\_\+\+HOST. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__config__t_a5373be241ff791b8488a9408fec00c8f}\label{structads1299__config__t_a5373be241ff791b8488a9408fec00c8f} 
+gpio\+\_\+num\+\_\+t {\bfseries cs\+\_\+pin}
+\begin{DoxyCompactList}\small\item\em Chip select pin, active low. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__config__t_afd602de03640196af95df4a89f35d1ce}\label{structads1299__config__t_afd602de03640196af95df4a89f35d1ce} 
+gpio\+\_\+num\+\_\+t {\bfseries drdy\+\_\+pin}
+\begin{DoxyCompactList}\small\item\em Data-\/ready pin, active low falling edge. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__config__t_a1cce1b68457f6d67f356f21266ac274d}\label{structads1299__config__t_a1cce1b68457f6d67f356f21266ac274d} 
+gpio\+\_\+num\+\_\+t {\bfseries reset\+\_\+pin}
+\begin{DoxyCompactList}\small\item\em Hardware reset pin, active low. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__config__t_aba54ee79759708b95fcefb52c7fc91d3}\label{structads1299__config__t_aba54ee79759708b95fcefb52c7fc91d3} 
+gpio\+\_\+num\+\_\+t {\bfseries start\+\_\+pin}
+\begin{DoxyCompactList}\small\item\em Conversion start pin. \end{DoxyCompactList}\item 
+\Hypertarget{structads1299__config__t_ab12407be6478a5d8250920e73ceb9ff7}\label{structads1299__config__t_ab12407be6478a5d8250920e73ceb9ff7} 
+\doxymbox{\hyperlink{ads1299__defs_8h_ad22d861d50e0705e058da6f59e2e169a}{ads1299\+\_\+sample\+\_\+rate\+\_\+t}} {\bfseries sample\+\_\+rate}
+\begin{DoxyCompactList}\small\item\em Initial ADS1299 output data rate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Static device configuration. 
+
+The application must initialize the SPI bus for spi\+\_\+host before calling \doxylink{ads1299_8h_ae8b134a209854c477ed5f76149f39c07}{ads1299\+\_\+init()}. The driver calls spi\+\_\+bus\+\_\+add\+\_\+device() and spi\+\_\+bus\+\_\+remove\+\_\+device() internally. 
+
+The documentation for this struct was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+include/\+\doxymbox{\hyperlink{ads1299_8h}{ads1299.\+h}}\end{DoxyCompactItemize}

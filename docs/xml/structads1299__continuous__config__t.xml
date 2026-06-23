@@ -11,12 +11,13 @@
         <name>on_chunk</name>
         <qualifiedname>ads1299_continuous_config_t::on_chunk</qualifiedname>
         <briefdescription>
+<para>Required callback for completed chunks. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="110" column="24" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="110" bodyend="-1"/>
+        <location file="include/ads1299.h" line="101" column="24" bodyfile="include/ads1299.h" bodystart="101" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__continuous__config__t_1ac2ef9d63859de1e005b8f283d8fffbf1" prot="public" static="no" mutable="no">
         <type><ref refid="ads1299_8h_1a138db55a2954a65c8fd6c380de1b318e" kindref="member">ads1299_error_cb_t</ref></type>
@@ -25,12 +26,13 @@
         <name>on_error</name>
         <qualifiedname>ads1299_continuous_config_t::on_error</qualifiedname>
         <briefdescription>
+<para>Optional callback for recoverable errors. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="111" column="24" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="111" bodyend="-1"/>
+        <location file="include/ads1299.h" line="102" column="24" bodyfile="include/ads1299.h" bodystart="102" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__continuous__config__t_1a5af3dc3511cc441c07c64e3cc7b0d254" prot="public" static="no" mutable="no">
         <type>void *</type>
@@ -39,12 +41,13 @@
         <name>ctx</name>
         <qualifiedname>ads1299_continuous_config_t::ctx</qualifiedname>
         <briefdescription>
+<para>User context passed to callbacks. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="112" column="23" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="112" bodyend="-1"/>
+        <location file="include/ads1299.h" line="103" column="10" bodyfile="include/ads1299.h" bodystart="103" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__continuous__config__t_1a0d803b98fde218abb87a15c9f9965eac" prot="public" static="no" mutable="no">
         <type>uint32_t</type>
@@ -53,12 +56,13 @@
         <name>chunk_duration_ms</name>
         <qualifiedname>ads1299_continuous_config_t::chunk_duration_ms</qualifiedname>
         <briefdescription>
+<para>Chunk length in milliseconds. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="113" column="24" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="113" bodyend="-1"/>
+        <location file="include/ads1299.h" line="104" column="14" bodyfile="include/ads1299.h" bodystart="104" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__continuous__config__t_1a93db9c124ee88b669d56081530171ea2" prot="public" static="no" mutable="no">
         <type>uint32_t</type>
@@ -67,19 +71,13 @@
         <name>ring_buffer_chunks</name>
         <qualifiedname>ads1299_continuous_config_t::ring_buffer_chunks</qualifiedname>
         <briefdescription>
-<para>Ring buffer depth in number of chunk slots. </para>
+<para>Chunk slots; 0 selects ADS1299_RING_BUF_SLOTS. </para>
         </briefdescription>
         <detaileddescription>
-<para>0 = ADS1299_RING_BUF_SLOTS (default).</para>
-<para>Must be a power of 2. Rounded up internally if not.</para>
-<para>Total memory allocated: ring_buffer_chunks * chunk_samples * sizeof(ads1299_sample_t)</para>
-<para>At 250 SPS, 100 ms chunks, 8 slots: 8 * 25 * 44 = 8,800 bytes</para>
-<para>At 16 kSPS, 10 ms chunks, 8 slots: 8 * 160 * 44 = 56,320 bytes</para>
-<para>At 16 kSPS, 100 ms chunks, 8 slots: 8 * 1600 * 44 = 563,200 bytes ← EXCEEDS ESP32 SRAM; reduce chunk_duration_ms </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="133" column="17" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="133" bodyend="-1"/>
+        <location file="include/ads1299.h" line="105" column="14" bodyfile="include/ads1299.h" bodystart="105" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__continuous__config__t_1add6d40348e9a1b8596023f1c945bac7b" prot="public" static="no" mutable="no">
         <type>UBaseType_t</type>
@@ -88,12 +86,13 @@
         <name>task_priority</name>
         <qualifiedname>ads1299_continuous_config_t::task_priority</qualifiedname>
         <briefdescription>
+<para>FreeRTOS priority for the handler task. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="135" column="17" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="135" bodyend="-1"/>
+        <location file="include/ads1299.h" line="106" column="17" bodyfile="include/ads1299.h" bodystart="106" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="structads1299__continuous__config__t_1a799a043538e080f6914823a34818b086" prot="public" static="no" mutable="no">
         <type>BaseType_t</type>
@@ -102,19 +101,20 @@
         <name>task_core</name>
         <qualifiedname>ads1299_continuous_config_t::task_core</qualifiedname>
         <briefdescription>
+<para>FreeRTOS core affinity for the handler task. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="136" column="17" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="136" bodyend="-1"/>
+        <location file="include/ads1299.h" line="107" column="16" bodyfile="include/ads1299.h" bodystart="107" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Continuous acquisition configuration. </para>
+<para>Continuous-acquisition configuration. </para>
     </briefdescription>
     <detaileddescription>
-<para>Provided to <ref refid="ads1299_8h_1aa9d9a25b8b6b449b24befabbf79a0c3c" kindref="member">ads1299_start_continuous()</ref>. All buffer sizing is derived automatically from config.sample_rate and chunk_duration_ms — the caller does not manage any buffers directly. </para>
+<para>Buffer sizing is derived from sample_rate and chunk_duration_ms. The caller does not manage DMA or chunk storage directly. </para>
     </detaileddescription>
     <collaborationgraph>
       <node id="2">
@@ -136,7 +136,7 @@
         <link refid="structads1299__sample__t"/>
       </node>
     </collaborationgraph>
-    <location file="/home/carlos/dev/ads1299-esp/include/ads1299.h" line="109" column="1" bodyfile="/home/carlos/dev/ads1299-esp/include/ads1299.h" bodystart="109" bodyend="137"/>
+    <location file="include/ads1299.h" line="100" column="1" bodyfile="include/ads1299.h" bodystart="100" bodyend="108"/>
     <listofallmembers>
       <member refid="structads1299__continuous__config__t_1a0d803b98fde218abb87a15c9f9965eac" prot="public" virt="non-virtual"><scope>ads1299_continuous_config_t</scope><name>chunk_duration_ms</name></member>
       <member refid="structads1299__continuous__config__t_1a5af3dc3511cc441c07c64e3cc7b0d254" prot="public" virt="non-virtual"><scope>ads1299_continuous_config_t</scope><name>ctx</name></member>
